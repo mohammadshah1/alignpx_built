@@ -349,4 +349,42 @@ div {
 	height:auto !important;
 	overflow:auto;
 	z-index:999;
+}
+
+.apx-view.view-view-cust.view-display-id-customer_detail_report{
+	width:900px;
+	margin:20px auto;
+}
+.apx-view.view-view-cust.view-display-id-attachment_1, .apx-view.view-view-cust.view-display-id-attachment_2, .apx-view.view-view-cust.view-display-id-weekly_averages_attachments, .apx-view.view-view-cust.view-display-id-weekly_averages_current_six_weeks {
+	float:left;
+	width:250px;
+	margin-right:0px;
+	margin-top:10px;	
+}
+.apx-view.view-view-cust.view-display-id-attachment_2, .apx-view.view-view-cust.view-display-id-weekly_averages_attachments, .apx-view.view-view-cust.view-display-id-weekly_averages_current_six_weeks {
+	margin-left:15px;
+}
+.apx-view.view-view-cust.view-display-id-attachment_1 .view-header, .apx-view.view-view-cust.view-display-id-attachment_2 .view-header, .apx-view.view-view-cust.view-display-id-weekly_averages_attachments .view-header, .apx-view.view-view-cust.view-display-id-weekly_averages_current_six_weeks .view-header {
+	font-weight: bold;
+	text-align: center;
+	font-size: 11px;
+	color: #333;
+	background: url("../images/slice3.png") repeat-x scroll 50% 50% #6AACFF;
+	color: #000;
+	font-family: arial,Tahoma,Arial;
+	border: 1px solid #333;
+	border-bottom: none;
+	z-index: 1;
+	padding:3px 0px;
+	width:100%;
+}
+.apx-view.view-view-cust .views-table {
+	width:100%;
+}
+.apx-view.view-view-cust .view-header p {
+	margin:0px;	
+}
+.apx-view.success-percentage-view .visualization-chart {
+	max-width:700px;
+	margin:auto;
 }
