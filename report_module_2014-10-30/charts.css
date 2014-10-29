@@ -1,0 +1,19 @@
+.wwtx-charts-header {
+	background: url(../images/slice3.png) repeat-x scroll 50% 50% #6aacff;
+	color: #722;
+	font-weight: bold;
+	font-size: 12px;
+	line-height: 20px;
+	border-bottom: 1px solid #111111;
+	text-align:center;
+	padding:3px;
+	font-family: arial,Tahoma, Arial;
+}
+.wwtx-charts {
+	width: 900px;
+	margin:auto;
+	ext-align: center;
+	overflow: hidden;
+	margin-top: 20px;
+	border: 1px solid #111111;
+}
