@@ -5,8 +5,8 @@ INTRODUCTION
 This file explains how to Add left menu (Reports) and installing report modules (wwex_reports, wwex_revenue_report, wwex_sales_rep_report, 
 wwex_shipments_by_date, wwex_shipments_detail_report, wwex_tier_report,wwex_report_charts) along with few drupal contributed modules and custom dependent module (wwex_views_uid_filter).
 
-	Note: (Adding a (Reports) menu), Make sure that report menu is created first.Check report menu in list on the path(i.e /admin/structure/menu/)
-				Also, Please make sure that "wwex_views_uid_filter" module is install first, because this module adds our custom views filter field (Content: Author UID (select list)) into view filters section.
+	Note: (Adding a "Reports" menu in main-menu), Make sure that report menu is created first under main-menu (steps defined below in "Configuration" section). Also, Please make sure that "wwex_views_uid_filter" module is install first, 
+	because this module adds our custom views filter field (Content: Author UID (select list)) into view filters section.
 
 ==========================================
 REQUIREMENTS
@@ -33,11 +33,11 @@ i.e(/admin/modules).
 CONFIGURATION
 ==========================================
 
-Now create a menu link with name (Shipment Reports Menu) by following below steps.
+Now create a new menu type with name (Shipment Reports Menu) by following below steps.
 Go to structure->menu
 ie (/admin/structure/menu/add)
 Click on Add menu,Enter the name of your menu (Shipment Reports Menu) and Click save.
-Also, create (Reports) link in main-menu (/admin/structure/menu/manage/main-menu/add).
+Also, create (Reports) menu in main-menu (/admin/structure/menu/manage/main-menu/add)
 
 Now for TB menu go to structure TB mega menu ie (/admin/structure/tb-megamenu) Make sure your menu "Shipment Reports Menu" appear in list.
 Click on "Config" link of main menu, there you will see all main-menu links/tabs. 
