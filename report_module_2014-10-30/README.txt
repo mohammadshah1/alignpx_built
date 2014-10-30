@@ -86,6 +86,6 @@ A Configure filter criterion popup will open. first of all please make sure that
 Scroll downward and check the box "allow multiple selection" and "Make it sexy" options and click on Apply.
 Now open another field in the same filters section and follow the same method.
 
-(Note: these are only for multiselcet fields and non-date fields, do not do this for any date filter fields).
+(Note: these are only for multi-select fields and non-date fields, do not do this for any date filter fields).
 
 
