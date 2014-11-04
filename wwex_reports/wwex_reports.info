@@ -1,0 +1,13 @@
+name = WWEX Reports
+description = Adds WWEX reports to site. 
+core = 7.x
+dependencies[] = views_distinct
+dependencies[] = php
+dependencies[] = views_php
+dependencies[] = colorbox
+dependencies[] = colorbox_node
+dependencies[] = views_date_format_sql
+dependencies[] = visualization
+dependencies[] = views_aggregator
+dependencies[] = tb_megamenu
+stylesheets[all][] = theme/css/wwex_reports.css

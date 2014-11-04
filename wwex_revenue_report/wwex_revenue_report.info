@@ -1,0 +1,3 @@
+name = WWEX Revenue Report
+description = Adds "Revenue Report" page to the reports section.
+core = 7.x

@@ -1,0 +1,119 @@
+<?php 
+/**
+ *Implementing hook_menu().
+ */
+function wwex_shipments_by_date_menu(){
+	 
+	$items['shipments-by-dates'] = array(
+		'title' => 'Shipments By Date',
+		'page callback' => 'drupal_get_form',
+		'access callback' => TRUE,
+		'weight' => 0,  
+		'menu_name' => 'menu-shipment-reports-menu',
+		'type' => MENU_NORMAL_ITEM,
+	); 
+	
+  return $items;
+}
+
+
+// hook_views_pre_render()
+function wwex_shipments_by_date_views_pre_render(&$view) {
+	global $base_url;
+	// Scramble the order of the rows shown on this result page.
+	// Note that this could be done earlier, but not later in the view execution
+	// process.
+	if( $view->name == 'shipments_by_dates' ){
+		
+		// re calculate totals
+		if( isset($view->totals) && !empty($view->totals) ){
+			
+			// first we get total customer rate (Total Retial Price)
+			$total_customer_rate = isset($view->totals['field_customer_rate']) ? strip_tags($view->totals['field_customer_rate']) : 0;
+			// get total margin
+			$total_margin = isset($view->totals['expression_1']) ? $view->totals['expression_1'] : 0;
+			
+			// calculate total marin %
+			$margin_percentage = $total_customer_rate != 0 ? ($total_margin / $total_customer_rate) * 100 : 0;
+			
+			// replce margin % total
+			if( isset($view->totals['expression_2']) )
+				$view->totals['expression_2'] = number_format($margin_percentage, 2, '.', '') . '%';
+				
+			// replace retail total with retail hidden total
+			if( isset($view->totals['field_customer_rate_1']) )
+				$view->totals['field_customer_rate_1'] = '$' . number_format($total_customer_rate, 2, '.', ',');
+				
+		}
+		
+		// recalculate per row
+		if( isset($view->style_plugin->rendered_fields) ){
+			
+			$rendered_fields = &$view->style_plugin->rendered_fields;
+			
+			foreach($rendered_fields as $count => $fields){
+				// first we get total customer rate (Total Retial Price) per row
+				$total_customer_rate_pr = isset($fields['field_customer_rate']) ? strip_tags($fields['field_customer_rate']) : 0;
+				// get total margin per row
+				$total_margin_pr = isset($fields['expression_1']) ? $fields['expression_1'] : 0;
+				
+				// calculate total marin % per row
+				$margin_percentage_pr = $total_customer_rate_pr != 0 ? ($total_margin_pr / $total_customer_rate_pr) * 100 : 0;
+				
+				// replace margin % total per row
+				if( isset($fields['expression_2']) )
+					$view->style_plugin->rendered_fields[$count]['expression_2'] = number_format($margin_percentage_pr, 2, '.', '') . '%';
+					
+				if( $view->current_display == 'attachment_1'){
+					if( isset($fields['nid']) && isset($fields['php']) ){
+						$ships_count = $fields['nid'];
+						$cs_nids = $fields['php'];
+						$view->style_plugin->rendered_fields[$count]['nid'] = '<a href="'.$base_url.'/load-count-detail/'.$cs_nids.'">'.$ships_count.'</a>';
+					}
+				}
+				
+			}
+			
+		}
+		
+	}
+}
+
+/*
+ * Implementation of hook_views_api()
+ */
+function wwex_shipments_by_date_views_api() {
+  return array('api' => 3.0);
+}
+
+/**
+ * Implements hook_theme().
+ */
+function wwex_shipments_by_date_theme() {
+	return array(
+		'views_view__shipments_by_dates' => array(
+			'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+			'template' => 'views-view--shipments-by-dates',
+			'base hook' => 'views_view',
+			'path' => drupal_get_path('module', 'wwex_shipments_by_date') . '/theme',
+		),
+	);
+}
+
+/**
+ * Implementing hook_views_query_alter().
+ */ 
+ 
+function wwex_shipments_by_date_views_query_alter(&$view, &$query) {
+ 
+ if($view->name == 'shipments_by_dates'){
+  if ( isset($_GET['uid']) && !empty($_GET['uid']) ) {
+   
+   $query->where[2]['conditions'][2] = array(
+    'field' => 'node.uid',
+    'value' => $_GET['uid'],
+    'operator' =>'IN' 
+   );
+  }
+ }
+}

@@ -1,0 +1,44 @@
+<?php 
+/**
+ *Implementing hook_menu().
+ */
+function wwex_shipments_detail_report_menu(){
+	 
+	$items['shipments-detail-report'] = array(
+		'title' => 'Shipments Detail Report',
+		'page callback' => 'drupal_get_form',
+		'access callback' => TRUE,
+		'weight' => -43,  
+		'menu_name' => 'main-menu',
+		'type' => MENU_NORMAL_ITEM,
+	); 
+	
+  return $items;
+}
+
+/*
+ * Implementation of hook_views_api()
+ */
+function wwex_shipments_detail_report_views_api() {
+  return array('api' => 3.0);
+}
+
+/**
+ * Implements hook_theme().
+ */
+function wwex_shipments_detail_report_theme() {
+	return array(
+		'views_view__shipment_detail_report' => array(
+			'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+			'template' => 'views-view--shipment-detail-report',
+			'base hook' => 'views_view',
+			'path' => drupal_get_path('module', 'wwex_shipments_detail_report') . '/theme',
+		),
+		'views_view__view_cust' => array(
+			'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+			'template' => 'views-view--view-cust',
+			'base hook' => 'views_view',
+			'path' => drupal_get_path('module', 'wwex_shipments_detail_report') . '/theme',
+		),
+	);
+}

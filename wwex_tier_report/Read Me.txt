@@ -1,0 +1,27 @@
+=======================
+     Description
+=======================
+
+* This module adds a view "Tier Report" and add some calculations for tier report.
+* You can access tier report page at site_url/tier-report.
+
+
+=======================
+     Installation:
+=======================
+
+Unzip and place module folder under the directory "sites/all/modules/custom/"
+
+
+=======================
+     Dependencies
+=======================
+This module depends on following modules:
+
+** Please add these modules under the dirctory "sites/all/modules/contrib/" before installing this module.
+
+1. Views Aggregator Plus (https://www.drupal.org/project/views_aggregator)
+
+2. Views Distinct (https://www.drupal.org/project/views_distinct)
+
+3. Views PHP (https://www.drupal.org/project/views_php)

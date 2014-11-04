@@ -1,0 +1,708 @@
+<?php
+
+$view = new view();
+$view->name = 'tier_report';
+$view->description = '';
+$view->tag = 'default';
+$view->base_table = 'node';
+$view->human_name = 'Tier Report';
+$view->core = 7;
+$view->api_version = '3.0';
+$view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+/* Display: Master */
+$handler = $view->new_display('default', 'Master', 'default');
+$handler->display->display_options['title'] = 'Customers report based on 6-Week Averages';
+$handler->display->display_options['use_more_always'] = FALSE;
+$handler->display->display_options['group_by'] = TRUE;
+$handler->display->display_options['access']['type'] = 'perm';
+$handler->display->display_options['cache']['type'] = 'none';
+$handler->display->display_options['query']['type'] = 'views_query';
+$handler->display->display_options['exposed_form']['type'] = 'basic';
+$handler->display->display_options['pager']['type'] = 'some';
+$handler->display->display_options['pager']['options']['items_per_page'] = '0';
+$handler->display->display_options['pager']['options']['offset'] = '0';
+$handler->display->display_options['style_plugin'] = 'views_aggregator';
+$handler->display->display_options['style_options']['columns'] = array(
+  'php' => 'php',
+  'field_w_number' => 'field_w_number',
+  'nid' => 'nid',
+  'field_w_number_1' => 'field_w_number_1',
+  'expression' => 'expression',
+  'field_customer_rate_1' => 'field_customer_rate_1',
+  'expression_5' => 'expression_5',
+  'expression_6' => 'expression_6',
+  'php_1' => 'php_1',
+  'field_carrier_rate' => 'field_carrier_rate',
+  'expression_7' => 'expression_7',
+  'field_shipment_booking_fee' => 'field_shipment_booking_fee',
+  'expression_8' => 'expression_8',
+  'expression_1' => 'expression_1',
+  'expression_11' => 'expression_11',
+  'php_2' => 'php_2',
+  'expression_2' => 'expression_2',
+  'expression_3' => 'expression_3',
+  'expression_4' => 'expression_4',
+  'expression_9' => 'expression_9',
+  'expression_10' => 'expression_10',
+);
+$handler->display->display_options['style_options']['default'] = '-1';
+$handler->display->display_options['style_options']['info'] = array(
+  'php' => array(
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 1,
+    'aggr' => array(
+      'views_aggregator_group_and_compress' => 'views_aggregator_group_and_compress',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_replace',
+    'aggr_par_column' => 'Total',
+  ),
+  'field_w_number' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_group_and_compress' => 'views_aggregator_group_and_compress',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 0,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'nid' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'field_w_number_1' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'expression' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'field_customer_rate_1' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'expression_5' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'expression_6' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'php_1' => array(
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 0,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'field_carrier_rate' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'expression_7' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'field_shipment_booking_fee' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'expression_8' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'expression_1' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'expression_11' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'php_2' => array(
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 0,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'expression_2' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'expression_3' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_sum' => 'views_aggregator_sum',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'expression_4' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_sum' => 'views_aggregator_sum',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_average',
+    'aggr_par_column' => '',
+  ),
+  'expression_9' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'expression_10' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+);
+$handler->display->display_options['style_options']['caption'] = 'Customers report based on 6-Week Averages';
+$handler->display->display_options['style_options']['totals_per_page'] = '0';
+$handler->display->display_options['style_options']['totals_row_position'] = array(
+  1 => 0,
+  2 => '2',
+);
+/* Field: Tier */
+$handler->display->display_options['fields']['php']['id'] = 'php';
+$handler->display->display_options['fields']['php']['table'] = 'views';
+$handler->display->display_options['fields']['php']['field'] = 'php';
+$handler->display->display_options['fields']['php']['ui_name'] = 'Tier';
+$handler->display->display_options['fields']['php']['label'] = 'Tier';
+$handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+$handler->display->display_options['fields']['php']['php_value'] = '$grade = \'\';
+if( isset($row->nid) ){
+	$count = $row->nid > 0 ? $row->nid / 6 : 0;
+	if( $count >= 3 ){
+		$grade = \'A\';
+	}else if( $count > 1 && $count < 3 ){
+		$grade = \'B\';
+	}else if( $count <= 1 ){
+		$grade = \'C\';
+	}
+}
+return $grade;';
+$handler->display->display_options['fields']['php']['php_output'] = '<?php 
+$grade = \'\';
+if( isset($row->nid) ){
+	$count = $row->nid > 0 ? $row->nid / 6 : 0;
+	if( $count >= 3){
+		$grade = \'A\';
+	}else if( $count > 1 && $count <  3){
+		$grade = \'B\';
+	}else if( $count <= 1 ){
+		$grade = \'C\';
+	}
+}
+print $grade;
+?>';
+$handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+$handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+/* Field: Customer Number (Hidden) */
+$handler->display->display_options['fields']['field_w_number']['id'] = 'field_w_number';
+$handler->display->display_options['fields']['field_w_number']['table'] = 'field_data_field_w_number';
+$handler->display->display_options['fields']['field_w_number']['field'] = 'field_w_number';
+$handler->display->display_options['fields']['field_w_number']['ui_name'] = 'Customer Number (Hidden)';
+$handler->display->display_options['fields']['field_w_number']['label'] = 'Customer Number (Hidden)';
+$handler->display->display_options['fields']['field_w_number']['exclude'] = TRUE;
+$handler->display->display_options['fields']['field_w_number']['group_columns'] = array(
+  'value' => 'value',
+);
+/* Field: COUNT(DISTINCT Content: Nid) */
+$handler->display->display_options['fields']['nid']['id'] = 'nid';
+$handler->display->display_options['fields']['nid']['table'] = 'node';
+$handler->display->display_options['fields']['nid']['field'] = 'nid';
+$handler->display->display_options['fields']['nid']['group_type'] = 'count_distinct';
+$handler->display->display_options['fields']['nid']['label'] = 'Shipment Count Hidden';
+$handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+/* Field: COUNT(DISTINCT Field: W Number) */
+$handler->display->display_options['fields']['field_w_number_1']['id'] = 'field_w_number_1';
+$handler->display->display_options['fields']['field_w_number_1']['table'] = 'field_data_field_w_number';
+$handler->display->display_options['fields']['field_w_number_1']['field'] = 'field_w_number';
+$handler->display->display_options['fields']['field_w_number_1']['group_type'] = 'count_distinct';
+$handler->display->display_options['fields']['field_w_number_1']['label'] = 'Customers';
+$handler->display->display_options['fields']['field_w_number_1']['separator'] = ', ';
+/* Field: Shpts */
+$handler->display->display_options['fields']['expression']['id'] = 'expression';
+$handler->display->display_options['fields']['expression']['table'] = 'views';
+$handler->display->display_options['fields']['expression']['field'] = 'expression';
+$handler->display->display_options['fields']['expression']['ui_name'] = 'Shpts';
+$handler->display->display_options['fields']['expression']['label'] = 'Shpts';
+$handler->display->display_options['fields']['expression']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression']['precision'] = '2';
+$handler->display->display_options['fields']['expression']['expression'] = '[nid]/6';
+/* Field: SUM(Customer Rate (Hidden)) */
+$handler->display->display_options['fields']['field_customer_rate_1']['id'] = 'field_customer_rate_1';
+$handler->display->display_options['fields']['field_customer_rate_1']['table'] = 'field_data_field_customer_rate';
+$handler->display->display_options['fields']['field_customer_rate_1']['field'] = 'field_customer_rate';
+$handler->display->display_options['fields']['field_customer_rate_1']['group_type'] = 'sum';
+$handler->display->display_options['fields']['field_customer_rate_1']['ui_name'] = 'Customer Rate (Hidden)';
+$handler->display->display_options['fields']['field_customer_rate_1']['label'] = 'Customer Rate (Hidden)';
+$handler->display->display_options['fields']['field_customer_rate_1']['exclude'] = TRUE;
+$handler->display->display_options['fields']['field_customer_rate_1']['settings'] = array(
+  'thousand_separator' => '',
+  'decimal_separator' => '.',
+  'scale' => '0',
+  'prefix_suffix' => 0,
+);
+$handler->display->display_options['fields']['field_customer_rate_1']['group_columns'] = array(
+  'value' => 'value',
+);
+/* Field: SUM(Customer Rate Average (Hidden)) */
+$handler->display->display_options['fields']['expression_5']['id'] = 'expression_5';
+$handler->display->display_options['fields']['expression_5']['table'] = 'views';
+$handler->display->display_options['fields']['expression_5']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_5']['group_type'] = 'sum';
+$handler->display->display_options['fields']['expression_5']['ui_name'] = 'Customer Rate Average (Hidden)';
+$handler->display->display_options['fields']['expression_5']['label'] = 'Customer Rate Average (Hidden)';
+$handler->display->display_options['fields']['expression_5']['exclude'] = TRUE;
+$handler->display->display_options['fields']['expression_5']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_5']['precision'] = '2';
+$handler->display->display_options['fields']['expression_5']['separator'] = '';
+$handler->display->display_options['fields']['expression_5']['expression'] = '[field_customer_rate_1]  / 6';
+/* Field: SUM(Customer Rate Average) */
+$handler->display->display_options['fields']['expression_6']['id'] = 'expression_6';
+$handler->display->display_options['fields']['expression_6']['table'] = 'views';
+$handler->display->display_options['fields']['expression_6']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_6']['group_type'] = 'sum';
+$handler->display->display_options['fields']['expression_6']['ui_name'] = 'Customer Rate Average';
+$handler->display->display_options['fields']['expression_6']['label'] = 'Revenue';
+$handler->display->display_options['fields']['expression_6']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_6']['precision'] = '2';
+$handler->display->display_options['fields']['expression_6']['prefix'] = '$';
+$handler->display->display_options['fields']['expression_6']['expression'] = '[field_customer_rate_1]  / 6';
+/* Field: Total Customer Rate (Hidden) */
+$handler->display->display_options['fields']['php_1']['id'] = 'php_1';
+$handler->display->display_options['fields']['php_1']['table'] = 'views';
+$handler->display->display_options['fields']['php_1']['field'] = 'php';
+$handler->display->display_options['fields']['php_1']['ui_name'] = 'Total Customer Rate (Hidden)';
+$handler->display->display_options['fields']['php_1']['label'] = 'Total Customer Rate (Hidden)';
+$handler->display->display_options['fields']['php_1']['exclude'] = TRUE;
+$handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
+$handler->display->display_options['fields']['php_1']['php_value'] = '$date_from = strtotime("-42 days");
+$date_to = time();
+$sql ="SELECT
+SUM(field_data_field_customer_rate.field_customer_rate_value) as customer_rate
+FROM
+node
+INNER JOIN field_data_field_shipment_booking_fee ON field_data_field_shipment_booking_fee.entity_id = node.nid
+INNER JOIN field_data_field_customer_rate ON field_data_field_customer_rate.entity_id = node.nid
+INNER JOIN field_data_field_carrier_rate ON field_data_field_carrier_rate.entity_id = node.nid
+INNER JOIN field_data_field_internal_load_status on field_data_field_internal_load_status.entity_id = node.nid
+WHERE (( (node.status = \'1\') AND (node.type IN  (\'shipment\')) AND (field_data_field_internal_load_status.field_internal_load_status_tid IN  (\'22\', \'23\')) AND (node.created BETWEEN ".$date_from." AND ".$date_to.") ))";
+$result = db_query($sql);
+if( !empty($result) ){
+	foreach ($result as $rows) {
+		return ($rows->customer_rate) > 0 ? $rows->customer_rate / 6 : 0;
+	}
+}';
+$handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
+$handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
+/* Field: SUM(Carrier Rate (Hidden)) */
+$handler->display->display_options['fields']['field_carrier_rate']['id'] = 'field_carrier_rate';
+$handler->display->display_options['fields']['field_carrier_rate']['table'] = 'field_data_field_carrier_rate';
+$handler->display->display_options['fields']['field_carrier_rate']['field'] = 'field_carrier_rate';
+$handler->display->display_options['fields']['field_carrier_rate']['group_type'] = 'sum';
+$handler->display->display_options['fields']['field_carrier_rate']['ui_name'] = 'Carrier Rate (Hidden)';
+$handler->display->display_options['fields']['field_carrier_rate']['label'] = 'Carrier Rate (Hidden)';
+$handler->display->display_options['fields']['field_carrier_rate']['exclude'] = TRUE;
+$handler->display->display_options['fields']['field_carrier_rate']['settings'] = array(
+  'thousand_separator' => '',
+  'decimal_separator' => '.',
+  'scale' => '0',
+  'prefix_suffix' => 0,
+);
+$handler->display->display_options['fields']['field_carrier_rate']['group_columns'] = array(
+  'value' => 'value',
+);
+/* Field: SUM(Carrier Rate Average (Hidden)) */
+$handler->display->display_options['fields']['expression_7']['id'] = 'expression_7';
+$handler->display->display_options['fields']['expression_7']['table'] = 'views';
+$handler->display->display_options['fields']['expression_7']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_7']['group_type'] = 'sum';
+$handler->display->display_options['fields']['expression_7']['ui_name'] = 'Carrier Rate Average (Hidden)';
+$handler->display->display_options['fields']['expression_7']['label'] = 'Carrier Rate Average (Hidden)';
+$handler->display->display_options['fields']['expression_7']['exclude'] = TRUE;
+$handler->display->display_options['fields']['expression_7']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_7']['precision'] = '2';
+$handler->display->display_options['fields']['expression_7']['separator'] = '';
+$handler->display->display_options['fields']['expression_7']['expression'] = '[field_carrier_rate] / 6';
+/* Field: SUM(Booking Fee (Hidden)) */
+$handler->display->display_options['fields']['field_shipment_booking_fee']['id'] = 'field_shipment_booking_fee';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['table'] = 'field_data_field_shipment_booking_fee';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['field'] = 'field_shipment_booking_fee';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['group_type'] = 'sum';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['ui_name'] = 'Booking Fee (Hidden)';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['label'] = 'Booking Fee (Hidden)';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['exclude'] = TRUE;
+$handler->display->display_options['fields']['field_shipment_booking_fee']['settings'] = array(
+  'thousand_separator' => '',
+  'decimal_separator' => '.',
+  'scale' => '0',
+  'prefix_suffix' => 0,
+);
+$handler->display->display_options['fields']['field_shipment_booking_fee']['group_columns'] = array(
+  'value' => 'value',
+);
+/* Field: SUM(Booking Fee Average (Hidden)) */
+$handler->display->display_options['fields']['expression_8']['id'] = 'expression_8';
+$handler->display->display_options['fields']['expression_8']['table'] = 'views';
+$handler->display->display_options['fields']['expression_8']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_8']['group_type'] = 'sum';
+$handler->display->display_options['fields']['expression_8']['ui_name'] = 'Booking Fee Average (Hidden)';
+$handler->display->display_options['fields']['expression_8']['label'] = 'Booking Fee Average (Hidden)';
+$handler->display->display_options['fields']['expression_8']['exclude'] = TRUE;
+$handler->display->display_options['fields']['expression_8']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_8']['precision'] = '2';
+$handler->display->display_options['fields']['expression_8']['separator'] = '';
+$handler->display->display_options['fields']['expression_8']['expression'] = '[field_shipment_booking_fee] / 6';
+/* Field: Total Cost (Hidden) */
+$handler->display->display_options['fields']['expression_1']['id'] = 'expression_1';
+$handler->display->display_options['fields']['expression_1']['table'] = 'views';
+$handler->display->display_options['fields']['expression_1']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_1']['ui_name'] = 'Total Cost (Hidden)';
+$handler->display->display_options['fields']['expression_1']['label'] = 'Total Cost (Hidden)';
+$handler->display->display_options['fields']['expression_1']['exclude'] = TRUE;
+$handler->display->display_options['fields']['expression_1']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_1']['precision'] = '2';
+$handler->display->display_options['fields']['expression_1']['separator'] = '';
+$handler->display->display_options['fields']['expression_1']['expression'] = '[expression_7] + [expression_8];';
+/* Field: SUM(Total Cost) */
+$handler->display->display_options['fields']['expression_11']['id'] = 'expression_11';
+$handler->display->display_options['fields']['expression_11']['table'] = 'views';
+$handler->display->display_options['fields']['expression_11']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_11']['group_type'] = 'sum';
+$handler->display->display_options['fields']['expression_11']['ui_name'] = 'Total Cost';
+$handler->display->display_options['fields']['expression_11']['label'] = 'Total Cost';
+$handler->display->display_options['fields']['expression_11']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_11']['precision'] = '2';
+$handler->display->display_options['fields']['expression_11']['prefix'] = '$';
+$handler->display->display_options['fields']['expression_11']['expression'] = '[expression_7] + [expression_8];';
+/* Field: Total Margin (Hidden) */
+$handler->display->display_options['fields']['php_2']['id'] = 'php_2';
+$handler->display->display_options['fields']['php_2']['table'] = 'views';
+$handler->display->display_options['fields']['php_2']['field'] = 'php';
+$handler->display->display_options['fields']['php_2']['ui_name'] = 'Total Margin (Hidden)';
+$handler->display->display_options['fields']['php_2']['label'] = 'Total Margin (Hidden)';
+$handler->display->display_options['fields']['php_2']['exclude'] = TRUE;
+$handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
+$handler->display->display_options['fields']['php_2']['php_value'] = '$date_from = strtotime("-42 days");
+$date_to = time();
+$sql ="SELECT
+(SUM(field_data_field_customer_rate.field_customer_rate_value)-
+(SUM(field_data_field_shipment_booking_fee.field_shipment_booking_fee_value) + SUM(field_data_field_carrier_rate.field_carrier_rate_value))
+) as total_margin
+FROM
+node
+INNER JOIN field_data_field_shipment_booking_fee ON field_data_field_shipment_booking_fee.entity_id = node.nid
+INNER JOIN field_data_field_customer_rate ON field_data_field_customer_rate.entity_id = node.nid
+INNER JOIN field_data_field_carrier_rate ON field_data_field_carrier_rate.entity_id = node.nid
+INNER JOIN field_data_field_internal_load_status on field_data_field_internal_load_status.entity_id = node.nid
+WHERE (( (node.status = \'1\') AND (node.type IN  (\'shipment\')) AND (field_data_field_internal_load_status.field_internal_load_status_tid IN  (\'22\', \'23\')) AND (node.created BETWEEN ".$date_from." AND ".$date_to.") ))";
+$result = db_query($sql);
+if( !empty($result) ){
+	foreach ($result as $rows) {
+		return ($rows->total_margin) > 0 ? $rows->total_margin / 6 : 0;
+	}
+}';
+$handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
+$handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
+/* Field: SUM(Margin) */
+$handler->display->display_options['fields']['expression_2']['id'] = 'expression_2';
+$handler->display->display_options['fields']['expression_2']['table'] = 'views';
+$handler->display->display_options['fields']['expression_2']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_2']['group_type'] = 'sum';
+$handler->display->display_options['fields']['expression_2']['ui_name'] = 'Margin';
+$handler->display->display_options['fields']['expression_2']['label'] = 'Margin';
+$handler->display->display_options['fields']['expression_2']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_2']['precision'] = '2';
+$handler->display->display_options['fields']['expression_2']['prefix'] = '$';
+$handler->display->display_options['fields']['expression_2']['expression'] = '[expression_5] - [expression_1]';
+/* Field: SUM(Margin (Hidden)) */
+$handler->display->display_options['fields']['expression_3']['id'] = 'expression_3';
+$handler->display->display_options['fields']['expression_3']['table'] = 'views';
+$handler->display->display_options['fields']['expression_3']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_3']['group_type'] = 'sum';
+$handler->display->display_options['fields']['expression_3']['ui_name'] = 'Margin (Hidden)';
+$handler->display->display_options['fields']['expression_3']['label'] = 'Margin (Hidden)';
+$handler->display->display_options['fields']['expression_3']['exclude'] = TRUE;
+$handler->display->display_options['fields']['expression_3']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_3']['precision'] = '0';
+$handler->display->display_options['fields']['expression_3']['separator'] = '';
+$handler->display->display_options['fields']['expression_3']['expression'] = '[expression_5] - [expression_1]';
+/* Field: Margin % */
+$handler->display->display_options['fields']['expression_4']['id'] = 'expression_4';
+$handler->display->display_options['fields']['expression_4']['table'] = 'views';
+$handler->display->display_options['fields']['expression_4']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_4']['ui_name'] = 'Margin %';
+$handler->display->display_options['fields']['expression_4']['label'] = 'Margin %';
+$handler->display->display_options['fields']['expression_4']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_4']['precision'] = '1';
+$handler->display->display_options['fields']['expression_4']['suffix'] = '%';
+$handler->display->display_options['fields']['expression_4']['expression'] = '([expression_3] / [expression_5])  * 100;';
+/* Field: SUM(% Total Revenue) */
+$handler->display->display_options['fields']['expression_9']['id'] = 'expression_9';
+$handler->display->display_options['fields']['expression_9']['table'] = 'views';
+$handler->display->display_options['fields']['expression_9']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_9']['group_type'] = 'sum';
+$handler->display->display_options['fields']['expression_9']['ui_name'] = '% Total Revenue';
+$handler->display->display_options['fields']['expression_9']['label'] = '% Total Revenue';
+$handler->display->display_options['fields']['expression_9']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_9']['precision'] = '2';
+$handler->display->display_options['fields']['expression_9']['suffix'] = '%';
+$handler->display->display_options['fields']['expression_9']['expression'] = '([expression_5] / [php_1]) * 100;';
+/* Field: SUM(% Total Margin) */
+$handler->display->display_options['fields']['expression_10']['id'] = 'expression_10';
+$handler->display->display_options['fields']['expression_10']['table'] = 'views';
+$handler->display->display_options['fields']['expression_10']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_10']['group_type'] = 'sum';
+$handler->display->display_options['fields']['expression_10']['ui_name'] = '% Total Margin';
+$handler->display->display_options['fields']['expression_10']['label'] = '% Total Margin';
+$handler->display->display_options['fields']['expression_10']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_10']['precision'] = '2';
+$handler->display->display_options['fields']['expression_10']['suffix'] = '%';
+$handler->display->display_options['fields']['expression_10']['expression'] = '([expression_3] / [php_2]) * 100;';
+/* Sort criterion: COUNT(DISTINCT Content: Nid) */
+$handler->display->display_options['sorts']['nid']['id'] = 'nid';
+$handler->display->display_options['sorts']['nid']['table'] = 'node';
+$handler->display->display_options['sorts']['nid']['field'] = 'nid';
+$handler->display->display_options['sorts']['nid']['group_type'] = 'count_distinct';
+/* Filter criterion: Content: Published */
+$handler->display->display_options['filters']['status']['id'] = 'status';
+$handler->display->display_options['filters']['status']['table'] = 'node';
+$handler->display->display_options['filters']['status']['field'] = 'status';
+$handler->display->display_options['filters']['status']['value'] = 1;
+$handler->display->display_options['filters']['status']['group'] = 1;
+$handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+/* Filter criterion: Content: Type */
+$handler->display->display_options['filters']['type']['id'] = 'type';
+$handler->display->display_options['filters']['type']['table'] = 'node';
+$handler->display->display_options['filters']['type']['field'] = 'type';
+$handler->display->display_options['filters']['type']['value'] = array(
+  'shipment' => 'shipment',
+);
+/* Filter criterion: Content: Internal Load Status (field_internal_load_status) */
+$handler->display->display_options['filters']['field_internal_load_status_tid']['id'] = 'field_internal_load_status_tid';
+$handler->display->display_options['filters']['field_internal_load_status_tid']['table'] = 'field_data_field_internal_load_status';
+$handler->display->display_options['filters']['field_internal_load_status_tid']['field'] = 'field_internal_load_status_tid';
+$handler->display->display_options['filters']['field_internal_load_status_tid']['value'] = array(
+  22 => '22',
+  23 => '23',
+);
+$handler->display->display_options['filters']['field_internal_load_status_tid']['type'] = 'select';
+$handler->display->display_options['filters']['field_internal_load_status_tid']['vocabulary'] = 'internal_load_states';
+/* Filter criterion: Content: Post date */
+$handler->display->display_options['filters']['created']['id'] = 'created';
+$handler->display->display_options['filters']['created']['table'] = 'node';
+$handler->display->display_options['filters']['created']['field'] = 'created';
+$handler->display->display_options['filters']['created']['operator'] = 'between';
+$handler->display->display_options['filters']['created']['value']['min'] = '-42 days';
+$handler->display->display_options['filters']['created']['value']['max'] = 'now';
+$handler->display->display_options['filters']['created']['value']['value'] = '-42 days';
+$handler->display->display_options['filters']['created']['value']['type'] = 'offset';
+
+/* Display: Page */
+$handler = $view->new_display('page', 'Page', 'page');
+$handler->display->display_options['defaults']['header'] = FALSE;
+$handler->display->display_options['path'] = 'tier-report';

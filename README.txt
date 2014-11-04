@@ -2,8 +2,11 @@
 INTRODUCTION
 ==========================================
 
-Adding left menu (Reports) and installing all report modules along with few drupal contributed modules.
-This file explain how to add report menu.Make sure that report menu is created first.Check report menu in list on the path(i.e /admin/structure/menu/)
+This file explains how to Add left menu (Reports) and installing report modules (wwex_reports, wwex_revenue_report, wwex_sales_rep_report, 
+wwex_shipments_by_date, wwex_shipments_detail_report, wwex_tier_report,wwex_report_charts) along with few drupal contributed modules and custom dependent module (wwex_views_uid_filter).
+
+	Note: (Adding a "Reports" menu in main-menu), Make sure that report menu is created first under main-menu (steps defined below in "Configuration" section). Also, Please make sure that "wwex_views_uid_filter" module is install first, 
+	because this module adds our custom views filter field (Content: Author UID (select list)) into view filters section.
 
 ==========================================
 REQUIREMENTS
@@ -30,11 +33,11 @@ i.e(/admin/modules).
 CONFIGURATION
 ==========================================
 
-Now make a menu link with name (Shipment Reports Menu) by following below steps.
+Now create a new menu type with name (Shipment Reports Menu) by following below steps.
 Go to structure->menu
 ie (/admin/structure/menu/add)
-Click on Add menu,Enter the name of your menu (Shipment Reports Menu) and Click save, thats it.
-Also, create (Reports) link in main-menu (/admin/structure/menu/manage/main-menu/add).
+Click on Add menu,Enter the name of your menu (Shipment Reports Menu) and Click save.
+Also, create (Reports) menu in main-menu (/admin/structure/menu/manage/main-menu/add)
 
 Now for TB menu go to structure TB mega menu ie (/admin/structure/tb-megamenu) Make sure your menu "Shipment Reports Menu" appear in list.
 Click on "Config" link of main menu, there you will see all main-menu links/tabs. 
@@ -50,8 +53,10 @@ Click save, and a Reports menu with sub menus will be created on left side navig
 Theme configuration for CSS
 ===============================================
 Upload table.css file to theme folder make sure the path is like(/sites/all/themes/e3_zen/css/table.css).
+Upload charts.css file to theme folder make sure the path is like(/sites/all/themes/e3_zen/css/charts.css).
 Now open template.php following the path (/sites/all/themes/e3_zen/template.php).
 Place this line of code "drupal_add_css(E3_ZEN . '/css/table.css');" (Just below this comment -> // Add site CSS) inside this function "function e3_zen_preprocess_html()".
+Place this line of code "drupal_add_css(E3_ZEN . '/css/charts.css');" (Just below this comment -> // Add site CSS) inside this function "function e3_zen_preprocess_html()".
 
 Save the file.
 
@@ -72,7 +77,7 @@ now save the file.
 ####################################################
 REPORT MODULES INSTALLATION
 ==================================================================================================================
-NOTE: After Installing All Reports Module,(Some necessary steps to do after enabling report modules)
+NOTE: After Installing All Report Modules mentioned in introduction section above,(Some necessary steps to do after enabling report modules)
 ==================================================================================================================
 Edit Every report view by clicking the gear on right top of view (When you have admin Rights a gear will appear hovering mouse on it an edit view option appears click on that).
 For example(/admin/structure/views/view/shipment_detail_report/edit/shipment_detail_report?destination=shipment-detail-report).
@@ -81,4 +86,6 @@ A Configure filter criterion popup will open. first of all please make sure that
 Scroll downward and check the box "allow multiple selection" and "Make it sexy" options and click on Apply.
 Now open another field in the same filters section and follow the same method.
 
-(Note these are only for multiselcet fields and non-date fields, do not do this for any date filter fields).
+(Note: these are only for multi-select fields and non-date fields, do not do this for any date filter fields).
+
+

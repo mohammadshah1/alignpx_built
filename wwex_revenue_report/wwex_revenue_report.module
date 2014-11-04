@@ -1,0 +1,121 @@
+<?php
+/**
+ *Implementing hook_menu().
+ */
+function wwex_revenue_report_menu(){
+	 
+	$items['revenue-report'] = array(
+		'title' => 'Revenue Report',
+		'page callback' => 'wwex_revenue_report_page_callback',
+		'access callback' => TRUE,
+		'weight' => 0,  
+		'menu_name' => 'menu-shipment-reports-menu',
+		'type' => MENU_NORMAL_ITEM,
+	); 
+	
+  return $items;
+}
+
+function wwex_revenue_report_dropdown_options(){
+	$query = "SELECT str_to_date( concat( yearweek( node.created ) , ' monday' ) , '%X%V %W' ) AS week_sdate
+	FROM node
+	WHERE TYPE = 'shipment'
+	GROUP BY yearweek( node.created )";
+	$res = db_query($query);
+	$options = array();
+	$options['all'] = 'Select Week';
+	foreach ($res as $item){
+		if(!empty($item->week_sdate)){
+			$options[$item->week_sdate] = $item->week_sdate;
+		}
+	}
+	return $options;
+}
+
+function wwex_revenue_report_page_callback(){
+	if((isset($_GET['start_week']) && !empty($_GET['start_week']) && $_GET['start_week'] != 'all') &&
+	( isset($_GET['end_week']) && !empty($_GET['end_week']) && $_GET['end_week'] != 'all') ){
+		
+		$sql_query = '';
+		$sql_query .= " AND ( (str_to_date( concat( yearweek( node.created ) , ' monday' ) , '%X%V %W' )  >= '" .$_GET['start_week']. "') AND (str_to_date( concat( yearweek( node.created ) , ' monday' ) , '%X%V %W' )  <= '" .$_GET['end_week']. "'))";
+	}
+	
+	$query = "SELECT count( node.nid ) AS shipments, 
+	SUM(field_data_field_shipment_booking_fee.field_shipment_booking_fee_value) AS sum_booking_fee, 
+	str_to_date( concat( yearweek( node.created ) , ' monday' ) , '%X%V %W' ) AS week_sdate
+	FROM node
+	LEFT JOIN field_data_field_shipment_booking_fee ON node.nid = field_data_field_shipment_booking_fee.entity_id 
+	AND (field_data_field_shipment_booking_fee.entity_type = 'node' AND field_data_field_shipment_booking_fee.deleted = '0')
+	WHERE (node.type = 'shipment' " .$sql_query. ")
+	GROUP BY yearweek( node.created )";
+	
+	$res = db_query($query);
+	$row = array();
+	global $base_url;
+	foreach ( $res as $item ) {
+		$row['dates'][] = $item->week_sdate;
+		$row['shipments'][] = $item->shipments;
+		$row['sum_booking_fee'][] = $item->sum_booking_fee;
+	}
+	
+	$link = "SELECT node.nid  AS shipments
+	FROM node
+	WHERE (node.type = 'shipment' " .$sql_query. ")
+	GROUP BY yearweek( node.created )";
+	 
+	
+	foreach ( $row['dates'] as $key => $item ) {
+		if( !empty($item) ) {
+			
+			$link = "SELECT node.nid AS nid FROM node WHERE (node.type = 'shipment' 
+			AND str_to_date( concat( yearweek( node.created ) , ' monday' ) , '%X%V %W' ) = '" .$item. "') ";
+			$result = db_query($link);
+			$nid = array();
+			foreach ($result as $nids){
+				$nid[] = $nids->nid;
+			}
+			 
+			$hyper_link = "<a href = '" .$base_url. "/load-count-detail/". implode(",", $nid )."'> " .$row['shipments'][$key]. "</a>";
+			
+			$rows[] = array($item, $hyper_link, '$'.number_format($row['sum_booking_fee'][$key], 2) );
+		}
+	}
+		
+	$header = array('Week Start Date', 'Shipments', 'Booking Fee');	
+	$output .= '<div class="apx-view success-percentage-view"><div  id = "success_data" class = "view-filters"><div class="views-exposed-form">';
+	$output .=  drupal_render(drupal_get_form('wwex_revenue_report_search_form'));
+	$output .= '<div class="success-percentage-table">';
+	$output .= theme( 'table' , array('header' => $header, 'rows' => $rows));
+	$output .= '</div>';
+	$output .= '</div></div></div>';
+	return $output;
+}
+
+function wwex_revenue_report_search_form(){
+	$form = array();
+	$form['#method'] = 'GET';
+  
+  $form['start_week'] = array(
+		'#type' => 'select',
+		'#date_label_position' => '',	
+		'#title' => 'Start Week',
+		'#options' => wwex_revenue_report_dropdown_options(),
+		'#default_value' => $_GET['start_week'], 
+		'#maxlength' => 10,
+	);
+  
+  $form['end_week'] = array(
+		'#type' => 'select',
+		'#date_label_position' => '',		
+		'#title' => 'End Week',
+		'#default_value' => $_GET['end_week'],
+		'#options' => wwex_revenue_report_dropdown_options(),
+		'#maxlength' => 10,
+	);
+	
+	$form['submit_button'] = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+	);
+	return $form;
+}
