@@ -1,0 +1,19 @@
+.wwtx-charts-header,.wwtx-charts .view-header {
+	background:#66bd0f;
+	color: #fff;
+	font-weight: bold;
+	font-size: 12px;
+	line-height: 20px;
+	border-bottom: 1px solid #111111;
+	text-align:center;
+	padding:3px;
+	font-family: arial,Tahoma, Arial;
+}
+.wwtx-charts {
+	width: 900px;
+	margin:auto;
+	ext-align: center;
+	overflow: hidden;
+	margin-top: 20px;
+	border: 1px solid #111111;
+}

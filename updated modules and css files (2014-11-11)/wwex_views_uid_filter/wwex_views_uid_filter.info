@@ -1,0 +1,8 @@
+name = WWEX Views Author Uid Filter Field
+description = Additional Author Uid Filter field for Views.
+core = 7.x
+
+;dependencies[] = views
+
+files[] = wwex_views_uid_filter_handler_filter_author_select.inc
+files[] = wwex_views_uid_filter.views.inc

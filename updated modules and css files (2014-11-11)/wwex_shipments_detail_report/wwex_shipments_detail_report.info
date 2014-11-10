@@ -1,0 +1,7 @@
+name = WWEX Shipments Detail Report
+description = Add Shipments Detail reports page and some calculations for this report.
+core = 7.x
+dependencies[] = views_aggregator
+dependencies[] = views_distinct
+dependencies[] = views_php
+

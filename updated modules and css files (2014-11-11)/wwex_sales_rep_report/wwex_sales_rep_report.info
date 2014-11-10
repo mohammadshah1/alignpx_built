@@ -1,0 +1,8 @@
+name = WWEX Sales Rep Report
+description = Add "Sales Rep Report" reports page and some calculations for this report.
+core = 7.x
+dependencies[] = views_aggregator
+dependencies[] = views_distinct
+dependencies[] = views_php
+
+stylesheets[all][] = theme/css/wwex_sales_rep_report.css

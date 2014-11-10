@@ -1,0 +1,219 @@
+<?php 
+
+/**
+* @file
+* hook_preprocess_views_aggregator_results_table() is use for wwex_sales_rep_report module table aggregation.
+* wwex_sales_rep_report_list_sales_rep() is use to list all sale rep for wwex_sales_rep_report module.
+* hook_views_query_alter() is use for sale rep report.
+*/
+
+/**
+ *Implementing hook_menu().
+ */
+function wwex_sales_rep_report_menu() {
+  
+  $items['sales-rep-report'] = array(
+    'title' => 'Sales Rep Report',
+    'access callback' => TRUE,
+    'weight' => 0,  
+    'menu_name' => 'menu-shipment-reports-menu',
+    'type' => MENU_NORMAL_ITEM,
+  ); 
+  
+  return $items;
+}
+/**
+ *Implementing hook_init().
+ */
+function wwex_sales_rep_report_init() {
+  
+  // add css if it is sale rep detail page
+  if ( arg(0) == 'sales-rep-report' && isset($_GET['sales_rep']) ) {
+    drupal_add_css('.view-sales-rep-report.view-display-id-attachment_2, .view-sales-rep-report.view-display-id-attachment_3, .view-sales-rep-report.view-display-id-attachment_4, .view-sales-rep-report.view-display-id-attachment_8, .view-sales-rep-report.view-display-id-attachment_5 { display:none; }', $option['type'] = 'inline');
+    // it will be used later to store history tables
+    $GLOBALS['all_history_tables'] = array();
+  }
+  
+}
+
+// hook_views_pre_render()
+function wwex_sales_rep_report_views_pre_render(&$view) {
+  // Scramble the order of the rows shown on this result page.
+  // Note that this could be done earlier, but not later in the view execution
+  // process.
+  //dpm($view->totals);
+  if ( $view->name == 'sales_rep_report' ) {
+    
+    // re calculate totals
+    if ( isset( $view->totals )) {
+      $total_revenue = isset($view->totals['expression_5']) ? $view->totals['expression_5'] : 0;
+      $total_margin = isset($view->totals['expression_3']) ? $view->totals['expression_3'] : 0;
+      
+      // calculate total marin %
+      $margin_percentage = ($total_margin / $total_revenue) * 100;
+  
+      // replce margin % total
+    if ( isset($view->totals['expression_4']) )
+      $view->totals['expression_4'] = number_format($margin_percentage, 2, '.', '') . '%';
+    }
+    
+    // change values per row
+    // it is toatl of tiers e.g for tier A or B or C
+    if ( isset($view->style_plugin->rendered_fields) ) {
+      $rendered_fields = &$view->style_plugin->rendered_fields;
+      
+    // total revenue updated 
+    $total_revenue_updated = 0;
+
+    // total margin updated 
+    $total_margin_updated = 0;
+
+    foreach ($rendered_fields as $count => $fields) {
+
+        // get revenue and margin per row
+        $total_revenue_pr = isset($fields['expression_5']) ? $fields['expression_5'] : 0;
+        $total_margin_pr = isset($fields['expression_3']) ? $fields['expression_3'] : 0;
+
+        // calculate margin % per row
+        $margin_percentage_pr = $total_margin_pr > 0 ? ($total_margin_pr / $total_revenue_pr) * 100 : 0;
+        // change margin % per row 
+        if ( isset($fields['expression_4']) )
+          $view->style_plugin->rendered_fields[$count]['expression_4'] = number_format($margin_percentage_pr, 2, ' . ', '') . '%';
+  
+        // calculate total revenue % per row
+        $total_revenue_percentage_pr = $total_revenue_pr > 0 ? ($total_revenue_pr / $total_revenue) * 100 : 0;
+        $total_revenue_updated += $total_revenue_percentage_pr;
+        if ( isset($fields['expression_9']) )
+          $view->style_plugin->rendered_fields[$count]['expression_9'] = number_format($total_revenue_percentage_pr, 2, '.', '') . '%';
+
+        // calculate total margin % per row
+        $total_margin_percentage_pr = $total_margin_pr > 0 ? ($total_margin_pr / $total_margin) * 100 : 0;
+        $total_margin_updated += $total_margin_percentage_pr;
+        // change total margin % per row 
+        if ( isset($fields['expression_10']) )
+          $view->style_plugin->rendered_fields[$count]['expression_10'] = number_format($total_margin_percentage_pr, 2, '.', '') . '%';
+
+    }
+  
+        // update total values
+        if ( isset( $view->totals )) {
+
+        // format % total revenue	
+        if ( isset($view->totals['expression_9']) )
+          $view->totals['expression_9'] = round($total_revenue_updated) . '%';
+  
+        // format % total margin	
+        if ( isset($view->totals['expression_10']) )
+          $view->totals['expression_10'] = round($total_margin_updated) . '%';
+    
+        }
+     }
+  }
+}
+
+/*
+ * Implementation of hook_views_api()
+ */
+function wwex_sales_rep_report_views_api() {
+  return array('api' => 3.0);
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function wwex_sales_rep_report_theme() {
+  return array(
+    'views_view__sales_rep_report' => array(
+      'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+      'template' => 'views-view--sales-rep-report',
+      'base hook' => 'views_view',
+      'path' => drupal_get_path('module', 'wwex_sales_rep_report') . '/theme',
+    ),
+  );
+}
+
+/**
+ * Implements hook_preprocess_views_aggregator_results_table().
+ */
+function wwex_sales_rep_report_preprocess_views_aggregator_results_table(&$vars) {
+  $view = & $vars['view'];
+  if (isset($vars['view']->name) && $vars['view']->name == 'sales_rep_report') {
+    $displays = array('attachment_2', 'attachment_3', 'attachment_4', 'attachment_8', 'attachment_5', 'attachment_6');
+    if ( isset($vars['view']->current_display) && in_array($vars['view']->current_display, $displays) ) {
+    // store all rows to merge	
+    if ( !empty($vars['rows']) && isset($vars['rows'][0]) ) {
+      $GLOBALS['all_history_tables'][] = $vars['rows'][0];
+    }
+    // if it is last display, merge all rows in it
+    // to create a final display as a table with all rows
+    if ( $vars['view']->current_display == end($displays) ) {
+    $vars['rows'] = $GLOBALS['all_history_tables'];
+    }
+
+    // clear data from merged table
+    if ( $vars['view']->current_display != end($displays) ) {
+    $vars['header'] = array();
+    $vars['rows'] = array();
+    $vars['fields'] = array();
+    }
+    }
+  }
+}
+
+// get all sales rep
+function wwex_sales_rep_report_list_sales_rep() {
+  global $user;
+  $sales_rep = array();
+  //$sales_rep[] = 'Select Sale Rep';
+
+  if ($user->uid > 0) {
+    $user_obj = user_load($user->uid); 
+    $user_franchise_nid = isset($user_obj->field_user_franchise['und'][0]['nid']) ? $user_obj->field_user_franchise['und'][0]['nid'] : 0;
+  }
+  $query = "SELECT DISTINCT fr.entity_id, usr.name 
+  FROM field_data_field_user_franchise fr,users_roles ur, node n, users usr 
+  WHERE fr.field_user_franchise_nid = :franchise_nid AND (fr.entity_id = ur.uid AND ur.rid != '7') 
+  AND fr.entity_id = n.uid AND fr.entity_id = usr.uid AND n.type = 'shipment'
+  ";
+  
+
+  $res = db_query($query, array(':franchise_nid' => $user_franchise_nid));
+
+  if ( !empty($res) ) {
+    foreach ( $res as $item ) {
+    $sales_rep[] = $item->entity_id;
+    }
+  }
+  
+  return $sales_rep;
+}
+
+/**
+ * Implementing hook_views_query_alter().
+ */ 
+function wwex_sales_rep_report_views_query_alter(&$view, &$query) {
+  if ($view->name == 'sales_rep_report' && $view->current_display == 'page') {
+    
+    if ( function_exists('wwex_sales_rep_report_list_sales_rep')) {
+      $sales_rep = wwex_sales_rep_report_list_sales_rep();
+      if ( (!empty($sales_rep)) && (( isset($_GET['sales_rep']) && $_GET['sales_rep'] == 'All') || (!isset($_GET['sales_rep'])) )) {
+        $query->where[1]['conditions'][] = array(
+        'field' => 'node.uid',
+        'value' => $sales_rep,
+        'operator' => 'IN',
+      );
+      }
+      // if sales_rep filter is selected, we have to hide main display
+      // so we are adding some condition which is not
+      // present, so it will automatic hide view due to no result found
+      else {
+      $query->where[1]['conditions'][] = array(
+        'field' => 'node.uid',
+        'value' => -999,
+        'operator' => '=', 
+        );
+      }
+    }
+  }
+}
