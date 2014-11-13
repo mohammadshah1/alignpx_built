@@ -6,9 +6,8 @@ function wwex_shipments_by_date_menu(){
 	 
 	$items['shipments-by-dates'] = array(
 		'title' => 'Shipments By Date',
-		'page callback' => 'drupal_get_form',
 		'access callback' => TRUE,
-		'weight' => 0,  
+		'weight' => -43,  
 		'menu_name' => 'menu-shipment-reports-menu',
 		'type' => MENU_NORMAL_ITEM,
 	); 
@@ -103,17 +102,55 @@ function wwex_shipments_by_date_theme() {
 /**
  * Implementing hook_views_query_alter().
  */ 
- 
 function wwex_shipments_by_date_views_query_alter(&$view, &$query) {
- 
- if($view->name == 'shipments_by_dates'){
-  if ( isset($_GET['uid']) && !empty($_GET['uid']) ) {
-   
-   $query->where[2]['conditions'][2] = array(
-    'field' => 'node.uid',
-    'value' => $_GET['uid'],
-    'operator' =>'IN' 
-   );
-  }
- }
+	if ($view->name == 'shipments_by_dates') {	
+		
+		// add sales rep filter
+		if( function_exists('wwex_sales_rep_report_list_sales_rep')) {
+		  $sales_rep = wwex_sales_rep_report_list_sales_rep();
+		  if( !empty($sales_rep) ){
+		    $query->where[1]['conditions'][] = array(
+				'field' => 'node.uid',
+				'value' => $sales_rep,
+				'operator' =>'IN' 
+			);
+		  }
+		  // if sales_rep filter is selected, we have to hide main display
+		  // so we are adding some condition which is not
+		  // present, so it will automatic hide view due to no result found
+		  else {
+			$query->where[1]['conditions'][] = array(
+				'field' => 'node.uid',
+				'value' => -999,
+				'operator' =>'=' 
+		    );
+		  }
+		}
+		
+		// add user franchise filter
+		if( function_exists('wwex_reports_list_markets')) {
+		  $user_franchise = wwex_reports_list_markets();
+		  
+		  // add franchis field relation in query
+		  $join = new views_join;
+		  $join->construct('field_data_field_shipment_franchise','node','nid','entity_id');
+          $view->query->add_relationship('field_data_field_shipment_franchise',$join,'node');
+	
+		  if( !empty($user_franchise) ){
+		    $query->where[1]['conditions'][] = array(
+				'field' => 'field_data_field_shipment_franchise.field_shipment_franchise_nid',
+				'value' => array_keys($user_franchise),
+				'operator' =>'IN' 
+			);
+		  }
+		  // if user has no franchise, hide view
+		  else {
+			$query->where[1]['conditions'][] = array(
+				'field' => 'field_data_field_shipment_franchise.field_shipment_franchise_nid',
+				'value' => -999,
+				'operator' =>'=' 
+		    );
+		  }
+		}
+	}
 }

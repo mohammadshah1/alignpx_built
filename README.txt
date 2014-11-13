@@ -17,10 +17,12 @@ REQUIREMENTS
 		Extract the file and upload it to site.Make sure that the path of module is (/sites/all/modules/contrib/tb_megamenu).
 2)  Download the "sexy_exposed" module, to enable checkbox selection on search form select boxes.
 		Module download link : https://www.drupal.org/project/sexy_exposed
-		Extract the file and upload it to site.Make sure that the path of module is (/sites/all/modules/contrib/tb_megamenu).
+		Extract the file and upload it to site.Make sure that the path of module is (/sites/all/modules/contrib/) and all required js files are copied to sites/all/libraries/ folder.
 		Important Note: Once this module is installed successfully, You will have to (Edit) the view where you want checkboxes facility in exposed form filter fields, 
 		and check the option "make it sexy" in field configuration. 
 		This must be done once the report modules are installed (Please refer to "REPORT MODULES INSTALLATION" section at the bottom of this file) 
+3) 	Download visualization module and install it into sites/all/modules, Also download all its highcharts js files and extract into sites/all/libraries/
+		( Note: In visualization configuration you must select highcharts library and save )	
 
 ==========================================
 INSTALLATION
@@ -32,12 +34,13 @@ i.e(/admin/modules).
 ==========================================
 CONFIGURATION
 ==========================================
-
-Now create a new menu type with name (Shipment Reports Menu) by following below steps.
+First download and install drupal contributed module called special_menu_item.
+Create (Reports) menu in main-menu (/admin/structure/menu/manage/main-menu/add) and in "Path" field put "<nolink>".
+Now create a new menu type with name (Shipment Reports Menu) by following below steps, Note: The machine name for this menu must be (menu-shipment-reports-menu).
 Go to structure->menu
 ie (/admin/structure/menu/add)
 Click on Add menu,Enter the name of your menu (Shipment Reports Menu) and Click save.
-Also, create (Reports) menu in main-menu (/admin/structure/menu/manage/main-menu/add)
+
 
 Now for TB menu go to structure TB mega menu ie (/admin/structure/tb-megamenu) Make sure your menu "Shipment Reports Menu" appear in list.
 Click on "Config" link of main menu, there you will see all main-menu links/tabs. 

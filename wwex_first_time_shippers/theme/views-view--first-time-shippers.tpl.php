@@ -13,7 +13,6 @@ if(empty($query_str[1])){ ?>
 	});
 </script>
 <?php } ?>
-
 <?php
 
 /**
@@ -43,7 +42,7 @@ if(empty($query_str[1])){ ?>
  * @ingroup views_templates
  */
 ?>
-<div class="<?php print $classes; ?>">
+<div class="<?php print $classes; ?> apx-view">
   <?php print render($title_prefix); ?>
   <?php if ($title): ?>
     <?php print $title; ?>
@@ -56,7 +55,7 @@ if(empty($query_str[1])){ ?>
   <?php endif; ?>
 
   <?php if ($exposed): ?>
-    <div class="view-filters" id="dashboard-filters">
+    <div class="view-filters">
       <?php print $exposed; ?>
     </div>
   <?php endif; ?>

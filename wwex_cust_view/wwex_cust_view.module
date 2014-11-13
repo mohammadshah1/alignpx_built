@@ -1,0 +1,28 @@
+<?php 
+
+/*
+ * Implementation of hook_views_api()
+ */
+function wwex_cust_view_views_api() {
+  return array('api' => 3.0);
+}
+/**
+ * Implements hook_theme().
+ */
+function wwex_cust_view_theme() {
+  return array(
+    'views_view__view_cust' => array(
+    'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+    'template' => 'views-view--view-cust',
+    'base hook' => 'views_view',
+    'path' => drupal_get_path('module', 'wwex_cust_view') . '/theme',
+    ),
+		'views_view__view_shipment_for_cust_calendar' => array(
+    'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+    'template' => 'views-view--view-shipment-for-cust-calendart',
+    'base hook' => 'views_view',
+    'path' => drupal_get_path('module', 'wwex_cust_view') . '/theme',
+    ),
+  );
+}
+

@@ -1,12 +1,22 @@
 <?php
-// Add Drupal.settings for this chart.
-// code debugging
-function __pre( $code ){
-	echo '<pre>';
-	print_r($code);
-	echo '</pre>';
+// clean string
+function wwex_report_charts_clean_input($string, $trim = false, $int = false, $str = false)
+{
+	$string = filter_var($string, FILTER_SANITIZE_STRING);
+	$string = trim($string);
+	$string = stripslashes($string);
+	$string = strip_tags($string);
+	$string = str_replace(array('‘', '’', '“', '”'), array("'", "'", '"', '"'), $string);
+	
+	if ($trim)
+		$string = substr($string, 0, $trim);
+	if ($int)
+		$string = preg_replace("/[^0-9\s]/", "", $string);
+	if ($str)
+		$string = preg_replace("/[^a-zA-Z\s]/", "", $string);
+	
+	return $string;
 }
-
 
 // return date of week with week number
 function wwex_report_charts_date_of_weeks($week_year) {
@@ -21,7 +31,7 @@ function wwex_report_charts_date_of_weeks($week_year) {
 
 // get start date 52 weeks back.
 function wwex_report_charts_start_date(){
-	return date('Y-m-d', strtotime('-53 monday'));
+  return date('Y-m-d', strtotime('-53 monday'));
 }
 // get 52 weeks range
 function wwex_report_charts_get_all_weeks( $weeks_limit = 53 ){

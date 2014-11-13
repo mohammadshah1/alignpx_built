@@ -1,5 +1,4 @@
 <?php
-
 $view = new view();
 $view->name = 'total_cost_details';
 $view->description = '';

@@ -1,5 +1,4 @@
 <?php
-
 $view = new view();
 $view->name = 'load_count_detail';
 $view->description = '';
@@ -318,50 +317,6 @@ $handler->display->display_options['fields']['field_shipment_carrier']['element_
 $handler->display->display_options['fields']['field_shipment_carrier']['element_default_classes'] = FALSE;
 $handler->display->display_options['fields']['field_shipment_carrier']['hide_empty'] = TRUE;
 $handler->display->display_options['fields']['field_shipment_carrier']['type'] = 'node_reference_plain';
-/* Field: Content: Contact Name */
-$handler->display->display_options['fields']['field_origin_contact_name']['id'] = 'field_origin_contact_name';
-$handler->display->display_options['fields']['field_origin_contact_name']['table'] = 'field_data_field_origin_contact_name';
-$handler->display->display_options['fields']['field_origin_contact_name']['field'] = 'field_origin_contact_name';
-$handler->display->display_options['fields']['field_origin_contact_name']['label'] = 'Shipper Name';
-/* Field: Content: Origin Address */
-$handler->display->display_options['fields']['field_shipment_origin']['id'] = 'field_shipment_origin';
-$handler->display->display_options['fields']['field_shipment_origin']['table'] = 'field_data_field_shipment_origin';
-$handler->display->display_options['fields']['field_shipment_origin']['field'] = 'field_shipment_origin';
-$handler->display->display_options['fields']['field_shipment_origin']['label'] = 'Shipper Address';
-$handler->display->display_options['fields']['field_shipment_origin']['element_type'] = '0';
-$handler->display->display_options['fields']['field_shipment_origin']['element_label_type'] = '0';
-$handler->display->display_options['fields']['field_shipment_origin']['element_wrapper_type'] = '0';
-$handler->display->display_options['fields']['field_shipment_origin']['element_default_classes'] = FALSE;
-$handler->display->display_options['fields']['field_shipment_origin']['hide_empty'] = TRUE;
-$handler->display->display_options['fields']['field_shipment_origin']['click_sort_column'] = 'country';
-$handler->display->display_options['fields']['field_shipment_origin']['settings'] = array(
-  'use_widget_handlers' => 1,
-  'format_handlers' => array(
-    'address' => 'address',
-  ),
-);
-/* Field: Content: Contact Name */
-$handler->display->display_options['fields']['field_dest_contact_name']['id'] = 'field_dest_contact_name';
-$handler->display->display_options['fields']['field_dest_contact_name']['table'] = 'field_data_field_dest_contact_name';
-$handler->display->display_options['fields']['field_dest_contact_name']['field'] = 'field_dest_contact_name';
-$handler->display->display_options['fields']['field_dest_contact_name']['label'] = 'Receiver Name';
-/* Field: Content: Destination Address */
-$handler->display->display_options['fields']['field_destination']['id'] = 'field_destination';
-$handler->display->display_options['fields']['field_destination']['table'] = 'field_data_field_destination';
-$handler->display->display_options['fields']['field_destination']['field'] = 'field_destination';
-$handler->display->display_options['fields']['field_destination']['label'] = 'Receiver Address ';
-$handler->display->display_options['fields']['field_destination']['element_type'] = '0';
-$handler->display->display_options['fields']['field_destination']['element_label_type'] = '0';
-$handler->display->display_options['fields']['field_destination']['element_wrapper_type'] = '0';
-$handler->display->display_options['fields']['field_destination']['element_default_classes'] = FALSE;
-$handler->display->display_options['fields']['field_destination']['hide_empty'] = TRUE;
-$handler->display->display_options['fields']['field_destination']['click_sort_column'] = 'country';
-$handler->display->display_options['fields']['field_destination']['settings'] = array(
-  'use_widget_handlers' => 1,
-  'format_handlers' => array(
-    'address' => 'address',
-  ),
-);
 /* Field: Content: Commodity */
 $handler->display->display_options['fields']['field_shipment_commodity']['id'] = 'field_shipment_commodity';
 $handler->display->display_options['fields']['field_shipment_commodity']['table'] = 'field_data_field_shipment_commodity';
@@ -386,6 +341,7 @@ $handler->display->display_options['fields']['field_company_1']['id'] = 'field_c
 $handler->display->display_options['fields']['field_company_1']['table'] = 'field_data_field_company';
 $handler->display->display_options['fields']['field_company_1']['field'] = 'field_company';
 $handler->display->display_options['fields']['field_company_1']['label'] = 'Customer Name';
+$handler->display->display_options['fields']['field_company_1']['alter']['make_link'] = TRUE;
 $handler->display->display_options['fields']['field_company_1']['alter']['path'] = 'cust-view/[field_w_number]';
 $handler->display->display_options['fields']['field_company_1']['alter']['absolute'] = TRUE;
 $handler->display->display_options['fields']['field_company_1']['type'] = 'taxonomy_term_reference_plain';
@@ -559,6 +515,9 @@ $handler->display->display_options['fields']['php']['id'] = 'php';
 $handler->display->display_options['fields']['php']['table'] = 'views';
 $handler->display->display_options['fields']['php']['field'] = 'php';
 $handler->display->display_options['fields']['php']['label'] = 'Sales Rep';
+$handler->display->display_options['fields']['php']['alter']['make_link'] = TRUE;
+$handler->display->display_options['fields']['php']['alter']['path'] = 'sales-rep-report?sales_rep=[uid]';
+$handler->display->display_options['fields']['php']['alter']['absolute'] = TRUE;
 $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
 $handler->display->display_options['fields']['php']['php_output'] = '<?php
 $user_fields_array = user_load($row->uid);

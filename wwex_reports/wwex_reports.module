@@ -3,25 +3,18 @@
 /**
  *Implementing hook_menu().
  */
-function wwex_reports_menu(){
-	
-	$items['tier-report'] = array(
-		'title' => 'Reports',
-		'page callback' => 'drupal_get_form',
-		'access callback' => TRUE,
-		'weight' => -43,  
-		'menu_name' => 'main-menu',
-		'type' => MENU_NORMAL_ITEM,
-	); 
+function wwex_reports_menu() {
 	
 	$items['load-by-count-date-all-in-one'] = array(
 		'title' => 'Load Count by Date Reports',
-		'page callback' => 'drupal_get_form',
 		'access callback' => TRUE,
 		'weight' => 0,  
 		'menu_name' => 'menu-shipment-reports-menu',
 		'type' => MENU_NORMAL_ITEM,
 	);
+	
+	// success percentage report is disabled for now
+	/*
 	$items['success-percentage-page'] = array(
 		'title' => 'Success Percentage Page',
 		'page callback' => 'wwex_reports_success_percentage_page',
@@ -30,102 +23,12 @@ function wwex_reports_menu(){
 		'menu_name' => 'menu-shipment-reports-menu',   
 		'type' => MENU_NORMAL_ITEM,
 	); 
- 
+ */
   
   return $items;
 }
 
-// Reports page callback function
-function report_page_callback(){
-	$output = '';
-	$output = '<p style="text-align: center; font-size: 14px;">
-							<strong>
-								<a href="'. url('load-by-count-date'). '">Load Count By Date</a>
-							</strong> | 
-							<strong>
-								<a href="'. url('success-percentage-page'). '">Success Precentage</a>
-							</strong> 
-						</p>';
-	
-	return $output;					
-}
-
-/**
-* Implements hook_block_info().
-*/
-function wwex_reports_block_info() {
-  $blocks = array();
-
-  $blocks['report_links'] = array(
-    'info' => t('Report Links'),
-		'region' => 'content',
-		'weight' => -1,
-    'status' => 1,
-    'visibility' => BLOCK_VISIBILITY_PHP,
-    'pages' => '<?php if(arg(0) == "load-by-count-date" || arg(0) == "load-count-by-date-lgraph" || arg(0) == "load-count-by-date-bchart") return TRUE; else return FALSE; ?>',
-		'theme' => 'e3_zen',
-		 
-	);
-	
-  return $blocks;
-}
-
  
-/**
-* Implements hook_block_view().
-*/
-function wwex_reports_block_view($delta = '') {
-  $block = array();
-
-  switch ($delta) {
-    case 'report_links':
-      $block['subject'] = '';
-      $block['content'] = _wwex_reports_report_links_content();
-      break;
-  }
-
-  return $block;
-}
-
-function _wwex_reports_report_links_content() {
-  global $base_url;
-	$uri =  request_uri();
-	$query_str = explode("?" , $uri);
-	$filter = str_replace("%5B", "[" , $query_str[1]);
-	$filter = str_replace("%5D", "]" , $filter);
-	
-	if (!empty($query_str[1])) {
-		$output = '<p style="text-align: center; font-size: 14px;">
-								<strong>
-									<a href="' .$base_url. '/load-by-count-date?' .$filter. '">Load Count By Date(Text)</a>
-								</strong> |
-								<strong> 
-									<a href="' .$base_url. '/load-count-by-date-lgraph?'.$filter. '">Load Count By Date Line Graph</a> 
-								</strong>| 
-								<strong>
-									<a href="' .$base_url. '/load-count-by-date-bchart?'.$filter. '">Load Count By Date Bar Chart</a>
-								</strong> 
-							</p>
-							<p style="text-align: center; font-size: 14px;"></p>';
-	}
-	else{
-		$output = '<p style="text-align: center; font-size: 14px;">
-								<strong>
-									<a href="' .url('load-by-count-date'). '">Load Count By Date(Text)</a>
-								</strong> |
-								<strong> 
-									<a href="' .url('load-count-by-date-lgraph'). '">Load Count By Date Line Graph</a> 
-								</strong>| 
-								<strong>
-									<a href="' .url('load-count-by-date-bchart') .'">Load Count By Date Bar Chart</a>
-								</strong> 
-							</p>
-							<p style="text-align: center; font-size: 14px;"></p>';
-	}
-	
-  return $output;
-}
-
 /**
  * Implementing hook_popup_process_alter().
  */  
@@ -139,7 +42,7 @@ function wwex_reports_date_popup_process_alter(&$element, &$form_state, $context
  */ 
 function wwex_reports_form($form, &$form_state) {
   
-	if ( empty($_GET['fdate']['date']) || empty($_GET['tdate']['date'])){
+	if ( empty($_GET['fdate']['date']) || empty($_GET['tdate']['date'])) {
 		 
 		$fdate = date('Y-m-d', time() - 60 * 60 * 24);
 		$tdate = date('Y-m-d', time());
@@ -153,7 +56,7 @@ function wwex_reports_form($form, &$form_state) {
   
   $form['fdate'] = array(
 		'#type' => 'date_popup',
-		'#date_label_position' => '',	
+		'#date_label_position' => '',
 		'#title' => 'From',
 		'#date_format' => 'Y-m-d', 
 		'#default_value' => $fdate, 
@@ -162,9 +65,9 @@ function wwex_reports_form($form, &$form_state) {
   
   $form['tdate'] = array(
 		'#type' => 'date_popup',
-		'#date_label_position' => '',		
+		'#date_label_position' => '',
 		'#title' => 'To',
-		'#date_format' => 'Y-m-d', 
+		'#date_format' => 'Y-m-d',
 		'#default_value' => $tdate,
 		'#maxlength' => 10,
 	);
@@ -174,7 +77,7 @@ function wwex_reports_form($form, &$form_state) {
 		'#title' => 'Markets(Select Markets)',
 		'#multiple' => TRUE,
 		'#pre_render' => array('dropdown_checkboxes'),
-		'#options' => list_markets(),	
+		'#options' => wwex_reports_list_markets(),
 		'#default_value' => $_GET['market'],
 	);
   
@@ -183,7 +86,7 @@ function wwex_reports_form($form, &$form_state) {
 		'#multiple' => TRUE,
 		'#pre_render' => array('dropdown_checkboxes'),
 		'#title' => 'Sales Rep (Select Sales Rep)',
-		'#options' => list_sales_rep(),
+		'#options' => wwex_sales_rep_report_list_sales_rep(),
 		'#default_value' => $_GET['sales'], 
 	);
   
@@ -192,7 +95,7 @@ function wwex_reports_form($form, &$form_state) {
 		'#title' => 'Broker (Select Broker)',
 		'#multiple' => TRUE,
 		'#pre_render' => array('dropdown_checkboxes'),
-		'#options' => list_brokers(),	 
+		'#options' => list_brokers(),
 		'#default_value' => $_GET['broker'],
 	);
  
@@ -204,99 +107,8 @@ function wwex_reports_form($form, &$form_state) {
   return $form;
 }
 
-// list of brokers 
-function list_brokers(){
-	
-	global $user;
-	$brokers = array();
-	//$brokers[] = 'Select Broker';
-	
-	$res = db_query("SELECT field_user_franchise_nid  FROM field_data_field_user_franchise  WHERE entity_id = ".$user->uid);
-	foreach($res as $item){
-		 $franchise[] = $item->field_user_franchise_nid;
-	}
-	$res = db_query(" SELECT
-						users.`name`,
-						users.uid
-						FROM
-						field_data_field_user_franchise
-						INNER JOIN users ON users.uid = field_data_field_user_franchise.entity_id
-						INNER JOIN users_roles ON users_roles.uid = users.uid
-						INNER JOIN role ON users_roles.rid = role.rid
-						WHERE
-						role.rid = 7 AND
-						field_data_field_user_franchise.field_user_franchise_nid IN (".implode(',',$franchise).")");
-	
-	foreach($res as $item){
-		$brokers[$item->uid] = $item->name;
-	}
-	
-	return $brokers; 
-} 
-
-// List of Sales Rep 
-function list_sales_rep(){
-	
-	global $user;
-	$sales_rep = array();
-	//$sales_rep[] = 'Select Sale Rep';
-	
-	if ($user->uid > 0) {
-		$user_obj = user_load($user->uid); 
-		$user_franchise_nid = $user_obj->field_user_franchise['und'][0]['nid'];
-	}
-	$query = "SELECT DISTINCT fr.entity_id, usr.name 
-		FROM field_data_field_user_franchise fr,users_roles ur, node n, users usr 
-		WHERE fr.field_user_franchise_nid = '" .$user_franchise_nid. "' AND (fr.entity_id = ur.uid AND ur.rid != '7') 
-		AND fr.entity_id = n.uid AND fr.entity_id = usr.uid AND n.type = 'shipment'
-	";
-
-	$res = db_query($query);
-	
-	foreach	(	$res as $item	)	{
-		$sales_rep[$item->entity_id] = $item->name;
-	}
-	return $sales_rep; 
-} 
-
-// list markets
-function list_markets(){
-	global $user;
-	$markets = array();
-	//$markets[] = 'Select Market';
-	$res = db_query("SELECT node.title ,field_data_field_user_franchise.field_user_franchise_nid  FROM 
-		field_data_field_user_franchise 
-		INNER JOIN node ON field_data_field_user_franchise.field_user_franchise_nid = node.nid 
-		WHERE field_data_field_user_franchise.entity_id = ".$user->uid
-	);
-	
-	foreach	(	$res as $item	)	{
-		$markets[$item->field_user_franchise_nid] = $item->title;
-	}
-	return $markets; 
-} 
-
-// List load status
-function list_load_status(){
-	$load_status = array();
-	//$load_status[] = 'Select Status';
-	$res = db_query("SELECT
-			taxonomy_term_data.`name` as name,
-			taxonomy_term_data.tid as tid
-			FROM
-			field_data_field_load_status
-			INNER JOIN taxonomy_term_data ON taxonomy_term_data.tid = field_data_field_load_status.field_load_status_tid
-			GROUP BY
-			field_data_field_load_status.field_load_status_tid
-		");
-
-	foreach	(	$res as $item	)	{
-		$load_status[$item->tid] = $item->name;
-	}
-	
-	return $load_status; 
-} 
-
+// success percentage page is disable for now
+/*
 // Callback function
 function wwex_reports_success_percentage_page() {
 	global $base_url;
@@ -304,10 +116,10 @@ function wwex_reports_success_percentage_page() {
 	$uri =  request_uri();
 	$query_str = explode("?" , $uri);
 	if ( empty($query_str[1]) ) {
-		drupal_add_js(drupal_get_path('module', 'wwex_reports') .'/js/wwex_reports.js');
-		$sql_string .= " AND sf.field_shipment_franchise_nid IN (" . implode("," ,array_keys(list_markets())). ") ";
-		$sql_string .= " AND node.uid IN (" .implode(',', array_keys(list_sales_rep())). ") ";
-		$sql_string .= " AND b.field_shipment_broker_uid IN (" .implode(',',array_keys(list_brokers())). ") ";
+		drupal_add_js(drupal_get_path('module', 'wwex_reports') . '/js/wwex_reports.js');
+		$sql_string .= " AND sf.field_shipment_franchise_nid IN (" . implode(", " , array_keys(list_markets())) . ") ";
+		$sql_string .= " AND node.uid IN (" . implode(', ', array_keys(list_sales_rep())) . ") ";
+		$sql_string .= " AND b.field_shipment_broker_uid IN (" . implode(', ', array_keys(list_brokers())) . ") ";
 	}
 	$output = "";
 	$sql_string = "";
@@ -319,19 +131,19 @@ function wwex_reports_success_percentage_page() {
 		$ToDate =  $_GET['tdate']['date'];
 		$FromDate2 =  str_replace( "-" , "" , $_GET['fdate']['date'] );
 		$ToDate2 =  str_replace( "-" , "" , $_GET['tdate']['date'] );
-		$sql_string .= " AND DATE(FROM_UNIXTIME(node.created)) >= '" .$FromDate. "' AND DATE(FROM_UNIXTIME(node.created)) <= '" .$ToDate. "'";
+		$sql_string .= " AND DATE(FROM_UNIXTIME(node.created)) >= '" . $FromDate . "' AND DATE(FROM_UNIXTIME(node.created)) <= '" . $ToDate . "'";
 	}
 	else {
 		$FromDate2 =  '20140701';
 		$ToDate2 =  '20140723';
 		$fdate = date('Y-m-d', time() - 60 * 60 * 24);
 		$tdate = date('Y-m-d', time());
-		$sql_string .= "AND DATE(FROM_UNIXTIME(node.created)) >= '" .$fdate. "' AND DATE(FROM_UNIXTIME(node.created)) <= '" .$tdate. "'"; 
+		$sql_string .= "AND DATE(FROM_UNIXTIME(node.created)) >= '" . $fdate . "' AND DATE(FROM_UNIXTIME(node.created)) <= '" . $tdate . "'"; 
 	}
 	 
 	if (isset($_GET['market']) && !empty($_GET['market'])) {
-		$markets = implode("," ,$_GET['market']);
-		$sql_string .= " AND sf.field_shipment_franchise_nid IN (" . implode("," ,$_GET['market']). ") ";
+		$markets = implode("," , $_GET['market']);
+		$sql_string .= " AND sf.field_shipment_franchise_nid IN (" . implode("," , $_GET['market']) . ") ";
 	}
 	else{
 		$markets = '-';
@@ -339,27 +151,27 @@ function wwex_reports_success_percentage_page() {
 	}
 	 
 	if (isset($_GET['sales']) && !empty($_GET['sales'])) {
-		$sales = implode(',',$_GET['sales']);
-		$sql_string .= " AND node.uid IN (" .implode(',',$_GET['sales']). ") ";
+		$sales = implode(',', $_GET['sales']);
+		$sql_string .= " AND node.uid IN (" . implode(', ', $_GET['sales']) . ") ";
 	}
 	else{
 		$sales = '-';
 		
 	}
 	if (isset($_GET['broker']) && !empty($_GET['broker'])) {
-		$broker = implode(',',$_GET['broker']);
-		$sql_string .= " AND b.field_shipment_broker_uid IN (" .implode(',',$_GET['broker']). ") ";
+		$broker = implode(',', $_GET['broker']);
+		$sql_string .= " AND b.field_shipment_broker_uid IN (" . implode(',', $_GET['broker']) . ") ";
 	}
 	else{
 		$brokers = '-';
 		
 	}
-	$sql = "SELECT DISTINCT nid FROM node
+	$sql = "SELECT DISTINCT nid FROM {node}
 		INNER JOIN field_data_field_load_status ON field_data_field_load_status.entity_id = node.nid 
 		LEFT OUTER JOIN field_data_field_shipment_franchise sf ON sf.entity_id =  node.nid 
 		LEFT OUTER JOIN field_data_field_shipment_broker b ON b.entity_id = node.nid
 		WHERE type = 'shipment' 
-		AND field_data_field_load_status.field_load_status_tid IN(1,2,3) " .$sql_string. " 
+		AND field_data_field_load_status.field_load_status_tid IN(1,2,3) " . $sql_string . " 
 	";
     //echo $sql;
 	$rows = array();
@@ -371,50 +183,29 @@ function wwex_reports_success_percentage_page() {
 		$rows[] = $item->nid;
 		$node = node_load($item->nid);
 		
-		if($node->field_internal_load_status[LANGUAGE_NONE][0]['tid'] == 22 ||
+		if ($node->field_internal_load_status[LANGUAGE_NONE][0]['tid'] == 22 ||
 			$node->field_internal_load_status[LANGUAGE_NONE][0]['tid'] == 23 ) {
 				
 			$accomplish_nids[] = $node->nid; 
 		}
 		$rfq_nid[] = $item->nid;
 	}
-	$rfq_nid_list = implode(",", $rfq_nid); 
+	$rfq_nid_list = implode(", ", $rfq_nid); 
 	$rfq = count($rows);
 	$accomplish = count($accomplish_nids);
-	$accomplish_nid_list = implode(",", $accomplish_nids);
-	/*
-	$sql2 = "
-		SELECT DISTINCT nid FROM node
-		INNER JOIN field_data_field_internal_load_status ON field_data_field_internal_load_status.entity_id = node.nid 
-		LEFT OUTER JOIN field_data_field_shipment_franchise sf ON sf.entity_id =  node.nid 
-		LEFT OUTER JOIN field_data_field_shipment_broker b ON b.entity_id = node.nid
-		WHERE type = 'shipment' 
-		AND
-		field_data_field_internal_load_status.field_internal_load_status_tid  = 23 " .$sql_string. " 
-	";
-	echo '<br /> <b>Second Query </b>< br />';
-	echo $sql2;
-	$result = db_query($sql2);
-	$rows = array(); 
-	
-	foreach ($result as $item) {
-		$rows[] = $item->nid;
-		$rsq_nids[] = $item->nid;
-	}
-	$rsq_nids_list = implode(",", $rsq_nids);
-	$rsq = count($rows);
-	*/
+	$accomplish_nid_list = implode(", ", $accomplish_nids);
+
 	// Rsq 
 	if ( $rfq  > 0 ) {
-		$rsq_link = '<a href ="'.url(  'load-count-detail/' .$rfq_nid_list ). '" >' .$rfq.'</a>';
+		$rsq_link = '<a href ="' . url(  'load-count-detail/' . $rfq_nid_list ) . '" >' . $rfq .'</a>';
 	}
 	else {
 		$rsq_link = $rfq;
 	}
 	
 	// accomplish
-	if ( $accomplish > 0){
-		$successed_link = '<a href ="'.url(  'load-count-detail/' .$accomplish_nid_list ). '" >' .$accomplish.'</a>';
+	if ( $accomplish > 0) {
+		$successed_link = '<a href ="' . url(  'load-count-detail/' . $accomplish_nid_list ) . '" >' . $accomplish .'</a>';
 	}
 	else{
 		$successed_link = $accomplish;
@@ -427,7 +218,7 @@ function wwex_reports_success_percentage_page() {
 	$success_percentage = ( $accomplish / $rfq ) * 100;
  
  
-	$rows[] = array($rsq_link, $successed_link, number_format($success_percentage, 0).'%' );
+	$rows[] = array($rsq_link, $successed_link, number_format($success_percentage, 0) . '%' );
  
  //pie chart start
  $data = array(
@@ -462,12 +253,6 @@ function wwex_reports_success_percentage_page() {
     '#options' => $options_pie,
   );
  
-/*   $build['column'] =  array(
-    '#theme' => 'visualization',
-    '#options' => $options_column,
-  ); */
- 
-  
  
  //pie chart end
 $output .= '<div class="apx-view success-percentage-view"><div  id = "success_data" class = "view-filters"><div class="views-exposed-form">';
@@ -482,7 +267,7 @@ $output .= '<div class="apx-view success-percentage-view"><div  id = "success_da
  $output .= '</div></div></div>';
  return $output;
 }
-
+*/
 
 /*
  * Implementation of hook_views_api()
@@ -502,28 +287,6 @@ function wwex_reports_theme() {
     'base hook' => 'views_view_fields',
     'path' => drupal_get_path('module', 'wwex_reports') . '/theme',
 		),
-		/*
-		'views_view__load_by_count_date_view' => array(
-    'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
-    'template' => 'views-view--load-by-count-date-view',
-    'base hook' => 'views_view',
-    'path' => drupal_get_path('module', 'wwex_reports') . '/theme',
-		),
-		
-		'views_view__clone_of_line_graph_load_by_count_date___page' => array(
-    'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
-    'template' => 'views-view--clone-of-line-graph-load-by-count-date---page',
-    'base hook' => 'views_view',
-    'path' => drupal_get_path('module', 'wwex_reports') . '/theme',
-		),
-		
-		'views_view__bar_chart_load_by_count_date_' => array(
-    'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
-    'template' => 'views-view--bar-chart-load-by-count-date-',
-    'base hook' => 'views_view',
-    'path' => drupal_get_path('module', 'wwex_reports') . '/theme',
-		),
-		 */
 		'views_view__load_by_count_date_all_in_one' => array(
     'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
     'template' => 'views-view--load-by-count-date-all-in-one',
@@ -545,90 +308,51 @@ function wwex_reports_theme() {
  * Implementing hook_form_views_exposed_form_alter().
  */ 
 function wwex_reports_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
-	//drupal_set_message($form_id);
-	global $user;
-	 
-	$user_obj = user_load($user->uid);
-	$franchise_nid = $user_obj->field_user_franchise['und'][0]['nid']; 
-
-	if ( $user->uid > 0) {
-		$user_obj = user_load($user->uid); 
-		$user_franchise_nid = $user_obj->field_user_franchise['und'][0]['nid'];
-	}
-	/*
-	$query = "SELECT DISTINCT fr.entity_id, usr.name 
-		FROM field_data_field_user_franchise fr,users_roles ur, node n, users usr 
-		WHERE fr.field_user_franchise_nid = '" .$user_franchise_nid. "' AND (fr.entity_id = ur.uid AND ur.rid != '7') 
-		AND fr.entity_id = n.uid AND fr.entity_id = usr.uid AND n.type = 'shipment'";
-	$res = db_query($query);	
-	*/
-	$query2 = "SELECT DISTINCT fr.entity_id, usr.name 
-		FROM field_data_field_user_franchise fr,users_roles ur, node n, users usr 
-		WHERE fr.field_user_franchise_nid = '" .$user_franchise_nid. "' AND (fr.entity_id = ur.uid AND ur.rid = '7') 
-		AND fr.entity_id = n.uid AND fr.entity_id = usr.uid AND n.type = 'shipment'";
-	$res2 = db_query($query2);
 	
-	 
-	//unset($form['uid']['#options']);
-	unset($form['field_shipment_franchise_nid']['#options']);
-	unset($form['field_shipment_broker_uid']['#options']);
-	$delivered = array(22 => 'In Transit',23 => 'Delivered');
+	//Updating exposed filter dropdowns based on user role and user's franchise
+	$access = wwex_access_user_has_role(array('super user'));
+	if ( $access == FALSE ) {
+		global $user;
+		$user_obj = user_load($user->uid);
+		$franchise_nid = $user_obj->field_user_franchise['und'][0]['nid'];
+		unset($form['field_shipment_broker_uid']['#options']);
+		unset($form['field_shipment_franchise_nid']['#options']);
+		$form['field_shipment_franchise_nid']['#options'][$franchise_nid] = node_load($franchise_nid)->title;
+		$form['field_shipment_broker_uid']['#options'] = list_brokers();
+	}
+	
+	// Updating (field_load_status) exposed filter drop down by adding two new options (In Transit and Delivered)
+	// without making changes to taxonomy terms vocabulary, to get correct searched results using current db structure.
+ 	$delivered = array(22 => 'In Transit', 23 => 'Delivered');
 	$load_status = $form['field_load_status_tid']['#options'];
 	unset($load_status[4]);
-	/*
-	if(!empty($load_status) && (arg(0) == 'shipments-by-dates' || arg(0) == 'load-by-count-date'
-	|| arg(0) == 'load-count-by-date-lgraph'|| arg(0) == 'load-count-by-date-bchart' )  ){
-		$options = $load_status + $delivered;
-	}
-	*/
-	if( !empty($load_status) ){
+	if ( !empty($load_status) ) {
 		$options = $load_status + $delivered;
 	}
 	unset($form['field_load_status_tid']['#options']);
-	$form['field_load_status_tid']['#options'] = $options;
-	// Updating values in All Markets exposed select box
-	$form['field_shipment_franchise_nid']['#options'][$franchise_nid] = node_load($franchise_nid)->title;
-	
-	//foreach ( $res2 as $item2 ) {
-		//$form['field_shipment_broker_uid']['#options'][$item2->entity_id] .= $item2->name;
-		
-	//}
-	$form['field_shipment_broker_uid']['#options'] = list_brokers();
-	
+	$form['field_load_status_tid']['#options'] = $options;	
 }
- 
-function wwex_reports_views_pre_execute(&$view){
-	 
-	if ($view->name == 'load_by_count_date_view' || $view->name == 'clone_of_line_graph_load_by_count_date_' || 
-			$view->name == 'bar_chart_load_by_count_date_' || $view->name == 'load_by_count_date_all_in_one') {
-			//drupal_add_js(drupal_get_path());
-			 
-		//dpq($view->build_info['query']);
-	}
-	 
-}
- 
+  
 /**
  * Implementing hook_views_query_alter().
  */ 
  
 function wwex_reports_views_query_alter(&$view, &$query) {
 	
-	if ($view->name == 'load_by_count_date_view' || $view->name == 'clone_of_line_graph_load_by_count_date_' || 
-			$view->name == 'bar_chart_load_by_count_date_' || $view->name == 'shipments_by_dates' || $view->name == 'load_by_count_date_all_in_one' ) {
+	if ( $view->name == 'shipments_by_dates' || $view->name == 'load_by_count_date_all_in_one' ) {
 			
 		if ( is_array($_GET['field_load_status_tid']) ) {
 			
 			unset($query->table_queue['field_data_field_load_status']);
-			foreach($query->where[1]['conditions'] as $key => $conditions){
-				if($conditions['field'] == 'field_data_field_load_status.field_load_status_tid'){
+			foreach ($query->where[1]['conditions'] as $key => $conditions) {
+				if ($conditions['field'] == 'field_data_field_load_status.field_load_status_tid') {
 					 
 					unset($query->where[1]['conditions'][$key]);	
 				}
 			}
 				
-			foreach($_GET['field_load_status_tid'] as $val){
-				if( $val == 22 || $val == 23) {
+			foreach ($_GET['field_load_status_tid'] as $val) {
+				if ( $val == 22 || $val == 23) {
 					$load_internal_status_tids[] = $val;	
 				}
 				else{
@@ -639,37 +363,37 @@ function wwex_reports_views_query_alter(&$view, &$query) {
 			if	(	!empty($load_internal_status_tids) && !empty($load_status_tids) )	{
 				 
 				$join4 = new views_join;
-				$join4->construct('field_data_field_internal_load_status','node','nid','entity_id');
-				$view->query->add_relationship('field_data_field_internal_load_status',$join4,'node');
+				$join4->construct('field_data_field_internal_load_status', 'node', 'nid', 'entity_id');
+				$view->query->add_relationship('field_data_field_internal_load_status', $join4, 'node');
 				
 				$join5 = new views_join;
-				$join5->construct('field_data_field_load_status','node','nid','entity_id');
-				$view->query->add_relationship('field_data_field_load_status',$join5,'node');
+				$join5->construct('field_data_field_load_status', 'node', 'nid', 'entity_id');
+				$view->query->add_relationship('field_data_field_load_status', $join5, 'node');
 				
 				$or = db_or()->condition('field_data_field_load_status.field_load_status_tid', $load_status_tids, 'IN')->condition('field_data_field_internal_load_status.field_internal_load_status_tid', $load_internal_status_tids, 'IN');
-				$query->add_where(1,$or);
+				$query->add_where(1, $or);
 				 
 			}
-			else if ( empty($load_status_tids) ) {
+			elseif ( empty($load_status_tids) ) {
 				
 				$join6 = new views_join;
-				$join6->construct('field_data_field_internal_load_status','node','nid','entity_id');
-				$view->query->add_relationship('field_data_field_internal_load_status',$join6,'node');
+				$join6->construct('field_data_field_internal_load_status', 'node', 'nid', 'entity_id');
+				$view->query->add_relationship('field_data_field_internal_load_status', $join6, 'node');
 				$query->where[2]['conditions'][4] = array(
 					'field' => 'field_data_field_internal_load_status.field_internal_load_status_tid',
 					'value' => $load_internal_status_tids,
-					'operator' =>'IN' 
+					'operator' => 'IN',
 				);
 			}
-			else if ( !empty($load_status_tids) ) {
+			elseif ( !empty($load_status_tids) ) {
 				
 				$join7 = new views_join;
-				$join7->construct('field_data_field_load_status','node','nid','entity_id');
-				$view->query->add_relationship('field_data_field_load_status',$join7,'node');
+				$join7->construct('field_data_field_load_status', 'node', 'nid', 'entity_id');
+				$view->query->add_relationship('field_data_field_load_status', $join7, 'node');
 				$query->where[2]['conditions'][4] = array(
 					'field' => 'field_data_field_load_status.field_load_status_tid',
 					'value' => $load_status_tids,
-					'operator' =>'IN' 
+					'operator' => 'IN', 
 				);	
 			}
 		}
@@ -679,7 +403,7 @@ function wwex_reports_views_query_alter(&$view, &$query) {
 			$query->where[2]['conditions'][2] = array(
 				'field' => 'node.uid',
 				'value' => $_GET['author_select'],
-				'operator' =>'IN' 
+				'operator' => 'IN', 
 			);
 		}
 		
@@ -687,47 +411,178 @@ function wwex_reports_views_query_alter(&$view, &$query) {
 		$query_str = explode("?" , $uri);
 		if ( empty($query_str[1]) ) {
 		
-			$franchise_nids = array_keys(list_markets());
+			$franchise_nids = array_keys(wwex_reports_list_markets());
 			$brokers = array_keys(list_brokers());
 			$load_status_tids = array_keys(list_load_status());
-			$sales_rep = array_keys(list_sales_rep());
+			$sales_rep = array_keys(wwex_sales_rep_report_list_sales_rep());
 			
 			$join2 = new views_join;
-			$join2->construct('field_data_field_shipment_franchise','node','nid','entity_id');
-			$view->query->add_relationship('field_data_field_shipment_franchise',$join2,'node');
+			$join2->construct('field_data_field_shipment_franchise', 'node', 'nid', 'entity_id');
+			$view->query->add_relationship('field_data_field_shipment_franchise', $join2, 'node');
 			
 			$query->where[2]['conditions'][2] = array(
 				'field' => 'field_data_field_shipment_franchise.field_shipment_franchise_nid',
 				'value' => $franchise_nids,
-				'operator' =>'IN' 
+				'operator' => 'IN',
 			);
 			
 			$join3 = new views_join;
-			$join3->construct('field_data_field_shipment_broker','node','nid','entity_id');
-			$view->query->add_relationship('field_data_field_shipment_broker',$join3,'node');
+			$join3->construct('field_data_field_shipment_broker', 'node', 'nid', 'entity_id');
+			$view->query->add_relationship('field_data_field_shipment_broker', $join3, 'node');
 			$query->where[2]['conditions'][3] = array(
 				'field' => 'field_data_field_shipment_broker.field_shipment_broker_uid',
 				'value' => $brokers,
-				'operator' =>'IN' 
+				'operator' => 'IN', 
 			);
 			
 			$join4 = new views_join;
-			$join4->construct('field_data_field_internal_load_status','node','nid','entity_id');
-			$view->query->add_relationship('field_data_field_internal_load_status',$join4,'node');
+			$join4->construct('field_data_field_internal_load_status', 'node', 'nid', 'entity_id');
+			$view->query->add_relationship('field_data_field_internal_load_status', $join4, 'node');
 			
 			$join5 = new views_join;
-			$join5->construct('field_data_field_load_status','node','nid','entity_id');
-			$view->query->add_relationship('field_data_field_load_status',$join5,'node');
+			$join5->construct('field_data_field_load_status', 'node', 'nid', 'entity_id');
+			$view->query->add_relationship('field_data_field_load_status', $join5, 'node');
 			
-			$or = db_or()->condition('field_data_field_load_status.field_load_status_tid', array(1,2,3), 'IN')->condition('field_data_field_internal_load_status.field_internal_load_status_tid', array(22,23), 'IN');
-			$query->add_where(1,$or);	
+			$or = db_or()->condition('field_data_field_load_status.field_load_status_tid', array(1, 2, 3), 'IN')->condition('field_data_field_internal_load_status.field_internal_load_status_tid', array(22, 23), 'IN');
+			$query->add_where(1, $or);	
 			
 			
 			$query->where[2]['conditions'][5] = array(
 				'field' => 'node.uid',
 				'value' => $sales_rep,
-				'operator' =>'IN' 
+				'operator' => 'IN', 
 			);			
 		}		
 	}
 }
+
+
+// hook_views_pre_render()
+function wwex_reports_views_pre_render(&$view) {
+	
+	if ( $view->name == 'load_by_count_date_all_in_one' ) {
+		
+		// update total values
+		if ( isset( $view->totals )) {
+			
+			// first we get total customer rate (Total Retial Price)
+			$total_customer_rate = isset($view->totals['field_customer_rate']) ? strip_tags($view->totals['field_customer_rate']) : 0;
+			$total_margin = isset($view->totals['expression_1']) ? $view->totals['expression_1'] : 0;
+			
+			// calculate total marin %
+			$margin_percentage = $total_customer_rate > 0 ? ($total_margin / $total_customer_rate) * 100 : 0;
+			
+			// replce total customer rate
+			if ( isset($view->totals['field_customer_rate_1']) )
+				$view->totals['field_customer_rate_1'] = '$' . number_format($total_customer_rate, 2, ' . ', ',');
+				
+			// replce total margin % rate
+			if ( isset($view->totals['expression_2']) )
+				$view->totals['expression_2'] = number_format($margin_percentage, 2, ' . ', '') . '%';
+				
+		}
+		
+		// change values per row
+		// it is toatl of tiers e.g for tier A or B or C
+		if ( isset($view->style_plugin->rendered_fields) ) {
+			$rendered_fields = &$view->style_plugin->rendered_fields;
+			
+			foreach ($rendered_fields as $count => $fields) {
+				
+				// get revenue and margin per row
+			    $total_customer_rate_pr = isset($fields['field_customer_rate']) ? $fields['field_customer_rate'] : 0;
+				$total_margin_pr = isset($fields['expression_1']) ? $fields['expression_1'] : 0;
+				
+				// calculate margin % per row
+				$margin_percentage_pr = $total_customer_rate_pr > 0 ? ($total_margin_pr / $total_customer_rate_pr) * 100 : 0;
+				// change margin % per row 
+				if ( isset($fields['expression_2']) )
+					$view->style_plugin->rendered_fields[$count]['expression_2'] = number_format($margin_percentage_pr, 2, ' . ', '') . '%';
+				
+			}
+				
+		}
+	}
+}
+
+
+// list of brokers 
+function list_brokers() {
+	$brokers = array();
+	$access = wwex_access_user_has_role(array('super user'));
+	
+	if ( $access == FALSE) {
+	
+		global $user;
+		$user_obj = user_load($user->uid);
+		$franchise = $user_obj->field_user_franchise['und'][0]['nid'];
+		$sql_concat = " AND field_data_field_user_franchise.field_user_franchise_nid IN (:frnachises) ";
+		$placeholder = array(':frnachises' => $franchise);					
+	}
+	else {
+		$sql_concat = " ";
+		$placeholder = array("");
+	}
+	$sql = "SELECT
+						users.`name`,
+						users.uid
+						FROM
+						{field_data_field_user_franchise} field_data_field_user_franchise
+						INNER JOIN {users} users ON users.uid = field_data_field_user_franchise.entity_id
+						INNER JOIN {users_roles} users_roles ON users_roles.uid = users.uid
+						INNER JOIN {role} role ON users_roles.rid = role.rid
+						WHERE
+						role.rid = 7 " .$sql_concat. " ";
+						
+	$res = db_query( $sql, $placeholder );
+	
+	foreach ( $res as $item ) {
+		$brokers[$item->uid] = $item->name;
+	}
+	
+	return $brokers; 
+} 
+
+// list markets
+function wwex_reports_list_markets() {
+	
+	$markets = array();
+	$access = wwex_access_user_has_role(array('super user'));
+	
+	if ( $access == FALSE) {
+	
+		global $user;
+		$user_obj = user_load($user->uid);
+		$franchise_nid = $user_obj->field_user_franchise['und'][0]['nid'];
+		$markets[$franchise_nid] = node_load($franchise_nid)->title;				
+	}
+	else {
+		$nodes = node_load_multiple(array(), array('type' => 'franchise')); 
+		foreach	(	$nodes as $node	)	{
+			$markets[$node->nid] = $node->title;
+		}
+	}
+	
+	return $markets; 
+} 
+
+// List load status
+function list_load_status() {
+	$load_status = array();
+	//$load_status[] = 'Select Status';
+	$res = db_query("SELECT
+			taxonomy_term_data.`name` as name,
+			taxonomy_term_data.tid as tid
+			FROM
+			{field_data_field_load_status} field_data_field_load_status
+			INNER JOIN {taxonomy_term_data} taxonomy_term_data ON taxonomy_term_data.tid = field_data_field_load_status.field_load_status_tid
+			GROUP BY
+			field_data_field_load_status.field_load_status_tid
+		");
+
+	foreach	(	$res as $item	)	{
+		$load_status[$item->tid] = $item->name;
+	}
+	
+	return $load_status; 
+} 
