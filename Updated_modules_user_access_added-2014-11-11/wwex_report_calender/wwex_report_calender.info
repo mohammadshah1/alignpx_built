@@ -1,6 +1,0 @@
-name = WWEX REPORT CALENDAR
-description = Creates custom calendar for reports
-core = 7.x
-package = Reports
-version = 7.x-1.0
-dependencies[] = wwex_access

@@ -1,6 +1,0 @@
-name = WWEX Revenue Report
-description = Adds "Revenue Report" page to the reports section.
-core = 7.x
-package = Reports
-version = 7.x-1.0
-dependencies[] = wwex_access
