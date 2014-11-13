@@ -1,8 +1,0 @@
-name = WWEX Customer List
-description = Add Customer General List reports based on W number.
-core = 7.x
-dependencies[] = views_aggregator
-dependencies[] = views_distinct
-dependencies[] = views_php
-
-
