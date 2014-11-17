@@ -1,0 +1,68 @@
+/*
+=========================================
+		Menu Dropdown
+=========================================
+*/
+#navigation ul li {
+	padding:5px 10px;
+}
+#navigation ul li a {
+	margin: 0;
+	border: 0;
+	font-size: 100%;
+	background: none;
+	font: inherit;
+	white-space: normal;
+	display: inline;
+}
+#navigation ul li a:hover, #navigation ul li a.active {
+	color: #7bb9e0;
+}
+#navigation ul.menu li.is-expanded {
+	position:relative;
+}
+#navigation ul.menu li.is-expanded ul {
+	display:none;
+	position: absolute;
+	background-color: #222;
+	width: 100%;
+	padding:10px;
+	border: none;
+	top: 100%;
+	left: 0;
+	z-index: 1000;
+}
+#navigation ul.menu > li.is-expanded:hover > ul {
+	display:block;
+}
+#navigation ul.menu > li.is-expanded li {
+	margin-top:10px;
+	padding:0px;
+}
+#navigation ul.menu > li.is-expanded li a {
+	color: #aaa;
+	padding:0px;
+}
+#navigation ul.menu > li.is-expanded li a:hover, #navigation ul.menu > li.is-expanded li a.active {
+	color: #7bb9e0;
+}
+#navigation ul.menu > li.is-expanded > span {
+	position:relative;
+	display:inline-block;
+}
+#navigation ul.menu > li.is-expanded > span:after {
+	position:absolute;
+	width: 0;
+	height: 0;
+	vertical-align: top;
+	border-top: 4px solid #fff;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+	content: "";
+	right: -16px;
+	top: 5px;
+}
+#navigation ul.menu > li.is-expanded li:hover > span:after, #navigation ul.menu > li.is-expanded li.active > span:after {
+	border-top: 4px solid #7bb9e0;
+}
+
