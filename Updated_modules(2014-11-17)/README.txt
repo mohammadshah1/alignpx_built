@@ -29,7 +29,7 @@ Theme configuration for CSS
 ===============================================
 Upload table.css file to theme folder make sure the path is like(/sites/all/themes/e3_zen/css/table.css).
 Upload charts.css file to theme folder make sure the path is like(/sites/all/themes/e3_zen/css/charts.css).
-Upload commen.css file to theme folder make sure the path is like(/sites/all/themes/e3_zen/css/common.css).
+Upload common.css file to theme folder make sure the path is like(/sites/all/themes/e3_zen/css/common.css).
 Now open template.php following the path (/sites/all/themes/e3_zen/template.php).
 Place this line of code "drupal_add_css(E3_ZEN . '/css/table.css');" (Just below this comment -> // Add site CSS) inside this function "function e3_zen_preprocess_html()".
 Place this line of code "drupal_add_css(E3_ZEN . '/css/charts.css');" (Just below this comment -> // Add site CSS) inside this function "function e3_zen_preprocess_html()".
