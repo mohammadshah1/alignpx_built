@@ -1,0 +1,4 @@
+name = WWEX carrier detail
+description = Add Carrier Detail.
+core = 7.x
+package = Reports

@@ -1,0 +1,12 @@
+name = WWEX Shipments By Dates
+description = Add "Shipments By Dates" reports page and some calculations for this report.
+core = 7.x
+package = Reports
+version = 7.x-1.0
+dependencies[] = views_aggregator
+dependencies[] = views_distinct
+dependencies[] = views_php
+dependencies[] = sexy_exposed
+dependencies[] = wwex_access
+dependencies[] = wwex_reports
+dependencies[] = wwex_sales_rep_report
