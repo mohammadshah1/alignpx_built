@@ -1165,7 +1165,7 @@ $handler->display->display_options['fields']['php']['empty'] = '-';
 $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
 $handler->display->display_options['fields']['php']['php_output'] = '<?php
 $markets = \'-\'; 
-$markets = $_GET[\'field_shipment_franchise_nid\'];
+$markets = wwex_access_clean_input($_GET[\'field_shipment_franchise_nid\'], TRUE);
 
 if(is_array($markets)){
   echo $markets_parm = implode(",", $markets); 
@@ -1187,7 +1187,7 @@ $handler->display->display_options['fields']['php_1']['empty'] = '-';
 $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
 $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
  $brokers = \'-\';
-$brokers = $_GET[\'field_shipment_broker_uid\'];
+$brokers = wwex_access_clean_input($_GET[\'field_shipment_broker_uid\'], TRUE);
 if(is_array($brokers)){
   echo $brokers_parm = implode(",", $brokers); 
 }
@@ -1208,7 +1208,7 @@ $handler->display->display_options['fields']['php_2']['empty'] = '-';
 $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
 $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
 $load_status = \'-\';
-$load_status = $_GET[\'field_load_status_tid\'];
+$load_status = wwex_access_clean_input($_GET[\'field_load_status_tid\'], TRUE);
 
 if(is_array($load_status)){
   echo $load_status_parm = implode(",", $load_status);
@@ -1270,7 +1270,7 @@ $handler->display->display_options['fields']['php_4']['empty'] = '-';
 $handler->display->display_options['fields']['php_4']['use_php_setup'] = 0;
 $handler->display->display_options['fields']['php_4']['php_output'] = '<?php
 $uid = \'\';
-$uid = $_GET[\'uid\'];
+$uid = wwex_access_clean_input($_GET[\'uid\'], TRUE);
 
 if(!empty($uid) && is_array($uid)){
   echo $uid_parm = implode(",", $uid);
@@ -1301,18 +1301,19 @@ $handler->display->display_options['fields']['php_5']['ui_name'] = 'Nids';
 $handler->display->display_options['fields']['php_5']['label'] = 'Nids';
 $handler->display->display_options['fields']['php_5']['exclude'] = TRUE;
 $handler->display->display_options['fields']['php_5']['use_php_setup'] = 0;
+//@todo FIX THIS. CODE IN DB
 $handler->display->display_options['fields']['php_5']['php_output'] = '<?php
 if( isset($data->_field_data[\'nid\'][\'entity\'])){
 	$data_row = $data->_field_data[\'nid\'][\'entity\'];
 }
 
-if( isset($data_row->field_ship_date) ) $created_date = date(\'Y-m-d\', strtotime($data_row->field_ship_date[\'und\'][0][\'value\']));
+if( isset($data_row->field_ship_date) ) $created_date = date(\'Y-m-d\', strtotime($data_row->field_ship_date[LANGUAGE_NONE][0][\'value\']));
 
 $sql_string = "";
 	$sql_string = " WHERE (node.status = \'1\') AND (node.type = \'shipment\') AND (DATE_FORMAT(field_data_field_ship_date.field_ship_date_value, \'%Y-%m-%d\') = \'".$created_date."\')";
 	 
 	if (isset($_GET[\'field_shipment_broker_uid\']) && !empty($_GET[\'field_shipment_broker_uid\'])) {
-		$sql_string .= " AND field_data_field_shipment_broker.field_shipment_broker_uid IN(" . implode(",", $_GET[\'field_shipment_broker_uid\']). ")";
+		$sql_string .= " AND field_data_field_shipment_broker.field_shipment_broker_uid IN(" . implode(",", wwex_access_clean_input($_GET[\'field_shipment_broker_uid\'], TRUE)). ")";
 	}
 	
 	if	(isset($_GET[\'field_load_status_tid\']) && !empty($_GET[\'field_load_status_tid\']))	{ 
@@ -1320,10 +1321,10 @@ $sql_string = "";
 		if ( is_array($_GET[\'field_load_status_tid\']) ) {
 			foreach($_GET[\'field_load_status_tid\'] as $val){
 				if( $val == 22 || $val == 23) {
-					$load_internal_status_tids[] = $val;	
+					$load_internal_status_tids[] = wwex_access_clean_input($val, TRUE);	
 				}
 				else{
-					$load_status_tids[] = $val;
+					$load_status_tids[] = wwex_access_clean_input($val, TRUE);
 				}
 			}
 }
@@ -1342,10 +1343,10 @@ $sql_string = "";
 	}
 
 	if	(isset($_GET[\'field_shipment_franchise_nid\']) && !empty($_GET[\'field_shipment_franchise_nid\']))	{
-		$sql_string .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", $_GET[\'field_shipment_franchise_nid\']). ") ";
+		$sql_string .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", wwex_access_clean_input($_GET[\'field_shipment_franchise_nid\'], TRUE)). ") ";
 	}
 	if	(isset($_GET[\'author_select\']) && !empty($_GET[\'author_select\']))	{
-		$sql_string .= " AND node.uid  IN(" .implode(",", $_GET[\'author_select\']). ") ";
+		$sql_string .= " AND node.uid  IN(" .implode(",", wwex_access_clean_input($_GET[\'author_select\'], TRUE)). ") ";
 
 	}
  
@@ -1376,7 +1377,6 @@ $handler->display->display_options['fields']['php_5']['php_click_sortable'] = ''
 $handler->display->display_options['fields']['field_ship_date_1']['id'] = 'field_ship_date_1';
 $handler->display->display_options['fields']['field_ship_date_1']['table'] = 'field_data_field_ship_date';
 $handler->display->display_options['fields']['field_ship_date_1']['field'] = 'field_ship_date';
-$handler->display->display_options['fields']['field_ship_date_1']['label'] = 'Date Created';
 $handler->display->display_options['fields']['field_ship_date_1']['alter']['make_link'] = TRUE;
 $handler->display->display_options['fields']['field_ship_date_1']['alter']['path'] = 'load-count-detail/[php_5]';
 $handler->display->display_options['fields']['field_ship_date_1']['alter']['absolute'] = TRUE;
@@ -1600,6 +1600,7 @@ $handler->display->display_options['filters']['field_shipment_franchise_nid']['e
   5 => 0,
   6 => 0,
   7 => 0,
+  9 => 0,
 );
 $handler->display->display_options['filters']['field_shipment_franchise_nid']['group_info']['label'] = 'Franchise (field_shipment_franchise)';
 $handler->display->display_options['filters']['field_shipment_franchise_nid']['group_info']['identifier'] = 'field_shipment_franchise_nid';
@@ -1647,6 +1648,7 @@ $handler->display->display_options['filters']['field_shipment_broker_uid']['expo
   5 => 0,
   6 => 0,
   7 => 0,
+  9 => 0,
 );
 /* Filter criterion: Content: Load Status (field_load_status) */
 $handler->display->display_options['filters']['field_load_status_tid']['id'] = 'field_load_status_tid';
@@ -1668,6 +1670,7 @@ $handler->display->display_options['filters']['field_load_status_tid']['expose']
   5 => 0,
   6 => 0,
   7 => 0,
+  9 => 0,
 );
 $handler->display->display_options['filters']['field_load_status_tid']['group_info']['label'] = 'Load Status (field_load_status)';
 $handler->display->display_options['filters']['field_load_status_tid']['group_info']['identifier'] = 'field_load_status_tid';
@@ -1699,6 +1702,7 @@ $handler->display->display_options['filters']['author_select']['expose']['rememb
   5 => 0,
   6 => 0,
   7 => 0,
+  9 => 0,
 );
 $handler->display->display_options['path'] = 'load-by-count-date-all-in-one';
 
@@ -1803,7 +1807,7 @@ $handler->display->display_options['fields']['php']['empty'] = '-';
 $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
 $handler->display->display_options['fields']['php']['php_output'] = '<?php
 $markets = \'-\'; 
-$markets = $_GET[\'field_shipment_franchise_nid\'];
+$markets = wwex_access_clean_input($_GET[\'field_shipment_franchise_nid\'], TRUE);
 
 if(is_array($markets)){
   echo $markets_parm = implode(",", $markets); 
@@ -1824,7 +1828,7 @@ $handler->display->display_options['fields']['php_1']['empty'] = '-';
 $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
 $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
  $brokers = \'-\';
-$brokers = $_GET[\'field_shipment_broker_uid\'];
+$brokers = wwex_access_clean_input($_GET[\'field_shipment_broker_uid\'], TRUE);
 if(is_array($brokers)){
   echo $brokers_parm = implode(",", $brokers); 
 }
@@ -1844,7 +1848,7 @@ $handler->display->display_options['fields']['php_2']['empty'] = '-';
 $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
 $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
 $load_status = \'-\';
-$load_status = $_GET[\'field_load_status_tid\'];
+$load_status = wwex_access_clean_input($_GET[\'field_load_status_tid\'], TRUE);
 
 if(is_array($load_status)){
   echo $load_status_parm = implode(",", $load_status);
@@ -1878,12 +1882,13 @@ $handler->display->display_options['fields']['php_3']['field'] = 'php';
 $handler->display->display_options['fields']['php_3']['label'] = 'sales rep Uids';
 $handler->display->display_options['fields']['php_3']['exclude'] = TRUE;
 $handler->display->display_options['fields']['php_3']['use_php_setup'] = 0;
+//@todo FIX THIS. PUTS CODE IN DB
 $handler->display->display_options['fields']['php_3']['php_output'] = '<?php
 if( isset($data->_field_data[\'nid\'][\'entity\'])){
 	$data_row = $data->_field_data[\'nid\'][\'entity\'];
 }
 
-if( isset($data_row->field_ship_date) ) $created_date = date(\'Y-m-d\', strtotime($data_row->field_ship_date[\'und\'][0][\'value\']));
+if( isset($data_row->field_ship_date) ) $created_date = date(\'Y-m-d\', strtotime($data_row->field_ship_date[LANGUAGE_NONE][0][\'value\']));
 
 $sql22 = "SELECT  node.uid as author_uid
 FROM 
@@ -1907,9 +1912,10 @@ $handler->display->display_options['fields']['php_4']['label'] = 'Uid url parame
 $handler->display->display_options['fields']['php_4']['exclude'] = TRUE;
 $handler->display->display_options['fields']['php_4']['empty'] = '-';
 $handler->display->display_options['fields']['php_4']['use_php_setup'] = 0;
+//@todo FIX THIS. PUTS CODE IN DB
 $handler->display->display_options['fields']['php_4']['php_output'] = '<?php
 $uid = \'\';
-$uid = $_GET[\'uid\'];
+$uid = wwex_access_clean_input($_GET[\'uid\'], TRUE);
 
 if(!empty($uid) && is_array($uid)){
   echo $uid_parm = implode(",", $uid);
@@ -1919,7 +1925,7 @@ if( isset($data->_field_data[\'nid\'][\'entity\'])){
 	$data_row = $data->_field_data[\'nid\'][\'entity\'];
 }
 
-if( isset($data_row->field_ship_date) ) $created_date = date(\'Y-m-d\', strtotime($data_row->field_ship_date[\'und\'][0][\'value\']));
+if( isset($data_row->field_ship_date) ) $created_date = date(\'Y-m-d\', strtotime($data_row->field_ship_date[LANGUAGE_NONE][0][\'value\']));
 	
 $sql22 = "SELECT  node.uid as author_uid
 FROM 
@@ -1945,18 +1951,19 @@ $handler->display->display_options['fields']['php_5']['field'] = 'php';
 $handler->display->display_options['fields']['php_5']['label'] = 'Nids';
 $handler->display->display_options['fields']['php_5']['exclude'] = TRUE;
 $handler->display->display_options['fields']['php_5']['use_php_setup'] = 0;
+//@todo FIX THIS. CODE IN DB
 $handler->display->display_options['fields']['php_5']['php_output'] = '<?php
  if( isset($data->_field_data[\'nid\'][\'entity\'])){
 	$data_row = $data->_field_data[\'nid\'][\'entity\'];
 }
 
-if( isset($data_row->field_ship_date) ) $created_date = date(\'Y-m-d\', strtotime($data_row->field_ship_date[\'und\'][0][\'value\']));
+if( isset($data_row->field_ship_date) ) $created_date = date(\'Y-m-d\', strtotime($data_row->field_ship_date[LANGUAGE_NONE][0][\'value\']));
 
 $sql_string = "";
 	$sql_string = " WHERE (node.status = \'1\') AND (node.type = \'shipment\') AND (DATE_FORMAT(field_data_field_ship_date.field_ship_date_value, \'%Y-%m-%d\') = \'".$created_date."\')";
 	 
 	if (isset($_GET[\'field_shipment_broker_uid\']) && !empty($_GET[\'field_shipment_broker_uid\'])) {
-		$sql_string .= " AND field_data_field_shipment_broker.field_shipment_broker_uid IN(" . implode(",", $_GET[\'field_shipment_broker_uid\']). ")";
+		$sql_string .= " AND field_data_field_shipment_broker.field_shipment_broker_uid IN(" . implode(",", wwex_access_clean_input($_GET[\'field_shipment_broker_uid\'], TRUE)). ")";
 	}
 	
 	if	(isset($_GET[\'field_load_status_tid\']) && !empty($_GET[\'field_load_status_tid\']))	{ 
@@ -1964,10 +1971,10 @@ $sql_string = "";
 		if ( is_array($_GET[\'field_load_status_tid\']) ) {
 			foreach($_GET[\'field_load_status_tid\'] as $val){
 				if( $val == 22 || $val == 23) {
-					$load_internal_status_tids[] = $val;	
+					$load_internal_status_tids[] = wwex_access_clean_input($val, TRUE);	
 				}
 				else{
-					$load_status_tids[] = $val;
+					$load_status_tids[] = wwex_access_clean_input($val, TRUE);
 				}
 			}
 		}
@@ -1986,10 +1993,10 @@ $sql_string = "";
 	}
 
 	if	(isset($_GET[\'field_shipment_franchise_nid\']) && !empty($_GET[\'field_shipment_franchise_nid\']))	{
-		$sql_string .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", $_GET[\'field_shipment_franchise_nid\']). ") ";
+		$sql_string .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", wwex_access_clean_input($_GET[\'field_shipment_franchise_nid\'], TRUE)). ") ";
 	}
 	if	(isset($_GET[\'uid\']) && !empty($_GET[\'uid\']))	{
-		$sql_string .= " AND node.uid  IN(" .implode(",", $_GET[\'uid\']). ") ";
+		$sql_string .= " AND node.uid  IN(" .implode(",", wwex_access_clean_input($_GET[\'uid\'], TRUE)). ") ";
 
 	}
  
@@ -2020,7 +2027,6 @@ $handler->display->display_options['fields']['php_5']['php_click_sortable'] = ''
 $handler->display->display_options['fields']['field_ship_date_1']['id'] = 'field_ship_date_1';
 $handler->display->display_options['fields']['field_ship_date_1']['table'] = 'field_data_field_ship_date';
 $handler->display->display_options['fields']['field_ship_date_1']['field'] = 'field_ship_date';
-$handler->display->display_options['fields']['field_ship_date_1']['label'] = 'Date Created';
 $handler->display->display_options['fields']['field_ship_date_1']['alter']['make_link'] = TRUE;
 $handler->display->display_options['fields']['field_ship_date_1']['alter']['path'] = 'load-count-detail/[php_5]';
 $handler->display->display_options['fields']['field_ship_date_1']['alter']['absolute'] = TRUE;
@@ -2404,7 +2410,7 @@ $handler->display->display_options['fields']['php']['empty'] = '-';
 $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
 $handler->display->display_options['fields']['php']['php_output'] = '<?php
 $markets = \'-\'; 
-$markets = $_GET[\'field_shipment_franchise_nid\'];
+$markets = wwex_access_clean_input($_GET[\'field_shipment_franchise_nid\'], TRUE);
 
 if(is_array($markets)){
   echo $markets_parm = implode(",", $markets); 
@@ -2425,7 +2431,7 @@ $handler->display->display_options['fields']['php_1']['empty'] = '-';
 $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
 $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
  $brokers = \'-\';
-$brokers = $_GET[\'field_shipment_broker_uid\'];
+$brokers = wwex_access_clean_input($_GET[\'field_shipment_broker_uid\'], TRUE);
 if(is_array($brokers)){
   echo $brokers_parm = implode(",", $brokers); 
 }
@@ -2445,7 +2451,7 @@ $handler->display->display_options['fields']['php_2']['empty'] = '-';
 $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
 $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
 $load_status = \'-\';
-$load_status = $_GET[\'field_load_status_tid\'];
+$load_status = wwex_access_clean_input($_GET[\'field_load_status_tid\'], TRUE);
 
 if(is_array($load_status)){
   echo $load_status_parm = implode(",", $load_status);
@@ -2479,12 +2485,13 @@ $handler->display->display_options['fields']['php_3']['field'] = 'php';
 $handler->display->display_options['fields']['php_3']['label'] = 'sales rep Uids';
 $handler->display->display_options['fields']['php_3']['exclude'] = TRUE;
 $handler->display->display_options['fields']['php_3']['use_php_setup'] = 0;
+//@todo FIX THIS. CODE IN DB
 $handler->display->display_options['fields']['php_3']['php_output'] = '<?php
 if( isset($data->_field_data[\'nid\'][\'entity\'])){
 	$data_row = $data->_field_data[\'nid\'][\'entity\'];
 }
 
-if( isset($data_row->field_ship_date) ) $created_date = date(\'Y-m-d\', strtotime($data_row->field_ship_date[\'und\'][0][\'value\']));
+if( isset($data_row->field_ship_date) ) $created_date = date(\'Y-m-d\', strtotime($data_row->field_ship_date[LANGUAGE_NONE][0][\'value\']));
 
 $sql22 = "SELECT  node.uid as author_uid
 FROM 
@@ -2508,9 +2515,10 @@ $handler->display->display_options['fields']['php_4']['label'] = 'Uid url parame
 $handler->display->display_options['fields']['php_4']['exclude'] = TRUE;
 $handler->display->display_options['fields']['php_4']['empty'] = '-';
 $handler->display->display_options['fields']['php_4']['use_php_setup'] = 0;
+//@todo FIX THIS. CODE IN DB
 $handler->display->display_options['fields']['php_4']['php_output'] = '<?php
 $uid = \'\';
-$uid = $_GET[\'uid\'];
+$uid = wwex_access_clean_input($_GET[\'uid\'], TRUE);
 
 if(!empty($uid) && is_array($uid)){
   echo $uid_parm = implode(",", $uid);
@@ -2520,7 +2528,7 @@ if( isset($data->_field_data[\'nid\'][\'entity\'])){
 	$data_row = $data->_field_data[\'nid\'][\'entity\'];
 }
 
-if( isset($data_row->field_ship_date) ) $created_date = date(\'Y-m-d\', strtotime($data_row->field_ship_date[\'und\'][0][\'value\']));
+if( isset($data_row->field_ship_date) ) $created_date = date(\'Y-m-d\', strtotime($data_row->field_ship_date[LANGUAGE_NONE][0][\'value\']));
 	
 $sql22 = "SELECT  node.uid as author_uid
 FROM 
@@ -2546,18 +2554,19 @@ $handler->display->display_options['fields']['php_5']['field'] = 'php';
 $handler->display->display_options['fields']['php_5']['label'] = 'Nids';
 $handler->display->display_options['fields']['php_5']['exclude'] = TRUE;
 $handler->display->display_options['fields']['php_5']['use_php_setup'] = 0;
+//@todo FIX THIS. CODE IN DB
 $handler->display->display_options['fields']['php_5']['php_output'] = '<?php
  if( isset($data->_field_data[\'nid\'][\'entity\'])){
 	$data_row = $data->_field_data[\'nid\'][\'entity\'];
 }
 
-if( isset($data_row->field_ship_date) ) $created_date = date(\'Y-m-d\', strtotime($data_row->field_ship_date[\'und\'][0][\'value\']));
+if( isset($data_row->field_ship_date) ) $created_date = date(\'Y-m-d\', strtotime($data_row->field_ship_date[LANGUAGE_NONE][0][\'value\']));
 
 $sql_string = "";
 	$sql_string = " WHERE (node.status = \'1\') AND (node.type = \'shipment\') AND (DATE_FORMAT(field_data_field_ship_date.field_ship_date_value, \'%Y-%m-%d\') = \'".$created_date."\')";
 	 
 	if (isset($_GET[\'field_shipment_broker_uid\']) && !empty($_GET[\'field_shipment_broker_uid\'])) {
-		$sql_string .= " AND field_data_field_shipment_broker.field_shipment_broker_uid IN(" . implode(",", $_GET[\'field_shipment_broker_uid\']). ")";
+		$sql_string .= " AND field_data_field_shipment_broker.field_shipment_broker_uid IN(" . implode(",", wwex_access_clean_input($_GET[\'field_shipment_broker_uid\'], TRUE)). ")";
 	}
 	
 	if	(isset($_GET[\'field_load_status_tid\']) && !empty($_GET[\'field_load_status_tid\']))	{ 
@@ -2565,10 +2574,10 @@ $sql_string = "";
 		if ( is_array($_GET[\'field_load_status_tid\']) ) {
 			foreach($_GET[\'field_load_status_tid\'] as $val){
 				if( $val == 22 || $val == 23) {
-					$load_internal_status_tids[] = $val;	
+					$load_internal_status_tids[] = wwex_access_clean_input($val, TRUE);	
 				}
 				else{
-					$load_status_tids[] = $val;
+					$load_status_tids[] = wwex_access_clean_input($val, TRUE);
 				}
 			}
 		}
@@ -2587,10 +2596,10 @@ $sql_string = "";
 	}
 
 	if	(isset($_GET[\'field_shipment_franchise_nid\']) && !empty($_GET[\'field_shipment_franchise_nid\']))	{
-		$sql_string .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", $_GET[\'field_shipment_franchise_nid\']). ") ";
+		$sql_string .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", wwex_access_clean_input($_GET[\'field_shipment_franchise_nid\'], TRUE)). ") ";
 	}
 	if	(isset($_GET[\'uid\']) && !empty($_GET[\'uid\']))	{
-		$sql_string .= " AND node.uid  IN(" .implode(",", $_GET[\'uid\']). ") ";
+		$sql_string .= " AND node.uid  IN(" .implode(",", wwex_access_clean_input($_GET[\'uid\'], TRUE)). ") ";
 
 	}
  
@@ -2621,7 +2630,6 @@ $handler->display->display_options['fields']['php_5']['php_click_sortable'] = ''
 $handler->display->display_options['fields']['field_ship_date_1']['id'] = 'field_ship_date_1';
 $handler->display->display_options['fields']['field_ship_date_1']['table'] = 'field_data_field_ship_date';
 $handler->display->display_options['fields']['field_ship_date_1']['field'] = 'field_ship_date';
-$handler->display->display_options['fields']['field_ship_date_1']['label'] = 'Date Created';
 $handler->display->display_options['fields']['field_ship_date_1']['alter']['make_link'] = TRUE;
 $handler->display->display_options['fields']['field_ship_date_1']['alter']['path'] = 'load-count-detail/[php_5]';
 $handler->display->display_options['fields']['field_ship_date_1']['alter']['absolute'] = TRUE;

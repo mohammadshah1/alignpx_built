@@ -1,22 +1,8 @@
-<?php 
-/**
- *Implementing hook_menu().
- */
-function wwex_shipments_detail_report_menu(){
-	 
-	$items['shipment-detail-report'] = array(
-		'title' => 'Shipments Detail Report',
-		'access callback' => TRUE,
-    'weight' => 0,  
-    'menu_name' => 'menu-shipment-reports-menu',
-    'type' => MENU_NORMAL_ITEM,
-	); 
-	
-  return $items;
-}
+<?php
 
-/*
- * Implementation of hook_views_api()
+/**
+ * implements hook_views_api()
+ * @return array
  */
 function wwex_shipments_detail_report_views_api() {
   return array('api' => 3.0);
@@ -26,26 +12,35 @@ function wwex_shipments_detail_report_views_api() {
  * Implements hook_theme().
  */
 function wwex_shipments_detail_report_theme() {
-	return array(
+  return array(
 		'views_view__shipment_detail_report' => array(
-			'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
-			'template' => 'views-view--shipment-detail-report',
-			'base hook' => 'views_view',
-			'path' => drupal_get_path('module', 'wwex_shipments_detail_report') . '/theme',
+      'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+      'template' => 'views-view--shipment-detail-report',
+      'base hook' => 'views_view',
+      'path' => drupal_get_path('module', 'wwex_shipments_detail_report') . '/theme',
 		),
+		 
+		'views_aggregator_results__table__shipment_detail_report' => array(
+			'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+			'template' => 'views-aggregator-results-table--shipment-detail-report',
+			'base hook' => 'views_view_table',
+			'path' => drupal_get_path('module', 'wwex_shipments_detail_report') . '/theme',
+    ),
 	);
 }
 
-
-// hook_views_pre_render()
+/**
+ * hook_views_pre_render()
+ * @param $view
+ */
 function wwex_shipments_detail_report_views_pre_render(&$view) {
 	// Scramble the order of the rows shown on this result page.
 	// Note that this could be done earlier, but not later in the view execution
 	// process.
-	if( $view->name == 'shipment_detail_report' ){
-		
+	if ($view->name == 'shipment_detail_report') {
+		 
 		// update total values
-		if( isset( $view->totals )){
+		if (isset( $view->totals)) {
 			
 			// first we get total customer rate (Total Retial Price)
 			$total_customer_rate = isset($view->totals['field_customer_rate']) ? strip_tags($view->totals['field_customer_rate']) : 0;
@@ -56,31 +51,34 @@ function wwex_shipments_detail_report_views_pre_render(&$view) {
 			$margin_percentage = $total_customer_rate > 0 ? ($total_margin / $total_customer_rate) * 100 : 0;
 			
 			// replce total customer rate
-			if( isset($view->totals['field_customer_rate_1']) )
+			if (isset($view->totals['field_customer_rate_1'])) {
 				$view->totals['field_customer_rate_1'] = '$' . number_format($total_customer_rate, 2, '.', ',');
+			}
 				
-			// replce total margin % rate
-			if( isset($view->totals['expression_2']) )
+			// replace total margin % rate
+			if (isset($view->totals['expression_2'])) {
 				$view->totals['expression_2'] = number_format($margin_percentage, 2, '.', '') . '%';
+			}
 				
 		}
 		
 		// change values per row
-		// it is toatl of tiers e.g for tier A or B or C
-		if( isset($view->style_plugin->rendered_fields) ){
+		// it is total of tiers e.g for tier A or B or C
+		if (isset($view->style_plugin->rendered_fields) ) {
 			$rendered_fields = &$view->style_plugin->rendered_fields;
 			
-			foreach($rendered_fields as $count => $fields){
+			foreach ($rendered_fields as $count => $fields) {
 				
 				// get revenue and margin per row
-			    $total_customer_rate_pr = isset($fields['field_customer_rate']) ? $fields['field_customer_rate'] : 0;
+				$total_customer_rate_pr = isset($fields['field_customer_rate']) ? $fields['field_customer_rate'] : 0;
 				$total_margin_pr = isset($fields['expression_1']) ? $fields['expression_1'] : 0;
 				
 				// calculate margin % per row
 				$margin_percentage_pr = $total_customer_rate_pr > 0 ? ($total_margin_pr / $total_customer_rate_pr) * 100 : 0;
 				// change margin % per row 
-				if( isset($fields['expression_2']) )
+				if (isset($fields['expression_2'])) {
 					$view->style_plugin->rendered_fields[$count]['expression_2'] = number_format($margin_percentage_pr, 2, '.', '') . '%';
+				}
 				
 			}
 				
@@ -95,51 +93,49 @@ function wwex_shipments_detail_report_views_query_alter(&$view, &$query) {
 	if ($view->name == 'shipment_detail_report' && $view->current_display == 'shipment_detail_report') {	
 		
 		// add sales rep filter
-		if( function_exists('wwex_sales_rep_report_list_sales_rep')) {
+		if (function_exists('wwex_sales_rep_report_list_sales_rep')) {
 		  $sales_rep = wwex_sales_rep_report_list_sales_rep();
 		  
-			if( !empty($sales_rep) ){
+			if (!empty($sales_rep)) {
 		    $query->where[1]['conditions'][] = array(
-				'field' => 'node.uid',
-				'value' => $sales_rep,
-				'operator' =>'IN' 
-			);
-		  }
-		  // if sales_rep filter is selected, we have to hide main display
-		  // so we are adding some condition which is not
-		  // present, so it will automatic hide view due to no result found
-		  else {
-			$query->where[1]['conditions'][] = array(
-				'field' => 'node.uid',
-				'value' => -999,
-				'operator' =>'=' 
-		    );
+					'field' => 'node.uid',
+					'value' => $sales_rep,
+					'operator' =>'IN',
+				);
+		  } else {
+				// if sales_rep filter is selected, we have to hide main display
+				// so we are adding some condition which is not
+				// present, so it will automatic hide view due to no result found
+				$query->where[1]['conditions'][] = array(
+					'field' => 'node.uid',
+					'value' => -999,
+					'operator' => '=',
+				);
 		  }
 		}
 		
 		// add user franchise filter
-		if( function_exists('wwex_reports_list_markets')) {
+		if (function_exists('wwex_reports_list_markets')) {
 		  $user_franchise = wwex_reports_list_markets();
 		  
 		  // add franchis field relation in query
 		  $join = new views_join;
 		  $join->construct('field_data_field_shipment_franchise','node','nid','entity_id');
-          $view->query->add_relationship('field_data_field_shipment_franchise',$join,'node');
+				$view->query->add_relationship('field_data_field_shipment_franchise',$join,'node');
 	
-		  if( !empty($user_franchise) ){
+		  if (!empty($user_franchise)) {
 		    $query->where[1]['conditions'][] = array(
-				'field' => 'field_data_field_shipment_franchise.field_shipment_franchise_nid',
-				'value' => array_keys($user_franchise),
-				'operator' =>'IN' 
-			);
-		  }
-		  // if user has no franchise, hide view
-		  else {
-			$query->where[1]['conditions'][] = array(
-				'field' => 'field_data_field_shipment_franchise.field_shipment_franchise_nid',
-				'value' => -999,
-				'operator' =>'=' 
-		    );
+					'field' => 'field_data_field_shipment_franchise.field_shipment_franchise_nid',
+					'value' => array_keys($user_franchise),
+					'operator' => 'IN',
+				);
+		  } else {
+				// if user has no franchise, hide view
+				$query->where[1]['conditions'][] = array(
+					'field' => 'field_data_field_shipment_franchise.field_shipment_franchise_nid',
+					'value' => -999,
+					'operator' => '=',
+				);
 		  }
 		}
 	}

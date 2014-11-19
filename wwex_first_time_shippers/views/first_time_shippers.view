@@ -1133,12 +1133,13 @@ $handler->display->display_options['fields']['php_2']['ui_name'] = 'Comma Separa
 $handler->display->display_options['fields']['php_2']['label'] = 'Comma Separated Nids';
 $handler->display->display_options['fields']['php_2']['exclude'] = TRUE;
 $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
+//@todo FIX THIS. PUTS PHP IN THE DB.
 $handler->display->display_options['fields']['php_2']['php_output'] = '<?php 
 
 $w_number = 0;
 if( isset($data->_field_data[\'nid\'][\'entity\'])){
 	$data_row = $data->_field_data[\'nid\'][\'entity\'];
-	if( isset($data_row->field_w_number) ) $w_number = $data_row->field_w_number[\'und\'][0][\'value\'];
+	if( isset($data_row->field_w_number) ) $w_number = $data_row->field_w_number[LANGUAGE_NONE][0][\'value\'];
 }
 
 $node_uid = ( isset($data->node_uid) ) ? $data->node_uid : 0;
@@ -1148,7 +1149,7 @@ $node_broker_uid = ( isset($data->field_data_field_shipment_broker_field_shipmen
 $shipment_franchise = ( isset($data->field_data_field_shipment_franchise_field_shipment_franchise) ) ? $data->field_data_field_shipment_franchise_field_shipment_franchise : 0;
 
 // get selected date range
-$selected_filter = isset($_GET[\'range\']) && $_GET[\'range\']!=\'\' ? $_GET[\'range\'] : 0;
+$selected_filter = isset($_GET[\'range\']) && $_GET[\'range\']!=\'\' ? wwex_access_clean_input($_GET[\'range\'], TRUE) : 0;
 $period_ranges = array(
 	1 => \'-1 week\',
 	2 => \'-1 month\',
@@ -1179,7 +1180,7 @@ if( $shipment_franchise ){
 
 // get franchise (Markete) from filter
 if(isset($_GET[\'field_shipment_franchise_nid\']) && !empty($_GET[\'field_shipment_franchise_nid\']))	{
-	$where_clause .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", $_GET[\'field_shipment_franchise_nid\']). ") ";
+	$where_clause .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", wwex_access_clean_input($_GET[\'field_shipment_franchise_nid\'], TRUE)). ") ";
 }
 
 // sql query
@@ -1290,11 +1291,12 @@ $handler->display->display_options['fields']['php_4']['field'] = 'php';
 $handler->display->display_options['fields']['php_4']['ui_name'] = 'first date';
 $handler->display->display_options['fields']['php_4']['label'] = 'first date';
 $handler->display->display_options['fields']['php_4']['use_php_setup'] = 0;
+//@todo FIX THIS. PUTS CODE IN DB
 $handler->display->display_options['fields']['php_4']['php_output'] = '<?php
 $w_number = 0;
 if( isset($data->_field_data[\'nid\'][\'entity\'])){
  $data_row = $data->_field_data[\'nid\'][\'entity\'];
- if( isset($data_row->field_w_number) ) $w_number = $data_row->field_w_number[\'und\'][0][\'value\'];
+ if( isset($data_row->field_w_number) ) $w_number = $data_row->field_w_number[LANGUAGE_NONE][0][\'value\'];
 }
  
 		$sql = "SELECT field_data_field_ship_date.field_ship_date_value AS field_data_field_ship_date_field_ship_date_value, \'node\' AS field_data_field_ship_date_node_entity_type
@@ -1597,6 +1599,7 @@ $handler->display->display_options['filters']['field_shipment_franchise_nid']['e
   5 => 0,
   6 => 0,
   7 => 0,
+  9 => 0,
 );
 /* Filter criterion: Check First Time */
 $handler->display->display_options['filters']['php']['id'] = 'php';
@@ -1609,7 +1612,7 @@ $handler->display->display_options['filters']['php']['php_setup'] = 'function is
 	if( $w_number ){
 		
 		// get selected date range
-		$selected_filter = isset($_GET[\'range\']) && $_GET[\'range\']!=\'\' ? $_GET[\'range\'] : 0;
+		$selected_filter = isset($_GET[\'range\']) && $_GET[\'range\']!=\'\' ? wwex_access_clean_input($_GET[\'range\'], TRUE) : 0;
 		$period_ranges = array(
 			1 => \'-1 week\',
 			2 => \'-1 month\',

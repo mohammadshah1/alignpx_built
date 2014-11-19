@@ -862,11 +862,12 @@ $handler->display->display_options['fields']['php_2']['ui_name'] = 'Comma Separa
 $handler->display->display_options['fields']['php_2']['label'] = 'Comma Separated Nids';
 $handler->display->display_options['fields']['php_2']['exclude'] = TRUE;
 $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
+//@todo FIX THIS. CODE IN DB
 $handler->display->display_options['fields']['php_2']['php_output'] = '<?php 
 $w_number = 0;
 if( isset($data->_field_data[\'nid\'][\'entity\'])){
 	$data_row = $data->_field_data[\'nid\'][\'entity\'];
-	if( isset($data_row->field_w_number) ) $w_number = $data_row->field_w_number[\'und\'][0][\'value\'];
+	if( isset($data_row->field_w_number) ) $w_number = $data_row->field_w_number[LANGUAGE_NONE][0][\'value\'];
 }
 
 $shipment_franchise = ( isset($data->field_data_field_shipment_franchise_field_shipment_franchise) ) ? $data->field_data_field_shipment_franchise_field_shipment_franchise : 0;
@@ -874,9 +875,9 @@ $shipment_franchise = ( isset($data->field_data_field_shipment_franchise_field_s
 $node_uid = ( isset($data->node_uid) ) ? $data->node_uid : 0;
 
 // set start and end date
-$start_date = ( isset($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) && !empty($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) ) ? $_GET[\'field_ship_date_value\'][\'value\'][\'date\'] : date(\'Y-m-d\', strtotime(\'-1 day\'));
+$start_date = ( isset($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) && !empty($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) ) ? wwex_access_clean_input($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) : date(\'Y-m-d\', strtotime(\'-1 day\'));
 
-$end_date = ( isset($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) && !empty($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) ) ? $_GET[\'field_ship_date_value_1\'][\'value\'][\'date\'] : date(\'Y-m-d\');
+$end_date = ( isset($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) && !empty($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) ) ? wwex_access_clean_input($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) : date(\'Y-m-d\');
 
 // default conditions
 $where_clause = "WHERE (node.status = \'1\') AND (node.type IN  (\'shipment\')) AND (DATE_FORMAT(field_data_field_ship_date.field_ship_date_value, \'%Y-%m-%d\') >= \'".$start_date."\') AND (DATE_FORMAT(field_data_field_ship_date.field_ship_date_value, \'%Y-%m-%d\') <= \'".$end_date."\')";
@@ -897,10 +898,10 @@ if( isset($_GET[\'field_load_status_tid\']) && !empty($_GET[\'field_load_status_
 	// group load status and internal load status
 	foreach($_GET[\'field_load_status_tid\'] as $val){
 		if( $val == 22 || $val == 23) {
-			$load_internal_status_tids[] = $val;	
+			$load_internal_status_tids[] = wwex_access_clean_input($val, TRUE);	
 		}
 		else{
-			$load_status_tids[] = $val;
+			$load_status_tids[] = wwex_access_clean_input($val, TRUE);
 		}
 	}
 	
@@ -920,12 +921,12 @@ if( isset($_GET[\'field_load_status_tid\']) && !empty($_GET[\'field_load_status_
 
 // get franchise (Markete) from filter
 if(isset($_GET[\'field_shipment_franchise_nid\']) && !empty($_GET[\'field_shipment_franchise_nid\']))	{
-	$where_clause .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", $_GET[\'field_shipment_franchise_nid\']). ") ";
+	$where_clause .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", wwex_access_clean_input($_GET[\'field_shipment_franchise_nid\'])). ") ";
 }
 
 // get uid (Sales rep) form filter
 if(isset($_GET[\'author_select\']) && !empty($_GET[\'author_select\']))	{
-	$where_clause .= " AND node.uid  IN(" .implode(",", $_GET[\'author_select\']). ") ";
+	$where_clause .= " AND node.uid  IN(" .implode(",", wwex_access_clean_input($_GET[\'author_select\'])). ") ";
 }
 
 // sql query
@@ -1300,7 +1301,13 @@ $handler->display->display_options['filters']['author_select']['expose']['rememb
   7 => 0,
   9 => 0,
 );
-$handler->display->display_options['path'] = 'shipments-by-dates';
+$handler->display->display_options['path'] = 'shipments-by-date';
+//$handler->display->display_options['menu']['type'] = 'normal';
+//$handler->display->display_options['menu']['title'] = 'Shipment By Dates';
+//$handler->display->display_options['menu']['weight'] = '1';
+//$handler->display->display_options['menu']['name'] = 'main-menu';
+//$handler->display->display_options['menu']['context'] = 0;
+//$handler->display->display_options['menu']['context_only_inline'] = 0;
 
 /* Display: Totals By Market */
 $handler = $view->new_display('attachment', 'Totals By Market', 'attachment_1');
@@ -1618,9 +1625,9 @@ $handler->display->display_options['fields']['php']['php_output'] = '<?php
 $franchise_nid = $data->field_data_field_shipment_franchise_field_shipment_franchise;
 
 // set start and end date
-$start_date = ( isset($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) && !empty($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) ) ? $_GET[\'field_ship_date_value\'][\'value\'][\'date\'] : date(\'Y-m-d\', strtotime(\'-1 day\'));
+$start_date = ( isset($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) && !empty($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) ) ? wwex_access_clean_input($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) : date(\'Y-m-d\', strtotime(\'-1 day\'));
 
-$end_date = ( isset($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) && !empty($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) ) ? $_GET[\'field_ship_date_value_1\'][\'value\'][\'date\'] : date(\'Y-m-d\');
+$end_date = ( isset($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) && !empty($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) ) ? wwex_access_clean_input($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) : date(\'Y-m-d\');
 
 // default conditions
 $where_clause = "WHERE (node.status = \'1\') AND (node.type IN  (\'shipment\')) AND (DATE_FORMAT(field_data_field_ship_date.field_ship_date_value, \'%Y-%m-%d\') >= \'".$start_date."\') AND (DATE_FORMAT(field_data_field_ship_date.field_ship_date_value, \'%Y-%m-%d\') <= \'".$end_date."\') AND field_data_field_shipment_franchise.field_shipment_franchise_nid = ".$franchise_nid."";
@@ -1631,10 +1638,10 @@ if( isset($_GET[\'field_load_status_tid\']) && !empty($_GET[\'field_load_status_
 	// group load status and internal load status
 	foreach($_GET[\'field_load_status_tid\'] as $val){
 		if( $val == 22 || $val == 23) {
-			$load_internal_status_tids[] = $val;	
+			$load_internal_status_tids[] = wwex_access_clean_input($val);	
 		}
 		else{
-			$load_status_tids[] = $val;
+			$load_status_tids[] = wwex_access_clean_input($val);
 		}
 	}
 	
@@ -1654,12 +1661,12 @@ if( isset($_GET[\'field_load_status_tid\']) && !empty($_GET[\'field_load_status_
 
 // get franchise (Markete) from filter
 if(isset($_GET[\'field_shipment_franchise_nid\']) && !empty($_GET[\'field_shipment_franchise_nid\']))	{
-	$where_clause .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", $_GET[\'field_shipment_franchise_nid\']). ") ";
+	$where_clause .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", wwex_access_clean_input($_GET[\'field_shipment_franchise_nid\'])). ") ";
 }
 
 // get uid (Sales rep) form filter
 if(isset($_GET[\'author_select\']) && !empty($_GET[\'author_select\']))	{
-	$where_clause .= " AND node.uid  IN(" .implode(",", $_GET[\'author_select\']). ") ";
+	$where_clause .= " AND node.uid  IN(" .implode(",", wwex_access_clean_input($_GET[\'author_select\'])). ") ";
 }
 
 // sql query
@@ -2135,7 +2142,6 @@ $handler->display->display_options['style_options']['info'] = array(
     'aggr_par_column' => '',
   ),
   'field_carrier_rate' => array(
-
     'sortable' => 0,
     'default_sort_order' => 'asc',
     'align' => '',
@@ -2317,9 +2323,9 @@ $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
 $node_uid = $row->uid;
 
 // set start and end date
-$start_date = ( isset($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) && !empty($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) ) ? $_GET[\'field_ship_date_value\'][\'value\'][\'date\'] : date(\'Y-m-d\', strtotime(\'-1 day\'));
+$start_date = ( isset($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) && !empty($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) ) ? wwex_access_clean_input($_GET[\'field_ship_date_value\'][\'value\'][\'date\']) : date(\'Y-m-d\', strtotime(\'-1 day\'));
 
-$end_date = ( isset($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) && !empty($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) ) ? $_GET[\'field_ship_date_value_1\'][\'value\'][\'date\'] : date(\'Y-m-d\');
+$end_date = ( isset($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) && !empty($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) ) ? wwex_access_clean_input($_GET[\'field_ship_date_value_1\'][\'value\'][\'date\']) : date(\'Y-m-d\');
 
 // default conditions
 $where_clause = "WHERE (node.status = \'1\') AND (node.type IN  (\'shipment\')) AND (DATE_FORMAT(field_data_field_ship_date.field_ship_date_value, \'%Y-%m-%d\') >= \'".$start_date."\') AND (DATE_FORMAT(field_data_field_ship_date.field_ship_date_value, \'%Y-%m-%d\') <= \'".$end_date."\') AND node.uid = ".$node_uid."";
@@ -2330,10 +2336,10 @@ if( isset($_GET[\'field_load_status_tid\']) && !empty($_GET[\'field_load_status_
 	// group load status and internal load status
 	foreach($_GET[\'field_load_status_tid\'] as $val){
 		if( $val == 22 || $val == 23) {
-			$load_internal_status_tids[] = $val;	
+			$load_internal_status_tids[] = wwex_access_clean_input($val, TRUE);	
 		}
 		else{
-			$load_status_tids[] = $val;
+			$load_status_tids[] = wwex_access_clean_input($val, TRUE);
 		}
 	}
 	
@@ -2353,12 +2359,12 @@ if( isset($_GET[\'field_load_status_tid\']) && !empty($_GET[\'field_load_status_
 
 // get franchise (Markete) from filter
 if(isset($_GET[\'field_shipment_franchise_nid\']) && !empty($_GET[\'field_shipment_franchise_nid\']))	{
-	$where_clause .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", $_GET[\'field_shipment_franchise_nid\']). ") ";
+	$where_clause .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", wwex_access_clean_input($_GET[\'field_shipment_franchise_nid\'])). ") ";
 }
 
 // get uid (Sales rep) form filter
 if(isset($_GET[\'author_select\']) && !empty($_GET[\'author_select\']))	{
-	$where_clause .= " AND node.uid  IN(" .implode(",", $_GET[\'author_select\']). ") ";
+	$where_clause .= " AND node.uid  IN(" .implode(",", wwex_access_clean_input($_GET[\'author_select\'])). ") ";
 }
 
 // sql query

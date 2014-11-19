@@ -4,12 +4,12 @@
  */
 class wwex_views_uid_filter_handler_filter_author_select extends views_handler_filter_in_operator {
 
-  /**
-   * Override parent get_value_options() function.
-   *
-   * @return
-   *   Return the stored values in $this->value_options if someone expects it.
-   */
+	/**
+	 * Override parent get_value_options() function.
+	 *
+	 * @return
+	 *   Return the stored values in $this->value_options if someone expects it.
+	 */
   function get_value_options() {
 		$sql_string = "";
 		global $user;
@@ -21,9 +21,9 @@ class wwex_views_uid_filter_handler_filter_author_select extends views_handler_f
 			}
 			else {
 				$user_obj = user_load($user->uid);
-				$franchise_nid = $user_obj->field_user_franchise['und'][0]['nid']; 
+				$franchise_nid = $user_obj->field_user_franchise[LANGUAGE_NONE][0]['nid'];
 				$user_obj = user_load($user->uid); 
-				$user_franchise_nid = $user_obj->field_user_franchise['und'][0]['nid'];
+				$user_franchise_nid = $user_obj->field_user_franchise[LANGUAGE_NONE][0]['nid'];
 				$sql_string = " AND fr.field_user_franchise_nid = '" .$user_franchise_nid. "'";
 			}
 		}

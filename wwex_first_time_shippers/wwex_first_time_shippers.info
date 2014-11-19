@@ -1,10 +1,11 @@
 name = WWEX First Time Shippers
 description = First time shippers report module.
 core = 7.x
+package = WWEX Reports
+version = 7.x-1.0
 dependencies[] = views_aggregator
 dependencies[] = views_distinct
 dependencies[] = views_php
-dependencies[] = sexy_exposed
 dependencies[] = wwex_access
 dependencies[] = wwex_reports
 dependencies[] = wwex_sales_rep_report

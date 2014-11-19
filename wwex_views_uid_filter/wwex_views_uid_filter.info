@@ -1,7 +1,7 @@
 name = WWEX Views Author Uid Filter Field
 description = Additional Author Uid Filter field for Views.
 core = 7.x
-package = Reports
+package = WWEX Reports
 version = 7.x-1.0
 ;dependencies[] = views
 

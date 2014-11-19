@@ -1,7 +1,7 @@
 name = WWEX Reports
 description = Adds WWEX reports to site. 
 core = 7.x
-package = Reports
+package = WWEX Reports
 version = 7.x-1.0
 dependencies[] = views_distinct
 dependencies[] = wwex_access

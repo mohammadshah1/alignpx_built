@@ -1108,7 +1108,6 @@ LEFT JOIN field_data_field_w_number field_data_field_w_number ON node.nid = fiel
 AND (field_data_field_internal_load_status.field_internal_load_status_tid IN  (\'22\', \'23\'))
 GROUP BY node_uid, w_number
 ";
-
 $result = db_query($sql);
 if( !empty($result)){ 
  $w_numbers = array();
@@ -4598,7 +4597,6 @@ $handler->display->display_options['filters']['author_select']['expose']['rememb
   3 => 0,
   4 => 0,
   5 => 0,
-
   6 => 0,
   7 => 0,
 );
@@ -4933,11 +4931,12 @@ $handler->display->display_options['fields']['php']['alter']['make_link'] = TRUE
 $handler->display->display_options['fields']['php']['alter']['path'] = 'cust-view/[field_w_number]';
 $handler->display->display_options['fields']['php']['alter']['absolute'] = TRUE;
 $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+//@todo FIX THIS. CODE IN DB
 $handler->display->display_options['fields']['php']['php_output'] = '<?php
 $w_number = 0;
 if( isset($data->_field_data[\'nid\'][\'entity\'])){
 	$data_row = $data->_field_data[\'nid\'][\'entity\'];
-	if( isset($data_row->field_w_number) ) $w_number = $data_row->field_w_number[\'und\'][0][\'value\'];
+	if( isset($data_row->field_w_number) ) $w_number = $data_row->field_w_number[LANGUAGE_NONE][0][\'value\'];
 }
 $sql = "SELECT
 taxonomy_term_data.`name`
@@ -5397,7 +5396,6 @@ $handler->display->display_options['style_options']['info'] = array(
     'default_sort_order' => 'asc',
     'align' => 'views-align-center',
     'separator' => '',
-
     'empty_column' => 0,
     'has_aggr' => 0,
     'aggr' => array(
@@ -5552,11 +5550,12 @@ $handler->display->display_options['fields']['php']['alter']['make_link'] = TRUE
 $handler->display->display_options['fields']['php']['alter']['path'] = 'cust-view/[field_w_number]';
 $handler->display->display_options['fields']['php']['alter']['absolute'] = TRUE;
 $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+//@todo FIX THIS. CODE IN DB
 $handler->display->display_options['fields']['php']['php_output'] = '<?php
 $w_number = 0;
 if( isset($data->_field_data[\'nid\'][\'entity\'])){
 	$data_row = $data->_field_data[\'nid\'][\'entity\'];
-	if( isset($data_row->field_w_number) ) $w_number = $data_row->field_w_number[\'und\'][0][\'value\'];
+	if( isset($data_row->field_w_number) ) $w_number = $data_row->field_w_number[LANGUAGE_NONE][0][\'value\'];
 }
 $sql = "SELECT
 taxonomy_term_data.`name`
@@ -6379,11 +6378,12 @@ $handler->display->display_options['fields']['php']['alter']['make_link'] = TRUE
 $handler->display->display_options['fields']['php']['alter']['path'] = 'cust-view/[field_w_number]';
 $handler->display->display_options['fields']['php']['alter']['absolute'] = TRUE;
 $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+//@todo FIX THIS. CODE IN DB
 $handler->display->display_options['fields']['php']['php_output'] = '<?php
 $w_number = 0;
 if( isset($data->_field_data[\'nid\'][\'entity\'])){
 	$data_row = $data->_field_data[\'nid\'][\'entity\'];
-	if( isset($data_row->field_w_number) ) $w_number = $data_row->field_w_number[\'und\'][0][\'value\'];
+	if( isset($data_row->field_w_number) ) $w_number = $data_row->field_w_number[LANGUAGE_NONE][0][\'value\'];
 }
 $sql = "SELECT
 taxonomy_term_data.`name`

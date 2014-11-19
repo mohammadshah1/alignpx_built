@@ -1,46 +1,53 @@
 <?php
+
+/**
+ * @return array
+ */
 function wwex_report_calender_filter_form() {
-$form = array();
-	$form['#method'] = 'GET';
+  $form = array();
+  $form['#method'] = 'GET';
   
-  $form['weeks'] = array(	
-		'#type' => 'select',
-		'#title' => '',
-		'#options' => array(6 => 6,12 => 12,26 => 26,52 => 52,104 => 104),
-		'#default_value' => $_GET['weeks'], 
-		'#maxlength' => 10,
-		'#prefix' => '<div class= "calendar-form-title"> Most Recent',
-		'#suffix' => 'Weeks of Shipments</div>',
-		'#attributes' => array('onChange' => "form.submit('{wwex_report_calender_filter_form}')"),
-	);
-	
-	return $form;
+  $form['weeks'] = array(
+    '#type' => 'select',
+    '#title' => '',
+    '#options' => array(6 => 6, 12 => 12, 26 => 26, 52 => 52, 104 => 104),
+    '#default_value' => wwex_access_clean_input($_GET['weeks'], TRUE), 
+    '#maxlength' => 10,
+    '#prefix' => '<div class= "calendar-form-title"> Most Recent',
+    '#suffix' => 'Weeks of Shipments</div>',
+    '#attributes' => array('onChange' => "form.submit('{wwex_report_calender_filter_form}')"),
+  );
+  
+  return $form;
 }
 
+
+/**
+ * @todo fix this mess
+ * @return string
+ */
 function generate_calender_view() {
-	
-	if (	isset($_GET['weeks']) && !empty($_GET['weeks'])	)	{
-		$weeks = $_GET['weeks'];
-	}
-	else{
-		$weeks = 6;
-	}
-	
-	if (	arg(1) ) {
-		$W_number = arg(1);
-	}
-	else{
-	
-		$W_number = 'W317599522';
-	}
+  
+  if (isset($_GET['weeks']) && !empty($_GET['weeks'])) {
+    $weeks = wwex_access_clean_input($_GET['weeks'], TRUE);
+  } else{
+    $weeks = 6;
+  }
+  
+  if (arg(1)) {
+    $W_number = arg(1);
+  } else{
+    $W_number = 'W317599522';
+  }
+
   if ($weeks > 104) {
-	//drupal_set_message('weeks should not be greater than 104');
-form_set_error($weeks, t('weeks must be less than 104!'));
-	}
-	$date_from = date('Y-m-d', strtotime('-' . $weeks . ' monday'));
-	$date_to = date('Y-m-d', time());
-	
-	$query = "SELECT field_data_field_ship_date.field_ship_date_value AS node_created, COUNT(DISTINCT node.nid) AS nid,
+    //this is an improper form set error...
+    form_set_error($weeks, t('weeks must be less than 104!'));
+  }
+  $date_from = date('Y-m-d', strtotime('-' . $weeks . ' monday'));
+  $date_to = date('Y-m-d', time());
+  
+  $query = "SELECT field_data_field_ship_date.field_ship_date_value AS node_created, COUNT(DISTINCT node.nid) AS nid,
 	SUM(field_data_field_customer_rate.field_customer_rate_value) AS customer_rate 	
 	FROM 
 	{node} node
@@ -52,147 +59,134 @@ form_set_error($weeks, t('weeks must be less than 104!'));
 	AND (DATE_FORMAT((DATE_ADD('19700101', INTERVAL node.created SECOND) + INTERVAL -21600 SECOND), '%Y-%m-%d') >= :date_from)
 	AND (DATE_FORMAT((DATE_ADD('19700101', INTERVAL node.created SECOND) + INTERVAL -21600 SECOND), '%Y-%m-%d') <= :date_to)))
 	GROUP BY node_created ASC";
-	 
-	$res = db_query($query, array(':W_number' => $W_number, ':date_from' => $date_from, ':date_to' => $date_to ));
-	$i = 0;
-	foreach ($res as  $data) {
-	$timestamp = $data->node_created;
-	$cls_date = new DateTime($timestamp);
-	$calculated_date = $cls_date->format('Y-m-d');
-	
-		if (	date('D', strtotime( $calculated_date )) == 'Sat' || date('D', strtotime( $calculated_date )) == 'Sun' ) {
-			$data_dates_array[date('D', strtotime( $calculated_date )) . $i] = $calculated_date;
-			$i++;
-		}
-		else{
-			$data_dates_array[str_replace("-", "", $calculated_date)]['date'] = $calculated_date;
-			$data_dates_array[str_replace("-", "", $calculated_date)]['nid'] = $data->nid;
-			$data_dates_array[str_replace("-", "", $calculated_date)]['customer_rate'] = $data->customer_rate;
-		}
-	}
+   
+  $res = db_query($query, array(':W_number' => $W_number, ':date_from' => $date_from, ':date_to' => $date_to ));
+  $i = 0;
+  foreach ($res as $data) {
+    $timestamp = $data->node_created;
+    $cls_date = new DateTime($timestamp);
+    $calculated_date = $cls_date->format('Y-m-d');
 
-	if ( date("l")  == 'Monday' ) {
-		$weeks = $weeks - 1;
-		$strDateFrom = date('Y-m-d', strtotime('-' . $weeks . ' Monday'));
-	}
-	else{
-		$strDateFrom = date('Y-m-d', strtotime('-' . $weeks . ' Monday'));
-	}
-	
-	if ( date("l")  == 'Friday' || date("l")  == 'Saturday' || date("l")  == 'Sunday' ) {
-		$strDateTo = date('Y-m-d');
-	}
-	else{
-		$strDateTo = date('Y-m-d', strtotime('next friday'));
-	}
-	$daterange = createDateRangeArray($strDateFrom, $strDateTo);
-	 
-	foreach (	$daterange as  $date	)	{
-		
-		if (	date('D', strtotime( $date )) == 'Sat' || date('D', strtotime( $date )) == 'Sun' ) {
-			//$dates_array[date('D', strtotime( $date )).$i] = $date;
-		 
-		}
-		else{
-			$dates_array[str_replace("-", "", $date)] = $date;
-		}
-	}
+    if (date('D', strtotime( $calculated_date )) == 'Sat' || date('D', strtotime( $calculated_date )) == 'Sun') {
+      $data_dates_array[date('D', strtotime( $calculated_date )) . $i] = $calculated_date;
+      $i++;
+    } else{
+      $data_dates_array[str_replace("-", "", $calculated_date)]['date'] = $calculated_date;
+      $data_dates_array[str_replace("-", "", $calculated_date)]['nid'] = $data->nid;
+      $data_dates_array[str_replace("-", "", $calculated_date)]['customer_rate'] = $data->customer_rate;
+    }
+  }
+  
+  if (date("l")  == 'Monday') {
+    $weeks = $weeks - 1;
+    $strDateFrom = date('Y-m-d', strtotime('-' . $weeks . ' Monday'));
+  } else{
+    $strDateFrom = date('Y-m-d', strtotime('-' . $weeks . ' Monday'));
+  }
+  
+  if (date("l")  == 'Friday' || date("l")  == 'Saturday' || date("l")  == 'Sunday') {
+    $strDateTo = date('Y-m-d');
+  } else{
+    $strDateTo = date('Y-m-d', strtotime('next friday'));
+  }
 
-	if ( !empty($data_dates_array) ) {
-		$merge = array_replace(	$dates_array, $data_dates_array	);
-	}
-	else{
-		$merge = $dates_array;
-	}
-	$chunks = array_chunk($merge, 5);
-
-	return built_calender_structure($chunks);
+  $daterange = createDateRangeArray($strDateFrom, $strDateTo);
+   
+  foreach ($daterange as  $date) {
+  
+    if (date('D', strtotime( $date )) == 'Sat' || date('D', strtotime( $date )) == 'Sun') {
+      //$dates_array[date('D', strtotime( $date )).$i] = $date;
+    } else{
+      $dates_array[str_replace("-", "", $date)] = $date;
+    }
+  }
+  
+  if (!empty($data_dates_array) ) {
+    $merge = array_replace( $dates_array, $data_dates_array	);
+  } else{
+    $merge = $dates_array;
+  }
+  $chunks = array_chunk($merge, 5);
+ 
+  return built_calender_structure($chunks);
 }
 
-function built_calender_structure( $data ) {
-	global $base_url;
-	//$output .= '<div class="success-percentage-table">';
-	$output = "<table class='views-table apx-calendar-table'>
-	<thead>
-		<tr>
-			<th class='headerbig' colspan='6'>";
-	$output .= '<div  class = "calendar-filter-form">';		
-	$output	.= 	drupal_render(drupal_get_form('wwex_report_calender_filter_form'));
-	 $output .= '</div>';
-	 
-	$output	.="
-			</th>
-		</tr>
-		<tr>
-			<th>Mon</th>
-			<th>Tue</th>
-			<th>Wed</th>
-			<th>Thu</th>
-			<th>Fri</th>
-			<th>Total</th>
-		</tr>
-	</thead>
+/**
+ * @todo fix this POS. IT WILL BREAK
+ * @param $data
+ * @return string
+ */
+function built_calender_structure($data) {
+  global $base_url;
 
-	<tbody>";
-	
-	foreach ($data as $key => $dates) {
-		$shipments = '';
-		$cust_rate = '';
-		$output .= '<tr>';
-		
-		foreach ($dates as $val) {
-			if (is_array($val)) {
-				$html = '';
-				$html .= '<a class="colorbox-node" href="' . $base_url . '/shipment-for-cust/' . arg(1) . '/' . $val['date'] . '?width=470&height=525">
-									<div class = "date">' . date('m/d', strtotime($val['date'])) . '</div>';
-				$html .= '<div class = "date">' . $val['nid'] . '</div>';
-				$html .= '<div class = "date">$' . number_format($val['customer_rate'], 2) . '</div></a>';
-				$shipments += $val['nid'];
-				$cust_rate +=	$val['customer_rate'];
-				$class = 'ltgreen';
-			}
-			else{
-				$class = '';
-				$html = '<div class = "">' . date('m/d', strtotime($val)) . '</div>';
-			}
-			
-			
-			$output .= '<td class="' . $class . '" >' . $html . '</td>';
-		}
-		$total_cust_rate += $cust_rate;
-		$total_shipments += $shipments;
-		$total_shipments_per_row = $shipments > 0 ? $shipments : 0;
-		$total_cust_rate_per_row = $cust_rate > 0 ? $cust_rate : 0;
-		$output .= '<td class=" "><div class="total-shipts">' . $total_shipments_per_row . '</div>
-																							<div class = "total-cust-rate">$' . number_format($total_cust_rate_per_row, 2) . '</div></td>';
-		$output .= '</tr>';
-	} 
-	$output .= '</tbody>
-	
-	<tfoot>
-		<tr>
-			<th class="ctr" colspan="6">';
-		$output .= '<b>' . $total_shipments . ' Shipments $' . number_format($total_cust_rate, 2) . ' Retails </b>';
-	$output .=	'</th>
-		</tr>
-	</tfoot>
-</table>';
-//$output .= '</div>';
-return $output;
+  $output = "<table class='views-table apx-calendar-table'><thead><tr><th class='headerbig' colspan='6'>";
+  $output .= '<div  class = "calendar-filter-form">';
+  $form = drupal_get_form('wwex_report_calender_filter_form');
+  $output	.= drupal_render($form);
+  $output .= '</div>';
+  
+  $output	.= "</th></tr><tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Total</th></tr></thead><tbody>";
+
+  $total_cust_rate = 0;
+  $total_shipments = 0;
+
+  foreach ($data as $key => $dates) {
+    $shipments = '';
+    $cust_rate = '';
+    $output .= '<tr>';
+  
+    foreach ($dates as $val) {
+      if (is_array($val)) {
+        $html = '';
+        $html .= '<a class="colorbox-node" href="' . $base_url . '/shipment-for-cust/' . arg(1) . '/' . $val['date'] . '?width=470&height=525">
+                  <div class = "date">' . date('m/d', strtotime($val['date'])) . '</div>';
+        $html .= '<div class = "date">' . $val['nid'] . '</div>';
+        $html .= '<div class = "date">$' . number_format($val['customer_rate'], 2) . '</div></a>';
+        $shipments += intval($val['nid']);
+        $cust_rate +=	intval($val['customer_rate']);
+        $class = 'ltgreen';
+      }
+      else{
+        $class = '';
+        $html = '<div class = "">' . date('m/d', strtotime($val)) . '</div>';
+      }
+
+      $output .= '<td class="' . $class . '" >' . $html . '</td>';
+    }
+
+    $total_cust_rate += $cust_rate;
+    $total_shipments += $shipments;
+    $total_shipments_per_row = ($shipments > 0) ? $shipments : 0;
+    $total_cust_rate_per_row = ($cust_rate > 0) ? $cust_rate : 0;
+    $output .= '<td class=" "><div class="total-shipts">' . $total_shipments_per_row . '</div><div class = "total-cust-rate">$' . number_format($total_cust_rate_per_row, 2) . '</div></td>';
+    $output .= '</tr>';
+  }
+
+  $output .= '</tbody><tfoot><tr><th class="ctr" colspan="6">';
+  $output .= '<b>' . $total_shipments . ' Shipments $' . number_format($total_cust_rate, 2) . ' Retails </b>';
+  $output .= '</th></tr></tfoot></table>';
+
+  return $output;
 }
 
-function createDateRangeArray(	$strDateFrom,	$strDateTo	)	{
-	$aryRange = array();
-
-	$iDateFrom=mktime(1, 0, 0, substr($strDateFrom, 5, 2),     substr($strDateFrom, 8, 2),substr($strDateFrom, 0, 4));
-	$iDateTo=mktime(1, 0, 0, substr($strDateTo, 5, 2),     substr($strDateTo, 8, 2),substr($strDateTo, 0, 4));
-
-	if ($iDateTo>=$iDateFrom) {
-			array_push($aryRange, date('Y-m-d', $iDateFrom)); // first entry
-			while ($iDateFrom < $iDateTo) {
-					$iDateFrom+=86400; // add 24 hours
-					array_push($aryRange, date('Y-m-d', $iDateFrom));
-			}
-	}
-	return $aryRange;
+/**
+ * @todo this may have to be replaced, incredibly inefficient
+ * @param $strDateFrom
+ * @param $strDateTo
+ * @return array
+ */
+function createDateRangeArray($strDateFrom,	$strDateTo)	{
+  $aryRange = array();
+  
+  $iDateFrom=mktime(1, 0, 0, substr($strDateFrom, 5, 2), substr($strDateFrom, 8, 2), substr($strDateFrom, 0, 4));
+  $iDateTo=mktime(1, 0, 0, substr($strDateTo, 5, 2), substr($strDateTo, 8, 2), substr($strDateTo, 0, 4));
+  
+  if ($iDateTo>=$iDateFrom) {
+    array_push($aryRange, date('Y-m-d', $iDateFrom)); // first entry
+    while ($iDateFrom < $iDateTo) {
+      $iDateFrom+=86400; // add 24 hours
+      array_push($aryRange, date('Y-m-d', $iDateFrom));
+    }
+  }
+  return $aryRange;
 }

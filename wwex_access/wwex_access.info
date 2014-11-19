@@ -1,5 +1,5 @@
 name = WWEX Access
-description = Checks user's role base access to reports.. 
+description = Checks user's role base access to reports
 core = 7.x
-package = Reports
+package = WWEX Reports
 version = 7.x-1.0

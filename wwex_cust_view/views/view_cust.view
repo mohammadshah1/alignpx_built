@@ -903,7 +903,7 @@ $handler->display->display_options['fields']['php_1']['label'] = 'First Date';
 $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
 $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
  if (	arg(1) ) {
-$arg = arg(1);
+$arg = wwex_access_clean_input(arg(1));
  
  $sql = "SELECT node.nid AS nid, field_data_field_ship_date.field_ship_date_value AS field_data_field_ship_date_field_ship_date_value, \'node\' AS field_data_field_ship_date_node_entity_type
 FROM 
@@ -1619,7 +1619,7 @@ $handler->display->display_options['fields']['php']['exclude'] = TRUE;
 $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
 $handler->display->display_options['fields']['php']['php_output'] = '<?php
 
-$arg = arg(1);
+$arg = wwex_access_clean_input(arg(1));
 
  $sql = "SELECT DISTINCT node.created AS node_created 
 FROM 
@@ -1770,6 +1770,7 @@ WHERE (( (field_data_field_w_number.field_w_number_value = \'".$arg."\') )AND(( 
 ORDER BY field_data_field_ship_date_field_ship_date_value ASC";
 $result = db_query($sql);
 foreach ($result as $item) {
+
 		$rows[] = $item->field_data_field_ship_date_field_ship_date_value;
 		 
 	}
@@ -2010,6 +2011,7 @@ $handler->display->display_options['defaults']['header'] = FALSE;
 $handler->display->display_options['header']['area']['id'] = 'area';
 $handler->display->display_options['header']['area']['table'] = 'views';
 $handler->display->display_options['header']['area']['field'] = 'area';
+
 $handler->display->display_options['header']['area']['content'] = 'Weekly Averages current 4-weeks ';
 $handler->display->display_options['header']['area']['format'] = 'full_html';
 $handler->display->display_options['defaults']['footer'] = FALSE;
@@ -2070,7 +2072,7 @@ $handler->display->display_options['fields']['php']['exclude'] = TRUE;
 $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
 $handler->display->display_options['fields']['php']['php_output'] = '<?php
 
-$arg = arg(1);
+$arg = wwex_access_clean_input(arg(1));
 
  $sql = "SELECT DISTINCT node.created AS node_created 
 FROM 

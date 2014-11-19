@@ -467,7 +467,6 @@ $handler->display->display_options['style_options']['info'] = array(
       'views_aggregator_range' => 0,
       'views_aggregator_sum' => 0,
       'views_aggregator_tally' => 0,
-
     ),
     'aggr_par' => '',
     'has_aggr_column' => 0,

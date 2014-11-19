@@ -1,4 +1,10 @@
 <?php
+
+/**
+* @file
+* Function wwex_cust_view_views_default_views for wwex_customer_view module.
+*/
+
 /**
 * Implements hook_views_default_views().
 **/
@@ -8,10 +14,10 @@ function wwex_cust_view_views_default_views() {
   require $filepath;
   if (isset($view)) {
   $views[$view->name] = $view;
-	}
+  }
 }
   if ( $views ) {  
-		return $views;
+    return $views;
   }
 }
 

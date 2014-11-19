@@ -1,7 +1,7 @@
 name = WWEX Customer List
 description = Add Customer General List reports based on W number.
 core = 7.x
-package = Reports
+package = WWEX Reports
 version = 7.x-2.1
 dependencies[] = views_aggregator
 dependencies[] = views_distinct
