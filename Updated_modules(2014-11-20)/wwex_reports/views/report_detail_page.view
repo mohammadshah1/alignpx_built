@@ -1,0 +1,305 @@
+<?php
+$view = new view();
+$view->name = 'report_detail_page';
+$view->description = '';
+$view->tag = 'default';
+$view->base_table = 'node';
+$view->human_name = 'Report Detail Page';
+$view->core = 7;
+$view->api_version = '3.0';
+$view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+/* Display: Master */
+$handler = $view->new_display('default', 'Master', 'default');
+$handler->display->display_options['title'] = 'Report Detail Page';
+$handler->display->display_options['css_class'] = 'table-scroll';
+$handler->display->display_options['use_more_always'] = FALSE;
+$handler->display->display_options['access']['type'] = 'perm';
+$handler->display->display_options['cache']['type'] = 'none';
+$handler->display->display_options['query']['type'] = 'views_query';
+$handler->display->display_options['query']['options']['distinct'] = TRUE;
+$handler->display->display_options['query']['options']['pure_distinct'] = TRUE;
+$handler->display->display_options['exposed_form']['type'] = 'basic';
+$handler->display->display_options['pager']['type'] = 'full';
+$handler->display->display_options['pager']['options']['items_per_page'] = '10';
+$handler->display->display_options['style_plugin'] = 'default';
+$handler->display->display_options['row_plugin'] = 'fields';
+/* Field: Content: Nid */
+$handler->display->display_options['fields']['nid']['id'] = 'nid';
+$handler->display->display_options['fields']['nid']['table'] = 'node';
+$handler->display->display_options['fields']['nid']['field'] = 'nid';
+$handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+/* Field: Content: Title */
+$handler->display->display_options['fields']['title']['id'] = 'title';
+$handler->display->display_options['fields']['title']['table'] = 'node';
+$handler->display->display_options['fields']['title']['field'] = 'title';
+$handler->display->display_options['fields']['title']['label'] = '';
+$handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+$handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+$handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['title']['hide_empty'] = TRUE;
+/* Field: File Usage: Entity ID */
+$handler->display->display_options['fields']['id']['id'] = 'id';
+$handler->display->display_options['fields']['id']['table'] = 'file_usage';
+$handler->display->display_options['fields']['id']['field'] = 'id';
+$handler->display->display_options['fields']['id']['label'] = 'BOL';
+$handler->display->display_options['fields']['id']['element_type'] = '0';
+$handler->display->display_options['fields']['id']['element_label_type'] = '0';
+$handler->display->display_options['fields']['id']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['id']['hide_empty'] = TRUE;
+$handler->display->display_options['fields']['id']['separator'] = '';
+/* Field: Content: Carrier */
+$handler->display->display_options['fields']['field_shipment_carrier']['id'] = 'field_shipment_carrier';
+$handler->display->display_options['fields']['field_shipment_carrier']['table'] = 'field_data_field_shipment_carrier';
+$handler->display->display_options['fields']['field_shipment_carrier']['field'] = 'field_shipment_carrier';
+$handler->display->display_options['fields']['field_shipment_carrier']['element_type'] = '0';
+$handler->display->display_options['fields']['field_shipment_carrier']['element_label_type'] = '0';
+$handler->display->display_options['fields']['field_shipment_carrier']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['field_shipment_carrier']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['field_shipment_carrier']['hide_empty'] = TRUE;
+$handler->display->display_options['fields']['field_shipment_carrier']['type'] = 'node_reference_plain';
+/* Field: Content: Post date */
+$handler->display->display_options['fields']['created']['id'] = 'created';
+$handler->display->display_options['fields']['created']['table'] = 'node';
+$handler->display->display_options['fields']['created']['field'] = 'created';
+$handler->display->display_options['fields']['created']['label'] = 'Create date';
+$handler->display->display_options['fields']['created']['element_type'] = '0';
+$handler->display->display_options['fields']['created']['element_label_type'] = '0';
+$handler->display->display_options['fields']['created']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['created']['date_format'] = 'mm_dd_yyyy';
+$handler->display->display_options['fields']['created']['custom_date_format'] = 'Y-m-d';
+$handler->display->display_options['fields']['created']['second_date_format'] = 'long';
+$handler->display->display_options['fields']['created']['format_date_sql'] = 0;
+/* Field: Content: Ship Date */
+$handler->display->display_options['fields']['field_ship_date']['id'] = 'field_ship_date';
+$handler->display->display_options['fields']['field_ship_date']['table'] = 'field_data_field_ship_date';
+$handler->display->display_options['fields']['field_ship_date']['field'] = 'field_ship_date';
+$handler->display->display_options['fields']['field_ship_date']['element_type'] = '0';
+$handler->display->display_options['fields']['field_ship_date']['element_label_type'] = '0';
+$handler->display->display_options['fields']['field_ship_date']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['field_ship_date']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['field_ship_date']['hide_empty'] = TRUE;
+$handler->display->display_options['fields']['field_ship_date']['settings'] = array(
+  'format_type' => 'mm_dd_yyyy',
+  'fromto' => 'both',
+  'multiple_number' => '',
+  'multiple_from' => '',
+  'multiple_to' => '',
+);
+/* Field: Content: Time Marked Delivered */
+$handler->display->display_options['fields']['field_time_marked_delivered']['id'] = 'field_time_marked_delivered';
+$handler->display->display_options['fields']['field_time_marked_delivered']['table'] = 'field_data_field_time_marked_delivered';
+$handler->display->display_options['fields']['field_time_marked_delivered']['field'] = 'field_time_marked_delivered';
+$handler->display->display_options['fields']['field_time_marked_delivered']['element_type'] = '0';
+$handler->display->display_options['fields']['field_time_marked_delivered']['element_label_type'] = '0';
+$handler->display->display_options['fields']['field_time_marked_delivered']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['field_time_marked_delivered']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['field_time_marked_delivered']['hide_empty'] = TRUE;
+$handler->display->display_options['fields']['field_time_marked_delivered']['settings'] = array(
+  'format_type' => 'mm_dd_yyyy',
+  'fromto' => 'both',
+  'multiple_number' => '',
+  'multiple_from' => '',
+  'multiple_to' => '',
+);
+/* Field: Content: Target Delivery Date */
+$handler->display->display_options['fields']['field_delivery_date']['id'] = 'field_delivery_date';
+$handler->display->display_options['fields']['field_delivery_date']['table'] = 'field_data_field_delivery_date';
+$handler->display->display_options['fields']['field_delivery_date']['field'] = 'field_delivery_date';
+$handler->display->display_options['fields']['field_delivery_date']['element_type'] = '0';
+$handler->display->display_options['fields']['field_delivery_date']['element_label_type'] = '0';
+$handler->display->display_options['fields']['field_delivery_date']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['field_delivery_date']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['field_delivery_date']['hide_empty'] = TRUE;
+$handler->display->display_options['fields']['field_delivery_date']['settings'] = array(
+  'format_type' => 'mm_dd_yyyy',
+  'fromto' => 'both',
+  'multiple_number' => '',
+  'multiple_from' => '',
+  'multiple_to' => '',
+);
+/* Field: Content: Load Status */
+$handler->display->display_options['fields']['field_load_status']['id'] = 'field_load_status';
+$handler->display->display_options['fields']['field_load_status']['table'] = 'field_data_field_load_status';
+$handler->display->display_options['fields']['field_load_status']['field'] = 'field_load_status';
+$handler->display->display_options['fields']['field_load_status']['element_type'] = '0';
+$handler->display->display_options['fields']['field_load_status']['element_label_type'] = '0';
+$handler->display->display_options['fields']['field_load_status']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['field_load_status']['hide_empty'] = TRUE;
+$handler->display->display_options['fields']['field_load_status']['type'] = 'taxonomy_term_reference_plain';
+/* Field: Content: Customer Rate */
+$handler->display->display_options['fields']['field_customer_rate']['id'] = 'field_customer_rate';
+$handler->display->display_options['fields']['field_customer_rate']['table'] = 'field_data_field_customer_rate';
+$handler->display->display_options['fields']['field_customer_rate']['field'] = 'field_customer_rate';
+$handler->display->display_options['fields']['field_customer_rate']['element_type'] = '0';
+$handler->display->display_options['fields']['field_customer_rate']['element_label_type'] = '0';
+$handler->display->display_options['fields']['field_customer_rate']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['field_customer_rate']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['field_customer_rate']['settings'] = array(
+  'thousand_separator' => '',
+  'decimal_separator' => '.',
+  'scale' => '0',
+  'prefix_suffix' => 0,
+);
+/* Field: Content: Carrier Rate */
+$handler->display->display_options['fields']['field_carrier_rate']['id'] = 'field_carrier_rate';
+$handler->display->display_options['fields']['field_carrier_rate']['table'] = 'field_data_field_carrier_rate';
+$handler->display->display_options['fields']['field_carrier_rate']['field'] = 'field_carrier_rate';
+$handler->display->display_options['fields']['field_carrier_rate']['element_type'] = '0';
+$handler->display->display_options['fields']['field_carrier_rate']['element_label_type'] = '0';
+$handler->display->display_options['fields']['field_carrier_rate']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['field_carrier_rate']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['field_carrier_rate']['hide_empty'] = TRUE;
+$handler->display->display_options['fields']['field_carrier_rate']['settings'] = array(
+  'thousand_separator' => '',
+  'decimal_separator' => '.',
+  'scale' => '0',
+  'prefix_suffix' => 0,
+);
+/* Field: Content: Booking Fee */
+$handler->display->display_options['fields']['field_shipment_booking_fee']['id'] = 'field_shipment_booking_fee';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['table'] = 'field_data_field_shipment_booking_fee';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['field'] = 'field_shipment_booking_fee';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['element_type'] = '0';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['element_label_type'] = '0';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['field_shipment_booking_fee']['hide_empty'] = TRUE;
+$handler->display->display_options['fields']['field_shipment_booking_fee']['settings'] = array(
+  'thousand_separator' => '',
+  'decimal_separator' => '.',
+  'scale' => '0',
+  'prefix_suffix' => 0,
+);
+/* Field: Global: Math expression */
+$handler->display->display_options['fields']['expression']['id'] = 'expression';
+$handler->display->display_options['fields']['expression']['table'] = 'views';
+$handler->display->display_options['fields']['expression']['field'] = 'expression';
+$handler->display->display_options['fields']['expression']['label'] = 'Total Cost';
+$handler->display->display_options['fields']['expression']['alter']['alter_text'] = TRUE;
+$handler->display->display_options['fields']['expression']['element_type'] = '0';
+$handler->display->display_options['fields']['expression']['element_label_type'] = '0';
+$handler->display->display_options['fields']['expression']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['expression']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['expression']['hide_empty'] = TRUE;
+$handler->display->display_options['fields']['expression']['precision'] = '0';
+$handler->display->display_options['fields']['expression']['separator'] = '';
+$handler->display->display_options['fields']['expression']['prefix'] = ' ';
+$handler->display->display_options['fields']['expression']['expression'] = '[field_carrier_rate] + [field_shipment_booking_fee];';
+/* Field: Global: Math expression */
+$handler->display->display_options['fields']['expression_1']['id'] = 'expression_1';
+$handler->display->display_options['fields']['expression_1']['table'] = 'views';
+$handler->display->display_options['fields']['expression_1']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_1']['label'] = 'Margin';
+$handler->display->display_options['fields']['expression_1']['element_type'] = '0';
+$handler->display->display_options['fields']['expression_1']['element_label_type'] = '0';
+$handler->display->display_options['fields']['expression_1']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['expression_1']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['expression_1']['hide_empty'] = TRUE;
+$handler->display->display_options['fields']['expression_1']['precision'] = '0';
+$handler->display->display_options['fields']['expression_1']['prefix'] = ' ';
+$handler->display->display_options['fields']['expression_1']['expression'] = '[field_customer_rate] - [expression];';
+/* Field: Global: Math expression */
+$handler->display->display_options['fields']['expression_2']['id'] = 'expression_2';
+$handler->display->display_options['fields']['expression_2']['table'] = 'views';
+$handler->display->display_options['fields']['expression_2']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_2']['label'] = 'Margin %';
+$handler->display->display_options['fields']['expression_2']['element_type'] = '0';
+$handler->display->display_options['fields']['expression_2']['element_label_type'] = '0';
+$handler->display->display_options['fields']['expression_2']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['expression_2']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['expression_2']['hide_empty'] = TRUE;
+$handler->display->display_options['fields']['expression_2']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_2']['precision'] = '2';
+$handler->display->display_options['fields']['expression_2']['prefix'] = ' ';
+$handler->display->display_options['fields']['expression_2']['suffix'] = '%';
+$handler->display->display_options['fields']['expression_2']['expression'] = '([expression_1]/[field_customer_rate]) *100;';
+/* Field: Content: Broker */
+$handler->display->display_options['fields']['field_shipment_broker']['id'] = 'field_shipment_broker';
+$handler->display->display_options['fields']['field_shipment_broker']['table'] = 'field_data_field_shipment_broker';
+$handler->display->display_options['fields']['field_shipment_broker']['field'] = 'field_shipment_broker';
+$handler->display->display_options['fields']['field_shipment_broker']['element_type'] = '0';
+$handler->display->display_options['fields']['field_shipment_broker']['element_label_type'] = '0';
+$handler->display->display_options['fields']['field_shipment_broker']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['field_shipment_broker']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['field_shipment_broker']['hide_empty'] = TRUE;
+$handler->display->display_options['fields']['field_shipment_broker']['type'] = 'user_reference_plain';
+/* Field: Field: W Number */
+$handler->display->display_options['fields']['field_w_number']['id'] = 'field_w_number';
+$handler->display->display_options['fields']['field_w_number']['table'] = 'field_data_field_w_number';
+$handler->display->display_options['fields']['field_w_number']['field'] = 'field_w_number';
+/* Field: Content: Customer */
+$handler->display->display_options['fields']['field_company']['id'] = 'field_company';
+$handler->display->display_options['fields']['field_company']['table'] = 'field_data_field_company';
+$handler->display->display_options['fields']['field_company']['field'] = 'field_company';
+$handler->display->display_options['fields']['field_company']['element_type'] = '0';
+$handler->display->display_options['fields']['field_company']['element_label_type'] = '0';
+$handler->display->display_options['fields']['field_company']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['field_company']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['field_company']['hide_empty'] = TRUE;
+$handler->display->display_options['fields']['field_company']['type'] = 'taxonomy_term_reference_plain';
+/* Field: Content: Franchise */
+$handler->display->display_options['fields']['field_shipment_franchise']['id'] = 'field_shipment_franchise';
+$handler->display->display_options['fields']['field_shipment_franchise']['table'] = 'field_data_field_shipment_franchise';
+$handler->display->display_options['fields']['field_shipment_franchise']['field'] = 'field_shipment_franchise';
+$handler->display->display_options['fields']['field_shipment_franchise']['element_type'] = '0';
+$handler->display->display_options['fields']['field_shipment_franchise']['element_label_type'] = '0';
+$handler->display->display_options['fields']['field_shipment_franchise']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['field_shipment_franchise']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['field_shipment_franchise']['hide_empty'] = TRUE;
+$handler->display->display_options['fields']['field_shipment_franchise']['type'] = 'node_reference_plain';
+/* Field: Content: Author uid */
+$handler->display->display_options['fields']['uid']['id'] = 'uid';
+$handler->display->display_options['fields']['uid']['table'] = 'node';
+$handler->display->display_options['fields']['uid']['field'] = 'uid';
+$handler->display->display_options['fields']['uid']['label'] = 'Sales Rep';
+$handler->display->display_options['fields']['uid']['exclude'] = TRUE;
+$handler->display->display_options['fields']['uid']['link_to_user'] = FALSE;
+/* Field: Global: PHP */
+$handler->display->display_options['fields']['php']['id'] = 'php';
+$handler->display->display_options['fields']['php']['table'] = 'views';
+$handler->display->display_options['fields']['php']['field'] = 'php';
+$handler->display->display_options['fields']['php']['label'] = 'Sales Rep';
+$handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+$handler->display->display_options['fields']['php']['php_output'] = '<?php
+$user_fields_array = user_load($row->uid);
+   if(in_array($user_fields_array->roles,\'Broker\')){
+    $sales_rep = \'\';
+   }else{
+    $sales_rep =  $user_fields_array->name;
+   }
+echo $sales_rep;
+?> ';
+$handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+$handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+/* Sort criterion: Content: Post date */
+$handler->display->display_options['sorts']['created']['id'] = 'created';
+$handler->display->display_options['sorts']['created']['table'] = 'node';
+$handler->display->display_options['sorts']['created']['field'] = 'created';
+$handler->display->display_options['sorts']['created']['order'] = 'DESC';
+/* Contextual filter: Content: Nid */
+$handler->display->display_options['arguments']['nid']['id'] = 'nid';
+$handler->display->display_options['arguments']['nid']['table'] = 'node';
+$handler->display->display_options['arguments']['nid']['field'] = 'nid';
+$handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
+$handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+$handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+$handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+/* Filter criterion: Content: Published */
+$handler->display->display_options['filters']['status']['id'] = 'status';
+$handler->display->display_options['filters']['status']['table'] = 'node';
+$handler->display->display_options['filters']['status']['field'] = 'status';
+$handler->display->display_options['filters']['status']['value'] = 1;
+$handler->display->display_options['filters']['status']['group'] = 1;
+$handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+/* Filter criterion: Content: Type */
+$handler->display->display_options['filters']['type']['id'] = 'type';
+$handler->display->display_options['filters']['type']['table'] = 'node';
+$handler->display->display_options['filters']['type']['field'] = 'type';
+$handler->display->display_options['filters']['type']['value'] = array(
+  'shipment' => 'shipment',
+);
+
+/* Display: Page */
+$handler = $view->new_display('page', 'Page', 'page');
+$handler->display->display_options['path'] = 'report-detail-page/%';

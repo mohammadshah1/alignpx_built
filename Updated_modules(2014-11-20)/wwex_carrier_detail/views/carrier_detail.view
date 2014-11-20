@@ -1,0 +1,349 @@
+<?php
+$view = new view();
+$view->name = 'carrier_detail';
+$view->description = '';
+$view->tag = 'default';
+$view->base_table = 'node';
+$view->human_name = 'carrier detail';
+$view->core = 7;
+$view->api_version = '3.0';
+$view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+/* Display: Master */
+$handler = $view->new_display('default', 'Master', 'default');
+$handler->display->display_options['title'] = 'carrier detail';
+$handler->display->display_options['use_more_always'] = FALSE;
+$handler->display->display_options['access']['type'] = 'perm';
+$handler->display->display_options['cache']['type'] = 'none';
+$handler->display->display_options['query']['type'] = 'views_query';
+$handler->display->display_options['exposed_form']['type'] = 'basic';
+$handler->display->display_options['pager']['type'] = 'full';
+$handler->display->display_options['pager']['options']['items_per_page'] = '10';
+$handler->display->display_options['style_plugin'] = 'flipped';
+$handler->display->display_options['style_options']['columns'] = array(
+  'title' => 'title',
+  'field_carrier_contact_name' => 'field_carrier_contact_name',
+  'field_carrier_cargo_phone' => 'field_carrier_cargo_phone',
+  'field_carrier_email' => 'field_carrier_email',
+  'field_carrier_fax' => 'field_carrier_fax',
+  'field_carrier_address' => 'field_carrier_address',
+  'field_carrier_billing_informatio' => 'field_carrier_billing_informatio',
+  'nid' => 'nid',
+  'field_carrier_liability_amount' => 'field_carrier_liability_amount',
+  'field_carrier_approved' => 'field_carrier_approved',
+  'field_carrier_authority' => 'field_carrier_authority',
+  'field_carrier_fee' => 'field_carrier_fee',
+  'field_carrier_sw_last_update' => 'field_carrier_sw_last_update',
+  'field_carrier_pay_within' => 'field_carrier_pay_within',
+  'field_us_dot_number' => 'field_us_dot_number',
+  'field_carrier_contract' => 'field_carrier_contract',
+  'field_carrier_docket_type' => 'field_carrier_docket_type',
+  'field_carrier_cargo_ef_date' => 'field_carrier_cargo_ef_date',
+  'field_carrier_liability_ef_date' => 'field_carrier_liability_ef_date',
+  'field_carrier_cargo_ex_date' => 'field_carrier_cargo_ex_date',
+  'field_carrier_liability_ex_date' => 'field_carrier_liability_ex_date',
+  'field_carrier_federal_id' => 'field_carrier_federal_id',
+  'field_carrier_hazmat' => 'field_carrier_hazmat',
+  'field_carrier_hazmat_number' => 'field_carrier_hazmat_number',
+  'field_carrier_cargo_insurer' => 'field_carrier_cargo_insurer',
+  'field_carrier_liability_insurer' => 'field_carrier_liability_insurer',
+  'field_carrier_liability_number' => 'field_carrier_liability_number',
+  'field_carrier_cargo_number' => 'field_carrier_cargo_number',
+  'field_carrier_scac' => 'field_carrier_scac',
+);
+$handler->display->display_options['style_options']['default'] = '-1';
+$handler->display->display_options['style_options']['info'] = array(
+  'title' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_contact_name' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_cargo_phone' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_email' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_fax' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_address' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_billing_informatio' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'nid' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_liability_amount' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_approved' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_authority' => array(
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_fee' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_sw_last_update' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_pay_within' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_us_dot_number' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_contract' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_docket_type' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_cargo_ef_date' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_liability_ef_date' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_cargo_ex_date' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_liability_ex_date' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_federal_id' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_hazmat' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_hazmat_number' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_cargo_insurer' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_liability_insurer' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_liability_number' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_cargo_number' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_scac' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+);
+$handler->display->display_options['style_options']['caption'] = 'CARRIER DETAIL';
+$handler->display->display_options['style_options']['flipped_table_header_first_field'] = 1;
+/* Header: Global: Text area */
+$handler->display->display_options['header']['area']['id'] = 'area';
+$handler->display->display_options['header']['area']['table'] = 'views';
+$handler->display->display_options['header']['area']['field'] = 'area';
+$handler->display->display_options['header']['area']['label'] = 'Table Header';
+$handler->display->display_options['header']['area']['content'] = 'CARRIER DETAIL';
+$handler->display->display_options['header']['area']['format'] = 'full_html';
+/* Relationship: Content: Carrier (field_shipment_carrier) */
+$handler->display->display_options['relationships']['field_shipment_carrier_nid']['id'] = 'field_shipment_carrier_nid';
+$handler->display->display_options['relationships']['field_shipment_carrier_nid']['table'] = 'field_data_field_shipment_carrier';
+$handler->display->display_options['relationships']['field_shipment_carrier_nid']['field'] = 'field_shipment_carrier_nid';
+$handler->display->display_options['relationships']['field_shipment_carrier_nid']['delta'] = '-1';
+/* Field: Carrier Name */
+$handler->display->display_options['fields']['title']['id'] = 'title';
+$handler->display->display_options['fields']['title']['table'] = 'node';
+$handler->display->display_options['fields']['title']['field'] = 'title';
+$handler->display->display_options['fields']['title']['ui_name'] = 'Carrier Name';
+$handler->display->display_options['fields']['title']['label'] = 'Carrier Name';
+$handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+$handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+$handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+$handler->display->display_options['fields']['title']['node_in_colorbox_width'] = '600';
+$handler->display->display_options['fields']['title']['node_in_colorbox_height'] = '600';
+$handler->display->display_options['fields']['title']['node_in_colorbox_rel'] = '';
+/* Field: Content: Phone */
+$handler->display->display_options['fields']['field_carrier_cargo_phone']['id'] = 'field_carrier_cargo_phone';
+$handler->display->display_options['fields']['field_carrier_cargo_phone']['table'] = 'field_data_field_carrier_cargo_phone';
+$handler->display->display_options['fields']['field_carrier_cargo_phone']['field'] = 'field_carrier_cargo_phone';
+/* Field: Content: Contact Name */
+$handler->display->display_options['fields']['field_carrier_contact_name']['id'] = 'field_carrier_contact_name';
+$handler->display->display_options['fields']['field_carrier_contact_name']['table'] = 'field_data_field_carrier_contact_name';
+$handler->display->display_options['fields']['field_carrier_contact_name']['field'] = 'field_carrier_contact_name';
+/* Field: Content: Docket Number */
+$handler->display->display_options['fields']['field_mc_number']['id'] = 'field_mc_number';
+$handler->display->display_options['fields']['field_mc_number']['table'] = 'field_data_field_mc_number';
+$handler->display->display_options['fields']['field_mc_number']['field'] = 'field_mc_number';
+$handler->display->display_options['fields']['field_mc_number']['label'] = 'MC#';
+/* Field: Content: Email */
+$handler->display->display_options['fields']['field_carrier_email']['id'] = 'field_carrier_email';
+$handler->display->display_options['fields']['field_carrier_email']['table'] = 'field_data_field_carrier_email';
+$handler->display->display_options['fields']['field_carrier_email']['field'] = 'field_carrier_email';
+/* Field: Content: Federal ID# */
+$handler->display->display_options['fields']['field_carrier_federal_id']['id'] = 'field_carrier_federal_id';
+$handler->display->display_options['fields']['field_carrier_federal_id']['table'] = 'field_data_field_carrier_federal_id';
+$handler->display->display_options['fields']['field_carrier_federal_id']['field'] = 'field_carrier_federal_id';
+$handler->display->display_options['fields']['field_carrier_federal_id']['label'] = 'Federal Tax ID#';
+/* Field: Content: Carrier Address */
+$handler->display->display_options['fields']['field_carrier_address']['id'] = 'field_carrier_address';
+$handler->display->display_options['fields']['field_carrier_address']['table'] = 'field_data_field_carrier_address';
+$handler->display->display_options['fields']['field_carrier_address']['field'] = 'field_carrier_address';
+$handler->display->display_options['fields']['field_carrier_address']['label'] = 'Address';
+$handler->display->display_options['fields']['field_carrier_address']['click_sort_column'] = 'country';
+$handler->display->display_options['fields']['field_carrier_address']['settings'] = array(
+  'use_widget_handlers' => 1,
+  'format_handlers' => array(
+    'address' => 'address',
+  ),
+);
+/* Sort criterion: Content: Post date */
+$handler->display->display_options['sorts']['created']['id'] = 'created';
+$handler->display->display_options['sorts']['created']['table'] = 'node';
+$handler->display->display_options['sorts']['created']['field'] = 'created';
+$handler->display->display_options['sorts']['created']['order'] = 'DESC';
+/* Contextual filter: Content: Nid */
+$handler->display->display_options['arguments']['nid']['id'] = 'nid';
+$handler->display->display_options['arguments']['nid']['table'] = 'node';
+$handler->display->display_options['arguments']['nid']['field'] = 'nid';
+$handler->display->display_options['arguments']['nid']['default_action'] = 'not found';
+$handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
+$handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+$handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+$handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+/* Filter criterion: Content: Published */
+$handler->display->display_options['filters']['status']['id'] = 'status';
+$handler->display->display_options['filters']['status']['table'] = 'node';
+$handler->display->display_options['filters']['status']['field'] = 'status';
+$handler->display->display_options['filters']['status']['value'] = 1;
+$handler->display->display_options['filters']['status']['group'] = 1;
+$handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+/* Filter criterion: Content: Type */
+$handler->display->display_options['filters']['type']['id'] = 'type';
+$handler->display->display_options['filters']['type']['table'] = 'node';
+$handler->display->display_options['filters']['type']['field'] = 'type';
+$handler->display->display_options['filters']['type']['value'] = array(
+  'carrier' => 'carrier',
+);
+
+/* Display: Page */
+$handler = $view->new_display('page', 'Page', 'page');
+$handler->display->display_options['path'] = 'carrier-detail';
