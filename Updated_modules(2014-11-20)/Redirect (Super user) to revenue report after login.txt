@@ -26,7 +26,7 @@ Paste below code.
     "IF" : [
       { "user_has_role" : { "account" : [ "account" ], "roles" : [ "account:roles" ] } }
     ],
-    "DO" : [ { "redirect" : { "url" : "revenue-report" } } ]
+    "DO" : [ { "redirect" : { "url" : "shipment-detail-report" } } ]
   }
 }
 
