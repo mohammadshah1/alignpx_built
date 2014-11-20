@@ -2536,7 +2536,7 @@ $handler->display->display_options['filters']['author_select']['table'] = 'node'
 $handler->display->display_options['filters']['author_select']['field'] = 'author_select';
 $handler->display->display_options['filters']['author_select']['exposed'] = TRUE;
 $handler->display->display_options['filters']['author_select']['expose']['operator_id'] = 'author_select_op';
-$handler->display->display_options['filters']['author_select']['expose']['label'] = 'Author UID (select list)';
+$handler->display->display_options['filters']['author_select']['expose']['label'] = 'Sales Rep';
 $handler->display->display_options['filters']['author_select']['expose']['operator'] = 'author_select_op';
 $handler->display->display_options['filters']['author_select']['expose']['identifier'] = 'author_select';
 $handler->display->display_options['filters']['author_select']['expose']['multiple'] = TRUE;
@@ -2551,29 +2551,6 @@ $handler->display->display_options['filters']['author_select']['expose']['rememb
   7 => 0,
   9 => 0,
 );
-/* Filter criterion: Content: Load Status (field_load_status) */
-$handler->display->display_options['filters']['field_load_status_tid']['id'] = 'field_load_status_tid';
-$handler->display->display_options['filters']['field_load_status_tid']['table'] = 'field_data_field_load_status';
-$handler->display->display_options['filters']['field_load_status_tid']['field'] = 'field_load_status_tid';
-$handler->display->display_options['filters']['field_load_status_tid']['exposed'] = TRUE;
-$handler->display->display_options['filters']['field_load_status_tid']['expose']['operator_id'] = 'field_load_status_tid_op';
-$handler->display->display_options['filters']['field_load_status_tid']['expose']['label'] = 'Load Status';
-$handler->display->display_options['filters']['field_load_status_tid']['expose']['operator'] = 'field_load_status_tid_op';
-$handler->display->display_options['filters']['field_load_status_tid']['expose']['identifier'] = 'field_load_status_tid';
-$handler->display->display_options['filters']['field_load_status_tid']['expose']['multiple'] = TRUE;
-$handler->display->display_options['filters']['field_load_status_tid']['expose']['remember_roles'] = array(
-  2 => '2',
-  1 => 0,
-  8 => 0,
-  3 => 0,
-  4 => 0,
-  5 => 0,
-  6 => 0,
-  7 => 0,
-  9 => 0,
-);
-$handler->display->display_options['filters']['field_load_status_tid']['type'] = 'select';
-$handler->display->display_options['filters']['field_load_status_tid']['vocabulary'] = 'load_states';
 $handler->display->display_options['path'] = 'shipment-detail-report';
 $handler->display->display_options['menu']['type'] = 'normal';
 $handler->display->display_options['menu']['title'] = 'Shipment Detail';
