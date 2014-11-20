@@ -1,0 +1,39 @@
+Steps to import Rule for (super user) role. 
+
+Step 1:
+Login with admin account
+Download Rules module from here https://www.drupal.org/project/rules (version 7.x-2.7).
+unzip file and place it inside contrib directory (sites/all/modules/contrib/).
+Install Rules module and enable its required modules.()
+
+Step 2:
+Add role (super user) on this page /admin/people/permissions/roles.
+And give required permissions for (super user) on this path /admin/people/permissions
+
+Step 3:
+Create Rule
+Go to path /admin/config/workflow/rules.
+Click on import rule.
+Paste below code.
+
+
+{ "rules_redirect_to_revnue_report" : {
+    "LABEL" : "Redirect (Super user) to revenue report after login",
+    "PLUGIN" : "reaction rule",
+    "OWNER" : "rules",
+    "REQUIRES" : [ "rules" ],
+    "ON" : { "user_login" : [] },
+    "IF" : [
+      { "user_has_role" : { "account" : [ "account" ], "roles" : [ "account:roles" ] } }
+    ],
+    "DO" : [ { "redirect" : { "url" : "revenue-report" } } ]
+  }
+}
+
+
+
+Step 4:
+click on Import.
+
+Step 5:
+Clear Cache
