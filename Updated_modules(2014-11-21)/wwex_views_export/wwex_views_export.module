@@ -1,0 +1,130 @@
+<?php
+/**
+ * Export View Button
+ *
+ * Will print export button
+ *
+ * @param $options 
+ *   an array of export options used in wwex_views_export_form
+ *
+ * @return 
+ *   wwex_views_export_form with custom options
+ */ 
+function wwex_views_export_get_export_button($options){
+	$form = drupal_get_form('wwex_views_export_form', $options);
+	return drupal_render($form);
+}
+ 
+/**
+ * Export View Data
+ *
+ * @param $vars 
+ *   an array views data passed from wwex_views_export_preprocess_views_aggregator_results_table()
+ * 
+ * @return 
+ *   export csv file
+ */ 
+function wwex_views_export_export_view( $vars ){
+	
+	// If export button form is submitted and contain required values 
+	// create and export csv file
+	if( ( isset($_POST['export_view_name']) && $_POST['export_view_name'] == $vars['view']->name ) 
+	&& (isset($_POST['export_view_display']) && $_POST['export_view_display'] == $vars['view']->current_display ) 
+	&& (isset($_POST['export_view_file'])) ){
+		
+		// Add the headers needed to let the browser know this is a csv file download.
+		drupal_add_http_header('Content-Type', 'text/csv; utf-8');
+		drupal_add_http_header('Content-Disposition', 'attachment; filename = '. $_POST['export_view_file']);
+		
+		$headers = array();
+		$rows = array();
+		$totals = array();
+		
+		// Remove tags from values
+		if( isset($vars['header']) && !empty($vars['header']) ){
+			foreach($vars['header'] as $key => $title){
+				$headers[] = strip_tags($title);
+				$totals[] = isset($vars['totals'][$key]) ? strip_tags($vars['totals'][$key]) : '';
+			}
+		}
+		
+		// Remove tags from values
+		if( isset($vars['rows']) && !empty($vars['rows']) ){
+			foreach($vars['rows'] as $row){
+				$val_arr = array();
+				if(is_array($row) && !empty($row) ){
+					foreach($row as $value){
+						$val_arr[] = strip_tags($value);
+					}
+				}
+				$rows[] = $val_arr;
+			}
+		}
+		
+		if( !empty($rows) ){
+			
+			// Instead of writing to a file, we write to the output stream.
+			$fh = fopen('php://output', 'w');
+			
+			// Add a header row
+			if( !empty($headers) ) fputcsv($fh, $headers);
+		 
+			// Loop through our nodes and write the csv data.
+			foreach($rows as $value_row) {
+				fputcsv($fh, $value_row);
+			}
+		 
+			// Add a totals row
+			if( !empty($totals) ) fputcsv($fh, $totals);
+			
+			// Close the output stream.
+			fclose($fh);
+		
+		}
+		exit;
+	}
+}
+/*
+ * Implementation of hook_preprocess_views_aggregator_results_table()
+ */
+function wwex_views_export_preprocess_views_aggregator_results_table(&$vars)
+{
+	wwex_views_export_export_view( $vars );
+}
+
+/*
+ * Implementation of hook_views_api()
+ */
+function wwex_views_export_views_api() {
+  return array('api' => 3.0);
+}
+
+/**
+ * Implementing hook_form()
+ *
+ * @param $options 
+ *  an array of export options
+ * @description 
+ *  this form is used to post export options 
+ *  and have already defined values, 
+ *  so we don't need any handler
+ */ 
+function wwex_views_export_form($form, &$form_state, $options = array()) {
+  $form['export_view_name'] = array(
+		'#type' => 'hidden',
+		'#value'  => isset($options['view_name']) ? $options['view_name'] : "",
+	);
+  $form['export_view_display'] = array(
+		'#type' => 'hidden',
+		'#value'  => isset($options['view_display']) ? $options['view_display'] : "page",
+	);
+  $form['export_view_file'] = array(
+		'#type' => 'hidden',
+		'#value'  => isset($options['file_name']) ? $options['file_name'] : "view-data.csv",
+	);
+  $form['submit_button'] = array(
+    '#type' => 'submit',
+    '#value' => t('Export CSV'),
+	);
+  return $form;
+}

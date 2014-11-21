@@ -1,0 +1,364 @@
+<?php
+// load functions file
+module_load_include('inc', 'wwex_report_charts', 'functions');
+
+/*
+* Create final chart
+*/
+function wwtx_create_average_highcharts($chart_title, $chart_id, $series, $x_axis){
+	
+	// print chart wrapper
+	$chart_wrapper = '';
+	$chart_wrapper .= '<div id="'.$chart_id.'-chart-wrapper" class="wwtx-charts">';
+	$chart_wrapper .= '<div class="wwtx-charts-header"><span>'.$chart_title.'</span></div>';
+	$chart_wrapper .= '<div id="'.$chart_id.'" class="wwtx-charts-chart-highcharts"></div>';
+	$chart_wrapper .= '</div>';
+	/* print $chart_wrapper; */
+	
+	
+	 // Chart options.
+    $highchart = new stdClass();
+	// Chart.
+    $highchart->chart = (object) array(
+      'plotBackgroundColor' => NULL,
+      'plotBorderWidth' => NULL,
+      'plotShadow' => FALSE,
+    );
+	// Set title.
+    $highchart->title = new stdClass();
+    $highchart->title->text = '';
+	
+	// Set legend.
+    $highchart->legend = new stdClass();
+    $highchart->legend->reversed = true;
+    $highchart->legend->verticalAlign = 'top';
+    $highchart->legend->x = 20;
+    $highchart->legend->y = 0;
+    $highchart->legend->symbolWidth = 10;
+    $highchart->legend->symbolHeight = 10;
+    $highchart->legend->symbolRadius = 0;
+    $highchart->legend->itemStyle->fontWeight = 'normal';
+    $highchart->legend->itemStyle->fontSize = '11px';
+	
+	// Set plot options.
+    $highchart->plotOptions = new stdClass();
+    $highchart->plotOptions->series->lineWidth = 1;
+    $highchart->plotOptions->series->tickWidth = 1;
+    $highchart->plotOptions->series->states->hover->lineWidth = 1;
+    $highchart->plotOptions->series->states->hover->halo->size = 2;
+    //$highchart->plotOptions->series->states->hover->lineWidth = 1;
+    $highchart->plotOptions->series->marker->radius = 2;
+	
+    $highchart->plotOptions->line->color = '#30a030';
+	
+    $highchart->plotOptions->area->fillOpacity = 0.3;
+    $highchart->plotOptions->area->color = '#3020c0';
+    $highchart->plotOptions->area->lineWidth = 1;
+    $highchart->plotOptions->area->states->hover->lineWidth = 1;
+	
+	// set yAxis
+	$highchart->yAxis = new stdClass();
+	$highchart->yAxis->title->text = NULL;
+	
+	// set xAxis
+	$xAxisLabels = new stdClass();
+	$xAxisLabels->maxStaggerLines = 1;
+	$xAxisLabels->step = 4;
+	$highchart->xAxis = (object) array(
+        'categories' => $x_axis,
+		'labels' => $xAxisLabels
+    );
+	
+	 // Series.
+    $highchart->series = $series;
+	
+	$highchart->credits = new stdClass();
+    $highchart->credits->enabled = FALSE;
+
+    // Rendering.
+    $highchart->chart->renderTo = $chart_id;
+	
+	
+	$information = array(
+      'library' => 'highcharts',
+      'options' => $highchart,
+    );
+	
+	// add highcharts library
+    module_load_include('module', 'libraries', 'libraries');
+    $path = libraries_get_path('highcharts');
+    drupal_add_js($path . '/js/highcharts.js');
+	
+	// add charts render js
+	drupal_add_js(array('wwtx_charts' => array($chart_id => $information)), array('type' => 'setting'));	
+	drupal_add_js(drupal_get_path('module', 'wwex_report_charts') . '/js/highcharts.js', array('scope' => 'footer'));
+	return $chart_wrapper;
+}
+
+/*
+* Sales rep retail chart
+*/
+function sale_rep_retail_chart(){
+	
+	// load chart file
+	module_load_include('inc', 'wwex_report_charts', 'includes/sales_rep');
+	$chart_data = _sr_customer_rate_chart();
+	
+	// chart defination
+	$chart_title = '52-Week Retail';
+	$chart_id = 'slaes-rep-retail-chart';
+	$x_axis = $chart_data['chart_dates'];
+	
+	// Series.
+    $all_series = array();
+	
+	$serie = new stdClass();
+	$serie->name = 'Retail';
+    $serie->type = 'line';
+    $serie->index = 1;
+	$serie->data = $chart_data['customer_rate'];
+	$all_series[] = $serie;
+	
+	$serie = new stdClass();
+	$serie->name = '4-Week Avg';
+    $serie->type = 'area';
+	$serie->index = 0;
+	$serie->data = $chart_data['customer_rate_average'];
+	$all_series[] = $serie;
+	
+	return wwtx_create_average_highcharts($chart_title, $chart_id, $all_series, $x_axis);
+}
+
+/*
+* Sales rep margin chart
+*/
+function sale_rep_margin_chart(){
+	
+	// load chart file
+	module_load_include('inc', 'wwex_report_charts', 'includes/sales_rep');
+	$chart_data = _sr_margin_chart();
+	
+	// chart defination
+	$chart_title = '52-Week Margin';
+	$chart_id = 'slaes-rep-margin-chart';
+	$x_axis = $chart_data['chart_dates'];
+	
+	// Series.
+    $all_series = array();
+	
+	$serie = new stdClass();
+	$serie->name = 'Margin';
+    $serie->type = 'line';
+	$serie->index = 1;
+	$serie->data = $chart_data['margin'];
+	$all_series[] = $serie;
+	
+	$serie = new stdClass();
+	$serie->name = '4-Week Avg';
+    $serie->type = 'area';
+	$serie->index = 0;
+	$serie->data = $chart_data['margin_average'];
+	$all_series[] = $serie;
+	
+	return wwtx_create_average_highcharts($chart_title, $chart_id, $all_series, $x_axis);
+}
+
+/*
+* Sales rep customer chart
+*/
+function sale_rep_customer_chart(){
+	
+	// load chart file
+	module_load_include('inc', 'wwex_report_charts', 'includes/sales_rep');
+	$chart_data = _sr_customers_chart();
+	
+	// chart defination
+	$chart_title = '52-Week Customers';
+	$chart_id = 'slaes-rep-customers-chart';
+	$x_axis = $chart_data['chart_dates'];
+	
+	// Series.
+    $all_series = array();
+	
+	$serie = new stdClass();
+	$serie->name = 'Customers';
+    $serie->type = 'line';
+	$serie->index = 1;
+	$serie->data = $chart_data['customer'];
+	$all_series[] = $serie;
+	
+	$serie = new stdClass();
+	$serie->name = '4-Week Avg';
+    $serie->type = 'area';
+	$serie->index = 0;
+	$serie->data = $chart_data['customer_average'];
+	$all_series[] = $serie;
+	
+	return wwtx_create_average_highcharts($chart_title, $chart_id, $all_series, $x_axis);
+}
+
+/*
+* Sales rep shipments chart
+*/
+function sale_rep_shipments_chart(){
+	
+	// load chart file
+	module_load_include('inc', 'wwex_report_charts', 'includes/sales_rep');
+	$chart_data = _sr_shipments_chart();
+	
+	// chart defination
+	$chart_title = '52-Week Shipments';
+	$chart_id = 'slaes-rep-shipments-chart';
+	$x_axis = $chart_data['chart_dates'];
+	
+	// Series.
+    $all_series = array();
+	
+	$serie = new stdClass();
+	$serie->name = 'Shipments';
+    $serie->type = 'line';
+	$serie->index = 1;
+	$serie->data = $chart_data['shipments'];
+	$all_series[] = $serie;
+	
+	$serie = new stdClass();
+	$serie->name = '4-Week Avg';
+    $serie->type = 'area';
+	$serie->index = 0;
+	$serie->data = $chart_data['shipments_average'];
+	$all_series[] = $serie;
+	
+	return wwtx_create_average_highcharts($chart_title, $chart_id, $all_series, $x_axis);
+}
+
+/*
+* Customer Deatil shipments chart
+*/
+function customer_detail_shipments_chart(){
+	
+	// load chart file
+	module_load_include('inc', 'wwex_report_charts', 'includes/cust_detail');
+	$chart_data = _cd_nc_chart();
+
+	
+	// chart defination
+	$w_number = wwex_access_clean_input(arg(1));
+	$company_name = wwex_common_get_company_name( $w_number );
+	$chart_title = 'Shipments By Week for ' . $company_name;
+	$chart_id = 'customer-detail-shipments-chart';
+	$x_axis = $chart_data['chart_dates'];
+	
+	// Series.
+    $all_series = array();
+	
+	$serie = new stdClass();
+	$serie->name = 'Shipments';
+    $serie->type = 'line';
+	$serie->index = 1;
+	$serie->data = $chart_data['shipments'];
+	$all_series[] = $serie;
+	
+	$serie = new stdClass();
+	$serie->name = '4-Week Avg';
+    $serie->type = 'area';
+	$serie->index = 0;
+	$serie->data = $chart_data['shipments_avg'];
+	$all_series[] = $serie;
+	
+	return wwtx_create_average_highcharts($chart_title, $chart_id, $all_series, $x_axis);
+}
+
+/*
+* Customer Deatil spends chart
+*/
+function customer_detail_spends_chart(){
+	
+	// load chart file
+	module_load_include('inc', 'wwex_report_charts', 'includes/cust_detail');
+	$chart_data = _cd_customer_rate_chart();
+	
+	// chart defination
+	$w_number = wwex_access_clean_input(arg(1));
+	$company_name = wwex_common_get_company_name( $w_number );
+	$chart_title = 'Spend By Week for ' . $company_name;
+	$chart_id = 'customer-detail-spends-chart';
+	$x_axis = $chart_data['chart_dates'];
+	
+	// Series.
+    $all_series = array();
+	
+	$serie = new stdClass();
+	$serie->name = 'Spend';
+    $serie->type = 'line';
+	$serie->index = 1;
+	$serie->data = $chart_data['customer_rate'];
+	$all_series[] = $serie;
+	
+	$serie = new stdClass();
+	$serie->name = '4-Week Avg';
+    $serie->type = 'area';
+	$serie->index = 0;
+	$serie->data = $chart_data['customer_rate_average'];
+	$all_series[] = $serie;
+	
+	return wwtx_create_average_highcharts($chart_title, $chart_id, $all_series, $x_axis);
+}
+
+/*
+* Customer Deatil margin chart
+*/
+function customer_detail_margin_chart(){
+	
+	// load chart file
+	module_load_include('inc', 'wwex_report_charts', 'includes/cust_detail');
+	$chart_data = _cd_margin_chart();
+	
+	// chart defination
+	$w_number = wwex_access_clean_input(arg(1));
+	$company_name = wwex_common_get_company_name( $w_number );
+	$chart_title = 'Margin $ for ' . $company_name;
+	$chart_id = 'customer-detail-margin-chart';
+	$x_axis = $chart_data['chart_dates'];
+	
+	// Series.
+  $all_series = array();
+	
+	$serie = new stdClass();
+	$serie->name = 'Margin $';
+  $serie->type = 'line';
+	$serie->index = 1;
+	$serie->data = $chart_data['margin'];
+	$all_series[] = $serie;
+	
+	$serie = new stdClass();
+	$serie->name = '4-Week Avg';
+    $serie->type = 'area';
+	$serie->index = 0;
+	$serie->data = $chart_data['margin_average'];
+	$all_series[] = $serie;
+	
+	return wwtx_create_average_highcharts($chart_title, $chart_id, $all_series, $x_axis);
+}
+
+/*
+* Render sales rep charts
+*/
+function wwtx_render_sales_rep_charts(){
+	$output = '';
+	$output .= sale_rep_retail_chart();
+	$output .= sale_rep_margin_chart();
+	$output .= sale_rep_customer_chart();
+	$output .= sale_rep_shipments_chart();
+	return $output;
+}
+
+/*
+* Render customer detail charts
+*/
+function wwtx_render_customer_detail_charts(){
+	$output = '';
+	$output .= customer_detail_shipments_chart();
+	$output .= customer_detail_spends_chart();
+	$output .= customer_detail_margin_chart();
+	return $output;
+}

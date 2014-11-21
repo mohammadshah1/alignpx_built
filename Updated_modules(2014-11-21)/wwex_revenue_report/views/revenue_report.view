@@ -1,0 +1,913 @@
+<?php
+$view = new view();
+$view->name = 'revenue_report';
+$view->description = '';
+$view->tag = 'default';
+$view->base_table = 'node';
+$view->human_name = 'Revenue Report';
+$view->core = 7;
+$view->api_version = '3.0';
+$view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+/* Display: Master */
+$handler = $view->new_display('default', 'Master', 'default');
+$handler->display->display_options['title'] = 'Revenue Report';
+$handler->display->display_options['use_more_always'] = FALSE;
+$handler->display->display_options['group_by'] = TRUE;
+$handler->display->display_options['access']['type'] = 'role';
+$handler->display->display_options['access']['role'] = array(
+  9 => '9',
+);
+$handler->display->display_options['cache']['type'] = 'none';
+$handler->display->display_options['query']['type'] = 'views_query';
+$handler->display->display_options['exposed_form']['type'] = 'basic';
+$handler->display->display_options['exposed_form']['options']['submit_button'] = 'Search';
+$handler->display->display_options['pager']['type'] = 'full';
+$handler->display->display_options['pager']['options']['items_per_page'] = '100';
+$handler->display->display_options['pager']['options']['offset'] = '0';
+$handler->display->display_options['pager']['options']['id'] = '0';
+$handler->display->display_options['pager']['options']['quantity'] = '9';
+$handler->display->display_options['style_plugin'] = 'table';
+$handler->display->display_options['style_options']['columns'] = array(
+  'php' => 'php',
+  'php_1' => 'php_1',
+  'php_2' => 'php_2',
+  'created_1' => 'created_1',
+  'php_3' => 'php_3',
+  'php_4' => 'php_4',
+  'created' => 'created',
+  'nid' => 'nid',
+  'field_customer_rate' => 'field_customer_rate',
+  'field_customer_rate_1' => 'field_customer_rate_1',
+  'field_carrier_rate' => 'field_carrier_rate',
+  'field_shipment_booking_fee' => 'field_shipment_booking_fee',
+  'expression' => 'expression',
+  'expression_3' => 'expression_3',
+  'expression_1' => 'expression_1',
+  'expression_4' => 'expression_4',
+  'expression_2' => 'expression_2',
+);
+$handler->display->display_options['style_options']['default'] = '-1';
+$handler->display->display_options['style_options']['info'] = array(
+  'php' => array(
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'php_1' => array(
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'php_2' => array(
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'created_1' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'php_3' => array(
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'php_4' => array(
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'created' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'nid' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_customer_rate' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_customer_rate_1' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_carrier_rate' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_shipment_booking_fee' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'expression' => array(
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'expression_3' => array(
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'expression_1' => array(
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'expression_4' => array(
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'expression_2' => array(
+    'align' => 'views-align-center',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+);
+/* Relationship: Content: Author */
+$handler->display->display_options['relationships']['uid']['id'] = 'uid';
+$handler->display->display_options['relationships']['uid']['table'] = 'node';
+$handler->display->display_options['relationships']['uid']['field'] = 'uid';
+/* Field: Global: PHP */
+$handler->display->display_options['fields']['php']['id'] = 'php';
+$handler->display->display_options['fields']['php']['table'] = 'views';
+$handler->display->display_options['fields']['php']['field'] = 'php';
+$handler->display->display_options['fields']['php']['label'] = 'Franchaise URL Parameter';
+$handler->display->display_options['fields']['php']['exclude'] = TRUE;
+$handler->display->display_options['fields']['php']['empty'] = '-';
+$handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+$handler->display->display_options['fields']['php']['php_output'] = '<?php
+$markets = \'-\'; 
+$markets = $_GET[\'field_shipment_franchise_nid\'];
+
+if(is_array($markets)){
+  echo $markets_parm = implode(",", $markets); 
+}
+else{
+  echo $markets;
+}
+?>';
+$handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+$handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+/* Field: Global: PHP */
+$handler->display->display_options['fields']['php_1']['id'] = 'php_1';
+$handler->display->display_options['fields']['php_1']['table'] = 'views';
+$handler->display->display_options['fields']['php_1']['field'] = 'php';
+$handler->display->display_options['fields']['php_1']['label'] = 'Broker URL Parameter';
+$handler->display->display_options['fields']['php_1']['exclude'] = TRUE;
+$handler->display->display_options['fields']['php_1']['empty'] = '-';
+$handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
+$handler->display->display_options['fields']['php_1']['php_output'] = '<?php
+ $brokers = \'-\';
+$brokers = $_GET[\'field_shipment_broker_uid\'];
+if(is_array($brokers)){
+  echo $brokers_parm = implode(",", $brokers); 
+}
+else{
+  echo $brokers;
+}
+?>';
+$handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
+$handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
+/* Field: Global: PHP */
+$handler->display->display_options['fields']['php_2']['id'] = 'php_2';
+$handler->display->display_options['fields']['php_2']['table'] = 'views';
+$handler->display->display_options['fields']['php_2']['field'] = 'php';
+$handler->display->display_options['fields']['php_2']['label'] = 'Load Status URL parameter';
+$handler->display->display_options['fields']['php_2']['exclude'] = TRUE;
+$handler->display->display_options['fields']['php_2']['empty'] = '-';
+$handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
+$handler->display->display_options['fields']['php_2']['php_output'] = '<?php
+$load_status = \'-\';
+$load_status = $_GET[\'field_load_status_tid\'];
+
+if(is_array($load_status)){
+  echo $load_status_parm = implode(",", $load_status);
+}
+else{
+echo $load_status;
+}
+?>';
+$handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
+$handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
+/* Field: Content: Post date */
+$handler->display->display_options['fields']['created_1']['id'] = 'created_1';
+$handler->display->display_options['fields']['created_1']['table'] = 'node';
+$handler->display->display_options['fields']['created_1']['field'] = 'created';
+$handler->display->display_options['fields']['created_1']['label'] = 'Post date link';
+$handler->display->display_options['fields']['created_1']['exclude'] = TRUE;
+$handler->display->display_options['fields']['created_1']['date_format'] = 'custom';
+$handler->display->display_options['fields']['created_1']['custom_date_format'] = 'Ymd';
+$handler->display->display_options['fields']['created_1']['second_date_format'] = 'long';
+$handler->display->display_options['fields']['created_1']['format_date_sql'] = 1;
+/* Field: Global: PHP */
+$handler->display->display_options['fields']['php_3']['id'] = 'php_3';
+$handler->display->display_options['fields']['php_3']['table'] = 'views';
+$handler->display->display_options['fields']['php_3']['field'] = 'php';
+$handler->display->display_options['fields']['php_3']['label'] = 'sales rep Uids';
+$handler->display->display_options['fields']['php_3']['exclude'] = TRUE;
+$handler->display->display_options['fields']['php_3']['use_php_setup'] = 0;
+$handler->display->display_options['fields']['php_3']['php_output'] = '<?php
+$sql22 = "SELECT  node.uid as author_uid
+FROM 
+ node
+ WHERE  node.status = \'1\'  AND  node.type = \'shipment\' AND 
+DATE_FORMAT((DATE_ADD(\'19700101\', INTERVAL node.created SECOND) + INTERVAL -21600 SECOND), \'%Y%m%d\') = \'" . $row->created_1 . "\'";
+$result = db_query($sql22);
+	$rows = array(); 
+	foreach ($result as $item) {
+		$author_uid[] = $item->author_uid;
+	}
+print	$uids = implode(",", $author_uid);
+?>';
+$handler->display->display_options['fields']['php_3']['use_php_click_sortable'] = '0';
+$handler->display->display_options['fields']['php_3']['php_click_sortable'] = '';
+/* Field: Global: PHP */
+$handler->display->display_options['fields']['php_4']['id'] = 'php_4';
+$handler->display->display_options['fields']['php_4']['table'] = 'views';
+$handler->display->display_options['fields']['php_4']['field'] = 'php';
+$handler->display->display_options['fields']['php_4']['label'] = 'Uid url parameter';
+$handler->display->display_options['fields']['php_4']['exclude'] = TRUE;
+$handler->display->display_options['fields']['php_4']['empty'] = '-';
+$handler->display->display_options['fields']['php_4']['use_php_setup'] = 0;
+$handler->display->display_options['fields']['php_4']['php_output'] = '<?php
+$uid = \'\';
+$uid = $_GET[\'uid\'];
+
+if(!empty($uid) && is_array($uid)){
+  echo $uid_parm = implode(",", $uid);
+}
+else{
+$sql22 = "SELECT  node.uid as author_uid
+FROM 
+ node
+ WHERE  node.status = \'1\'  AND  node.type = \'shipment\' AND 
+DATE_FORMAT((DATE_ADD(\'19700101\', INTERVAL node.created SECOND) + INTERVAL -21600 SECOND), \'%Y%m%d\') = \'" . $row->created_1 . "\'";
+$result = db_query($sql22);
+	$rows = array(); 
+	foreach ($result as $item) {
+		$author_uid[] = $item->author_uid;
+	}
+//print	$uids = implode(",", $author_uid);
+
+}
+ 
+?>';
+$handler->display->display_options['fields']['php_4']['use_php_click_sortable'] = '0';
+$handler->display->display_options['fields']['php_4']['php_click_sortable'] = '';
+/* Field: Global: PHP */
+$handler->display->display_options['fields']['php_5']['id'] = 'php_5';
+$handler->display->display_options['fields']['php_5']['table'] = 'views';
+$handler->display->display_options['fields']['php_5']['field'] = 'php';
+$handler->display->display_options['fields']['php_5']['label'] = 'Nids';
+$handler->display->display_options['fields']['php_5']['exclude'] = TRUE;
+$handler->display->display_options['fields']['php_5']['use_php_setup'] = 0;
+$handler->display->display_options['fields']['php_5']['php_output'] = '<?php
+ 
+$sql_string = "";
+$created_date = $row->created_1;
+	$sql_string = " WHERE (node.status = \'1\') AND (node.type = \'shipment\') AND (DATE(FROM_UNIXTIME(node.created)) >= \'" .$created_date. "\' AND DATE(FROM_UNIXTIME(node.created)) <= \'" .$created_date. "\')";
+	 
+	if (isset($_GET[\'field_shipment_broker_uid\']) && !empty($_GET[\'field_shipment_broker_uid\'])) {
+		$sql_string .= " AND field_data_field_shipment_broker.field_shipment_broker_uid IN(" . implode(",", $_GET[\'field_shipment_broker_uid\']). ")";
+	}
+	
+	if	(isset($_GET[\'field_load_status_tid\']) && !empty($_GET[\'field_load_status_tid\']))	{ 
+		
+		if ( is_array($_GET[\'field_load_status_tid\']) ) {
+			foreach($_GET[\'field_load_status_tid\'] as $val){
+				if( $val == 22 || $val == 23) {
+					$load_internal_status_tids[] = $val;	
+				}
+				else{
+					$load_status_tids[] = $val;
+				}
+			}
+		}
+		if	(	!empty($load_internal_status_tids) && !empty($load_status_tids) )	{
+			$sql_string .= " AND (field_data_field_internal_load_status.field_internal_load_status_tid IN(" . implode(",", $load_internal_status_tids). ") 
+			OR 
+			field_data_field_load_status.field_load_status_tid IN(" . implode(",", $load_status_tids). "))";
+		}
+		else if( empty($load_status_tids) ){
+			$sql_string .= " AND field_data_field_internal_load_status.field_internal_load_status_tid IN(" . implode(",", $load_internal_status_tids). ")";
+		}
+		else if( !empty($load_status_tids) ){
+			$sql_string .= " AND field_data_field_load_status.field_load_status_tid IN(" . implode(",", $load_status_tids). ")";
+		}
+		
+	}
+
+	if	(isset($_GET[\'field_shipment_franchise_nid\']) && !empty($_GET[\'field_shipment_franchise_nid\']))	{
+		$sql_string .= " AND field_data_field_shipment_franchise.field_shipment_franchise_nid IN(" .implode(",", $_GET[\'field_shipment_franchise_nid\']). ") ";
+	}
+	if	(isset($_GET[\'uid\']) && !empty($_GET[\'uid\']))	{
+		$sql_string .= " AND node.uid  IN(" .implode(",", $_GET[\'uid\']). ") ";
+
+	}
+ 
+$sql = "SELECT node.nid AS nid FROM node
+LEFT OUTER JOIN field_data_field_shipment_broker ON node.nid = field_data_field_shipment_broker.entity_id 
+LEFT JOIN field_data_field_shipment_franchise ON node.nid = field_data_field_shipment_franchise.entity_id AND (field_data_field_shipment_franchise.entity_type = \'node\' AND field_data_field_shipment_franchise.deleted = \'0\')
+INNER JOIN field_data_field_load_status ON node.nid = field_data_field_load_status.entity_id AND (field_data_field_load_status.entity_type = \'node\' AND field_data_field_load_status.deleted = \'0\')  
+INNER JOIN field_data_field_internal_load_status ON node.nid = field_data_field_internal_load_status.entity_id AND (field_data_field_internal_load_status.entity_type = \'node\' AND field_data_field_internal_load_status.deleted = \'0\')  
+LEFT JOIN field_data_field_customer_rate ON node.nid = field_data_field_customer_rate.entity_id AND (field_data_field_customer_rate.entity_type = \'node\' AND field_data_field_customer_rate.deleted = \'0\')
+LEFT JOIN  field_data_field_carrier_rate ON node.nid = field_data_field_carrier_rate.entity_id AND (field_data_field_carrier_rate.entity_type = \'node\' AND field_data_field_carrier_rate.deleted = \'0\')
+LEFT JOIN field_data_field_shipment_booking_fee ON node.nid = field_data_field_shipment_booking_fee.entity_id AND (field_data_field_shipment_booking_fee.entity_type = \'node\' AND field_data_field_shipment_booking_fee.deleted = \'0\')
+" .$sql_string. "";
+
+$result = db_query($sql);
+	 
+	foreach ($result as $item) {
+		$rows[] = $item->nid;
+		 
+	}
+ 
+$nids = implode("," , $rows);
+echo $nids;
+?>';
+$handler->display->display_options['fields']['php_5']['use_php_click_sortable'] = '0';
+$handler->display->display_options['fields']['php_5']['php_click_sortable'] = '';
+/* Field: Content: Post date */
+$handler->display->display_options['fields']['created']['id'] = 'created';
+$handler->display->display_options['fields']['created']['table'] = 'node';
+$handler->display->display_options['fields']['created']['field'] = 'created';
+$handler->display->display_options['fields']['created']['label'] = 'Date Created';
+$handler->display->display_options['fields']['created']['alter']['text'] = ' ';
+$handler->display->display_options['fields']['created']['alter']['make_link'] = TRUE;
+$handler->display->display_options['fields']['created']['alter']['path'] = 'load-count-detail/[php_5]';
+$handler->display->display_options['fields']['created']['alter']['absolute'] = TRUE;
+$handler->display->display_options['fields']['created']['date_format'] = 'custom';
+$handler->display->display_options['fields']['created']['custom_date_format'] = 'Y-m-d';
+$handler->display->display_options['fields']['created']['second_date_format'] = 'long';
+$handler->display->display_options['fields']['created']['format_date_sql'] = 1;
+/* Field: Content: Nid */
+$handler->display->display_options['fields']['nid']['id'] = 'nid';
+$handler->display->display_options['fields']['nid']['table'] = 'node';
+$handler->display->display_options['fields']['nid']['field'] = 'nid';
+$handler->display->display_options['fields']['nid']['group_type'] = 'count_distinct';
+$handler->display->display_options['fields']['nid']['label'] = 'Count';
+/* Field: Content: Customer Rate */
+$handler->display->display_options['fields']['field_customer_rate']['id'] = 'field_customer_rate';
+$handler->display->display_options['fields']['field_customer_rate']['table'] = 'field_data_field_customer_rate';
+$handler->display->display_options['fields']['field_customer_rate']['field'] = 'field_customer_rate';
+$handler->display->display_options['fields']['field_customer_rate']['group_type'] = 'sum';
+$handler->display->display_options['fields']['field_customer_rate']['label'] = 'Customer Rate hidden';
+$handler->display->display_options['fields']['field_customer_rate']['exclude'] = TRUE;
+$handler->display->display_options['fields']['field_customer_rate']['settings'] = array(
+  'thousand_separator' => '',
+  'decimal_separator' => '.',
+  'scale' => '0',
+  'prefix_suffix' => 0,
+);
+$handler->display->display_options['fields']['field_customer_rate']['separator'] = ',';
+/* Field: Content: Customer Rate */
+$handler->display->display_options['fields']['field_customer_rate_1']['id'] = 'field_customer_rate_1';
+$handler->display->display_options['fields']['field_customer_rate_1']['table'] = 'field_data_field_customer_rate';
+$handler->display->display_options['fields']['field_customer_rate_1']['field'] = 'field_customer_rate';
+$handler->display->display_options['fields']['field_customer_rate_1']['group_type'] = 'sum';
+$handler->display->display_options['fields']['field_customer_rate_1']['settings'] = array(
+  'thousand_separator' => ',',
+  'decimal_separator' => '.',
+  'scale' => '2',
+  'prefix_suffix' => 1,
+);
+$handler->display->display_options['fields']['field_customer_rate_1']['group_columns'] = array(
+  'value' => 'value',
+);
+/* Field: Content: Carrier Rate */
+$handler->display->display_options['fields']['field_carrier_rate']['id'] = 'field_carrier_rate';
+$handler->display->display_options['fields']['field_carrier_rate']['table'] = 'field_data_field_carrier_rate';
+$handler->display->display_options['fields']['field_carrier_rate']['field'] = 'field_carrier_rate';
+$handler->display->display_options['fields']['field_carrier_rate']['group_type'] = 'sum';
+$handler->display->display_options['fields']['field_carrier_rate']['exclude'] = TRUE;
+$handler->display->display_options['fields']['field_carrier_rate']['settings'] = array(
+  'thousand_separator' => '',
+  'decimal_separator' => '.',
+  'scale' => '0',
+  'prefix_suffix' => 0,
+);
+$handler->display->display_options['fields']['field_carrier_rate']['group_columns'] = array(
+  'value' => 'value',
+);
+/* Field: Content: Booking Fee */
+$handler->display->display_options['fields']['field_shipment_booking_fee']['id'] = 'field_shipment_booking_fee';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['table'] = 'field_data_field_shipment_booking_fee';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['field'] = 'field_shipment_booking_fee';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['group_type'] = 'sum';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['exclude'] = TRUE;
+$handler->display->display_options['fields']['field_shipment_booking_fee']['settings'] = array(
+  'thousand_separator' => '',
+  'decimal_separator' => '.',
+  'scale' => '0',
+  'prefix_suffix' => 0,
+);
+$handler->display->display_options['fields']['field_shipment_booking_fee']['group_columns'] = array(
+  'value' => 'value',
+);
+/* Field: Global: Math expression */
+$handler->display->display_options['fields']['expression']['id'] = 'expression';
+$handler->display->display_options['fields']['expression']['table'] = 'views';
+$handler->display->display_options['fields']['expression']['field'] = 'expression';
+$handler->display->display_options['fields']['expression']['label'] = 'Total Cost (hidden)';
+$handler->display->display_options['fields']['expression']['exclude'] = TRUE;
+$handler->display->display_options['fields']['expression']['precision'] = '2';
+$handler->display->display_options['fields']['expression']['separator'] = '';
+$handler->display->display_options['fields']['expression']['expression'] = '[field_carrier_rate] + [field_shipment_booking_fee];';
+/* Field: Global: Math expression */
+$handler->display->display_options['fields']['expression_3']['id'] = 'expression_3';
+$handler->display->display_options['fields']['expression_3']['table'] = 'views';
+$handler->display->display_options['fields']['expression_3']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_3']['label'] = 'Total Cost';
+$handler->display->display_options['fields']['expression_3']['alter']['make_link'] = TRUE;
+$handler->display->display_options['fields']['expression_3']['alter']['path'] = 'total-cost-details/[php_5]/[php]/[php_1]/[php_2]/[php_4]?width=300&height=100';
+$handler->display->display_options['fields']['expression_3']['alter']['link_class'] = 'colorbox-node';
+$handler->display->display_options['fields']['expression_3']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_3']['precision'] = '2';
+$handler->display->display_options['fields']['expression_3']['prefix'] = '$';
+$handler->display->display_options['fields']['expression_3']['expression'] = '[field_carrier_rate] + [field_shipment_booking_fee];';
+/* Field: Global: Math expression */
+$handler->display->display_options['fields']['expression_1']['id'] = 'expression_1';
+$handler->display->display_options['fields']['expression_1']['table'] = 'views';
+$handler->display->display_options['fields']['expression_1']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_1']['label'] = 'Margin Hidden';
+$handler->display->display_options['fields']['expression_1']['exclude'] = TRUE;
+$handler->display->display_options['fields']['expression_1']['precision'] = '0';
+$handler->display->display_options['fields']['expression_1']['separator'] = '';
+$handler->display->display_options['fields']['expression_1']['expression'] = '[field_customer_rate] - [expression];';
+/* Field: Global: Math expression */
+$handler->display->display_options['fields']['expression_4']['id'] = 'expression_4';
+$handler->display->display_options['fields']['expression_4']['table'] = 'views';
+$handler->display->display_options['fields']['expression_4']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_4']['label'] = 'Margin';
+$handler->display->display_options['fields']['expression_4']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_4']['precision'] = '2';
+$handler->display->display_options['fields']['expression_4']['prefix'] = '$';
+$handler->display->display_options['fields']['expression_4']['expression'] = '[field_customer_rate] - [expression];';
+/* Field: Global: Math expression */
+$handler->display->display_options['fields']['expression_2']['id'] = 'expression_2';
+$handler->display->display_options['fields']['expression_2']['table'] = 'views';
+$handler->display->display_options['fields']['expression_2']['field'] = 'expression';
+$handler->display->display_options['fields']['expression_2']['label'] = 'Margin Percent';
+$handler->display->display_options['fields']['expression_2']['set_precision'] = TRUE;
+$handler->display->display_options['fields']['expression_2']['precision'] = '2';
+$handler->display->display_options['fields']['expression_2']['suffix'] = '%';
+$handler->display->display_options['fields']['expression_2']['expression'] = '([expression_1]/[field_customer_rate]) *100;';
+/* Sort criterion: Content: Post date */
+$handler->display->display_options['sorts']['created']['id'] = 'created';
+$handler->display->display_options['sorts']['created']['table'] = 'node';
+$handler->display->display_options['sorts']['created']['field'] = 'created';
+$handler->display->display_options['sorts']['created']['granularity'] = 'day';
+/* Sort criterion: Content: Ship Date (field_ship_date) */
+$handler->display->display_options['sorts']['field_ship_date_value']['id'] = 'field_ship_date_value';
+$handler->display->display_options['sorts']['field_ship_date_value']['table'] = 'field_data_field_ship_date';
+$handler->display->display_options['sorts']['field_ship_date_value']['field'] = 'field_ship_date_value';
+$handler->display->display_options['sorts']['field_ship_date_value']['exposed'] = TRUE;
+$handler->display->display_options['sorts']['field_ship_date_value']['expose']['label'] = 'Ship Date (field_ship_date)';
+/* Filter criterion: Content: Published */
+$handler->display->display_options['filters']['status']['id'] = 'status';
+$handler->display->display_options['filters']['status']['table'] = 'node';
+$handler->display->display_options['filters']['status']['field'] = 'status';
+$handler->display->display_options['filters']['status']['value'] = 1;
+$handler->display->display_options['filters']['status']['group'] = 1;
+$handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+/* Filter criterion: Content: Type */
+$handler->display->display_options['filters']['type']['id'] = 'type';
+$handler->display->display_options['filters']['type']['table'] = 'node';
+$handler->display->display_options['filters']['type']['field'] = 'type';
+$handler->display->display_options['filters']['type']['value'] = array(
+  'shipment' => 'shipment',
+);
+$handler->display->display_options['filters']['type']['group'] = 1;
+/* Filter criterion: Date: Date (node) */
+$handler->display->display_options['filters']['date_filter']['id'] = 'date_filter';
+$handler->display->display_options['filters']['date_filter']['table'] = 'node';
+$handler->display->display_options['filters']['date_filter']['field'] = 'date_filter';
+$handler->display->display_options['filters']['date_filter']['operator'] = '>=';
+$handler->display->display_options['filters']['date_filter']['group'] = 1;
+$handler->display->display_options['filters']['date_filter']['exposed'] = TRUE;
+$handler->display->display_options['filters']['date_filter']['expose']['operator_id'] = 'date_filter_op';
+$handler->display->display_options['filters']['date_filter']['expose']['label'] = 'From (Select Date)';
+$handler->display->display_options['filters']['date_filter']['expose']['operator'] = 'date_filter_op';
+$handler->display->display_options['filters']['date_filter']['expose']['identifier'] = 'date_filter';
+$handler->display->display_options['filters']['date_filter']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+  6 => 0,
+  7 => 0,
+);
+$handler->display->display_options['filters']['date_filter']['form_type'] = 'date_popup';
+$handler->display->display_options['filters']['date_filter']['default_date'] = 'now -1 day';
+$handler->display->display_options['filters']['date_filter']['year_range'] = '-3:+0';
+$handler->display->display_options['filters']['date_filter']['date_fields'] = array(
+  'node.created' => 'node.created',
+);
+$handler->display->display_options['filters']['date_filter']['date_method'] = 'AND';
+/* Filter criterion: Date: Date (node) */
+$handler->display->display_options['filters']['date_filter_1']['id'] = 'date_filter_1';
+$handler->display->display_options['filters']['date_filter_1']['table'] = 'node';
+$handler->display->display_options['filters']['date_filter_1']['field'] = 'date_filter';
+$handler->display->display_options['filters']['date_filter_1']['operator'] = '<=';
+$handler->display->display_options['filters']['date_filter_1']['group'] = 1;
+$handler->display->display_options['filters']['date_filter_1']['exposed'] = TRUE;
+$handler->display->display_options['filters']['date_filter_1']['expose']['operator_id'] = 'date_filter_1_op';
+$handler->display->display_options['filters']['date_filter_1']['expose']['label'] = 'To (Select Date)';
+$handler->display->display_options['filters']['date_filter_1']['expose']['operator'] = 'date_filter_1_op';
+$handler->display->display_options['filters']['date_filter_1']['expose']['identifier'] = 'date_filter_1';
+$handler->display->display_options['filters']['date_filter_1']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+  6 => 0,
+  7 => 0,
+);
+$handler->display->display_options['filters']['date_filter_1']['form_type'] = 'date_popup';
+$handler->display->display_options['filters']['date_filter_1']['default_date'] = 'now';
+$handler->display->display_options['filters']['date_filter_1']['date_fields'] = array(
+  'node.created' => 'node.created',
+);
+$handler->display->display_options['filters']['date_filter_1']['date_method'] = 'AND';
+
+/* Display: Revenue Report */
+$handler = $view->new_display('page', 'Revenue Report', 'page');
+$handler->display->display_options['defaults']['title'] = FALSE;
+$handler->display->display_options['title'] = 'Revenue Report';
+$handler->display->display_options['defaults']['style_plugin'] = FALSE;
+$handler->display->display_options['style_plugin'] = 'views_aggregator';
+$handler->display->display_options['style_options']['columns'] = array(
+  'field_ship_date' => 'field_ship_date',
+  'nid_1' => 'nid_1',
+  'field_ship_date_1' => 'field_ship_date_1',
+  'nid' => 'nid',
+  'nothing' => 'nothing',
+  'field_shipment_booking_fee' => 'field_shipment_booking_fee',
+);
+$handler->display->display_options['style_options']['default'] = '-1';
+$handler->display->display_options['style_options']['info'] = array(
+  'field_ship_date' => array(
+    'sortable' => 1,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_group_and_compress' => 'views_aggregator_group_and_compress',
+      'views_aggregator_row_filter' => 0,
+      'views_aggregator_average' => 0,
+      'views_aggregator_count' => 0,
+      'views_aggregator_first' => 0,
+      'views_aggregator_enumerate' => 0,
+      'views_aggregator_replace' => 0,
+      'views_aggregator_maximum' => 0,
+      'views_aggregator_median' => 0,
+      'views_aggregator_minimum' => 0,
+      'views_aggregator_range' => 0,
+      'views_aggregator_sum' => 0,
+      'views_aggregator_tally' => 0,
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 0,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'nid_1' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+      'views_aggregator_row_filter' => 0,
+      'views_aggregator_group_and_compress' => 0,
+      'views_aggregator_average' => 0,
+      'views_aggregator_count' => 0,
+      'views_aggregator_enumerate' => 0,
+      'views_aggregator_replace' => 0,
+      'views_aggregator_maximum' => 0,
+      'views_aggregator_median' => 0,
+      'views_aggregator_minimum' => 0,
+      'views_aggregator_range' => 0,
+      'views_aggregator_sum' => 0,
+      'views_aggregator_tally' => 0,
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 0,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'field_ship_date_1' => array(
+    'sortable' => 1,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 1,
+    'aggr' => array(
+      'views_aggregator_group_and_compress' => 'views_aggregator_group_and_compress',
+      'views_aggregator_row_filter' => 0,
+      'views_aggregator_average' => 0,
+      'views_aggregator_count' => 0,
+      'views_aggregator_first' => 0,
+      'views_aggregator_enumerate' => 0,
+      'views_aggregator_replace' => 0,
+      'views_aggregator_maximum' => 0,
+      'views_aggregator_median' => 0,
+      'views_aggregator_minimum' => 0,
+      'views_aggregator_range' => 0,
+      'views_aggregator_sum' => 0,
+      'views_aggregator_tally' => 0,
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 0,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'nid' => array(
+    'sortable' => 1,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+      'views_aggregator_row_filter' => 0,
+      'views_aggregator_group_and_compress' => 0,
+      'views_aggregator_average' => 0,
+      'views_aggregator_count' => 0,
+      'views_aggregator_enumerate' => 0,
+      'views_aggregator_replace' => 0,
+      'views_aggregator_maximum' => 0,
+      'views_aggregator_median' => 0,
+      'views_aggregator_minimum' => 0,
+      'views_aggregator_range' => 0,
+      'views_aggregator_sum' => 0,
+      'views_aggregator_tally' => 0,
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'nothing' => array(
+    'sortable' => 1,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+      'views_aggregator_row_filter' => 0,
+      'views_aggregator_group_and_compress' => 0,
+      'views_aggregator_average' => 0,
+      'views_aggregator_count' => 0,
+      'views_aggregator_enumerate' => 0,
+      'views_aggregator_replace' => 0,
+      'views_aggregator_maximum' => 0,
+      'views_aggregator_median' => 0,
+      'views_aggregator_minimum' => 0,
+      'views_aggregator_range' => 0,
+      'views_aggregator_sum' => 0,
+      'views_aggregator_tally' => 0,
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 0,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+  'field_shipment_booking_fee' => array(
+    'sortable' => 1,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+    'has_aggr' => 0,
+    'aggr' => array(
+      'views_aggregator_first' => 'views_aggregator_first',
+      'views_aggregator_row_filter' => 0,
+      'views_aggregator_group_and_compress' => 0,
+      'views_aggregator_average' => 0,
+      'views_aggregator_count' => 0,
+      'views_aggregator_enumerate' => 0,
+      'views_aggregator_replace' => 0,
+      'views_aggregator_maximum' => 0,
+      'views_aggregator_median' => 0,
+      'views_aggregator_minimum' => 0,
+      'views_aggregator_range' => 0,
+      'views_aggregator_sum' => 0,
+      'views_aggregator_tally' => 0,
+    ),
+    'aggr_par' => '',
+    'has_aggr_column' => 1,
+    'aggr_column' => 'views_aggregator_sum',
+    'aggr_par_column' => '',
+  ),
+);
+$handler->display->display_options['style_options']['empty_table'] = TRUE;
+$handler->display->display_options['style_options']['totals_per_page'] = '1';
+$handler->display->display_options['style_options']['totals_row_position'] = array(
+  1 => 0,
+  2 => '2',
+);
+$handler->display->display_options['defaults']['style_options'] = FALSE;
+$handler->display->display_options['defaults']['row_plugin'] = FALSE;
+$handler->display->display_options['defaults']['row_options'] = FALSE;
+$handler->display->display_options['defaults']['relationships'] = FALSE;
+$handler->display->display_options['defaults']['fields'] = FALSE;
+/* Field: Ship Date Link */
+$handler->display->display_options['fields']['field_ship_date']['id'] = 'field_ship_date';
+$handler->display->display_options['fields']['field_ship_date']['table'] = 'field_data_field_ship_date';
+$handler->display->display_options['fields']['field_ship_date']['field'] = 'field_ship_date';
+$handler->display->display_options['fields']['field_ship_date']['ui_name'] = 'Ship Date Link';
+$handler->display->display_options['fields']['field_ship_date']['label'] = 'Ship Date Link';
+$handler->display->display_options['fields']['field_ship_date']['exclude'] = TRUE;
+$handler->display->display_options['fields']['field_ship_date']['settings'] = array(
+  'format_type' => 'short',
+  'fromto' => 'both',
+  'multiple_number' => '',
+  'multiple_from' => '',
+  'multiple_to' => '',
+);
+$handler->display->display_options['fields']['field_ship_date']['group_columns'] = array(
+  'value' => 'value',
+);
+/* Field: Comma Separated Nids */
+$handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
+$handler->display->display_options['fields']['nid_1']['table'] = 'node';
+$handler->display->display_options['fields']['nid_1']['field'] = 'nid';
+$handler->display->display_options['fields']['nid_1']['group_type'] = 'group_concat';
+$handler->display->display_options['fields']['nid_1']['ui_name'] = 'Comma Separated Nids';
+$handler->display->display_options['fields']['nid_1']['label'] = 'Comma Separated Nids';
+$handler->display->display_options['fields']['nid_1']['exclude'] = TRUE;
+$handler->display->display_options['fields']['nid_1']['node_in_colorbox_width'] = '600';
+$handler->display->display_options['fields']['nid_1']['node_in_colorbox_height'] = '600';
+$handler->display->display_options['fields']['nid_1']['node_in_colorbox_rel'] = '';
+/* Field: Content: Ship Date */
+$handler->display->display_options['fields']['field_ship_date_1']['id'] = 'field_ship_date_1';
+$handler->display->display_options['fields']['field_ship_date_1']['table'] = 'field_data_field_ship_date';
+$handler->display->display_options['fields']['field_ship_date_1']['field'] = 'field_ship_date';
+$handler->display->display_options['fields']['field_ship_date_1']['alter']['path'] = 'load-count-detail/[nid_1]';
+$handler->display->display_options['fields']['field_ship_date_1']['alter']['absolute'] = TRUE;
+$handler->display->display_options['fields']['field_ship_date_1']['settings'] = array(
+  'format_type' => 'mm_dd_yyyy',
+  'fromto' => 'both',
+  'multiple_number' => '',
+  'multiple_from' => '',
+  'multiple_to' => '',
+);
+$handler->display->display_options['fields']['field_ship_date_1']['group_columns'] = array(
+  'value' => 'value',
+);
+/* Field: Shipments Count */
+$handler->display->display_options['fields']['nid']['id'] = 'nid';
+$handler->display->display_options['fields']['nid']['table'] = 'node';
+$handler->display->display_options['fields']['nid']['field'] = 'nid';
+$handler->display->display_options['fields']['nid']['group_type'] = 'count_distinct';
+$handler->display->display_options['fields']['nid']['ui_name'] = 'Shipments Count';
+$handler->display->display_options['fields']['nid']['label'] = 'Shipments';
+$handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+$handler->display->display_options['fields']['nid']['alter']['make_link'] = TRUE;
+$handler->display->display_options['fields']['nid']['alter']['path'] = 'load-count-detail/[nid_1]';
+/* Field: Shipts custom text link */
+$handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+$handler->display->display_options['fields']['nothing']['table'] = 'views';
+$handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+$handler->display->display_options['fields']['nothing']['ui_name'] = 'Shipts custom text link';
+$handler->display->display_options['fields']['nothing']['label'] = 'Shipments';
+$handler->display->display_options['fields']['nothing']['alter']['text'] = '[nid]';
+/* Field: Content: Booking Fee */
+$handler->display->display_options['fields']['field_shipment_booking_fee']['id'] = 'field_shipment_booking_fee';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['table'] = 'field_data_field_shipment_booking_fee';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['field'] = 'field_shipment_booking_fee';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['group_type'] = 'sum';
+$handler->display->display_options['fields']['field_shipment_booking_fee']['settings'] = array(
+  'thousand_separator' => ',',
+  'decimal_separator' => '.',
+  'scale' => '2',
+  'prefix_suffix' => 1,
+);
+$handler->display->display_options['fields']['field_shipment_booking_fee']['group_columns'] = array(
+  'value' => 'value',
+);
+$handler->display->display_options['defaults']['sorts'] = FALSE;
+/* Sort criterion: Content: Ship Date (field_ship_date) */
+$handler->display->display_options['sorts']['field_ship_date_value']['id'] = 'field_ship_date_value';
+$handler->display->display_options['sorts']['field_ship_date_value']['table'] = 'field_data_field_ship_date';
+$handler->display->display_options['sorts']['field_ship_date_value']['field'] = 'field_ship_date_value';
+$handler->display->display_options['sorts']['field_ship_date_value']['expose']['label'] = 'Ship Date (field_ship_date)';
+$handler->display->display_options['defaults']['filter_groups'] = FALSE;
+$handler->display->display_options['defaults']['filters'] = FALSE;
+/* Filter criterion: Content: Published */
+$handler->display->display_options['filters']['status']['id'] = 'status';
+$handler->display->display_options['filters']['status']['table'] = 'node';
+$handler->display->display_options['filters']['status']['field'] = 'status';
+$handler->display->display_options['filters']['status']['value'] = 1;
+$handler->display->display_options['filters']['status']['group'] = 1;
+$handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+/* Filter criterion: Content: Type */
+$handler->display->display_options['filters']['type']['id'] = 'type';
+$handler->display->display_options['filters']['type']['table'] = 'node';
+$handler->display->display_options['filters']['type']['field'] = 'type';
+$handler->display->display_options['filters']['type']['value'] = array(
+  'shipment' => 'shipment',
+);
+$handler->display->display_options['filters']['type']['group'] = 1;
+/* Filter criterion: Date: Date (node) */
+$handler->display->display_options['filters']['date_filter_2']['id'] = 'date_filter_2';
+$handler->display->display_options['filters']['date_filter_2']['table'] = 'node';
+$handler->display->display_options['filters']['date_filter_2']['field'] = 'date_filter';
+$handler->display->display_options['filters']['date_filter_2']['operator'] = '>=';
+$handler->display->display_options['filters']['date_filter_2']['group'] = 1;
+$handler->display->display_options['filters']['date_filter_2']['exposed'] = TRUE;
+$handler->display->display_options['filters']['date_filter_2']['expose']['operator_id'] = 'date_filter_2_op';
+$handler->display->display_options['filters']['date_filter_2']['expose']['label'] = 'From (Select Date)';
+$handler->display->display_options['filters']['date_filter_2']['expose']['operator'] = 'date_filter_2_op';
+$handler->display->display_options['filters']['date_filter_2']['expose']['identifier'] = 'date_filter_2';
+$handler->display->display_options['filters']['date_filter_2']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  8 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+  6 => 0,
+  7 => 0,
+  9 => 0,
+);
+$handler->display->display_options['filters']['date_filter_2']['form_type'] = 'date_popup';
+$handler->display->display_options['filters']['date_filter_2']['date_fields'] = array(
+  'field_data_field_ship_date.field_ship_date_value' => 'field_data_field_ship_date.field_ship_date_value',
+);
+$handler->display->display_options['filters']['date_filter_2']['date_method'] = 'AND';
+/* Filter criterion: Date: Date (node) */
+$handler->display->display_options['filters']['date_filter_3']['id'] = 'date_filter_3';
+$handler->display->display_options['filters']['date_filter_3']['table'] = 'node';
+$handler->display->display_options['filters']['date_filter_3']['field'] = 'date_filter';
+$handler->display->display_options['filters']['date_filter_3']['operator'] = '<=';
+$handler->display->display_options['filters']['date_filter_3']['group'] = 1;
+$handler->display->display_options['filters']['date_filter_3']['exposed'] = TRUE;
+$handler->display->display_options['filters']['date_filter_3']['expose']['operator_id'] = 'date_filter_3_op';
+$handler->display->display_options['filters']['date_filter_3']['expose']['label'] = 'To (Select Date)';
+$handler->display->display_options['filters']['date_filter_3']['expose']['operator'] = 'date_filter_3_op';
+$handler->display->display_options['filters']['date_filter_3']['expose']['identifier'] = 'date_filter_3';
+$handler->display->display_options['filters']['date_filter_3']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  8 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+  6 => 0,
+  7 => 0,
+  9 => 0,
+);
+$handler->display->display_options['filters']['date_filter_3']['form_type'] = 'date_popup';
+$handler->display->display_options['filters']['date_filter_3']['date_fields'] = array(
+  'field_data_field_ship_date.field_ship_date_value' => 'field_data_field_ship_date.field_ship_date_value',
+);
+$handler->display->display_options['filters']['date_filter_3']['date_method'] = 'AND';
+$handler->display->display_options['path'] = 'revenue-report';
+$handler->display->display_options['menu']['type'] = 'normal';
+$handler->display->display_options['menu']['title'] = 'Revenue Reportv';
+$handler->display->display_options['menu']['weight'] = '4';
+$handler->display->display_options['menu']['name'] = 'main-menu';
+$handler->display->display_options['menu']['context'] = 0;
+$handler->display->display_options['menu']['context_only_inline'] = 0;
+
+/* Display: Block */
+$handler = $view->new_display('block', 'Block', 'block_1');
+$handler->display->display_options['block_description'] = 'Load by Count Date';

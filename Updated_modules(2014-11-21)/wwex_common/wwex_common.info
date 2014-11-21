@@ -1,0 +1,6 @@
+name = WWEX Common
+description = To extend functionality of other modules.
+core = 7.x
+package = Reports
+version = 7.x-1.0
+dependencies[] = views_aggregator

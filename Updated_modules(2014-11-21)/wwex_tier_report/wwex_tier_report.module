@@ -1,0 +1,139 @@
+<?php 
+
+/**
+* @file
+*  wwex_tier_report_page_tier_detail() Tier detail for wwex_tier_report module.
+*/
+
+/**
+ * Implements hook_menu()
+ * @return array
+ */
+function wwex_tier_report_menu() {
+  $items['tier-detail/%'] = array(
+    'title' => 'Tier Detail',
+    'page callback' => 'wwex_tier_report_page_tier_detail',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+  
+/**
+ * Page callback mapped to the url /tier-detail/%
+ *
+ * @return array
+ */
+function wwex_tier_report_page_tier_detail() {
+  if ( arg(1) == '1' ) {
+  $tier_detail = 'Number of shipment greater than 2';
+  }
+  elseif ( arg(1) == '2' ) {
+    $tier_detail = 'Number of shipment greater 1 and less than 2';
+  }
+  elseif ( arg(1) == '3' ) {
+    $tier_detail = 'Number of shipment less or eqaul to 1';
+  }
+  else {
+    $tier_detail = 'Unknown Tier';
+  }
+  return array(
+    '#markup' => '<div class="tier-detail">' . $tier_detail . '</div>'
+  );
+}
+
+// hook_views_pre_render()
+function wwex_tier_report_views_pre_render(&$view) {
+  // Scramble the order of the rows shown on this result page.
+  // Note that this could be done earlier, but not later in the view execution
+  // process.
+  if ( $view->name == 'tier_report' ) {
+
+    // update total values
+    if ( isset( $view->totals )) {
+    
+      $total_revenue = isset($view->totals['expression_5']) ? $view->totals['expression_5'] : 0;
+      $total_margin = isset($view->totals['expression_3']) ? $view->totals['expression_3'] : 0;
+
+      // calculate total marin %
+      $margin_percentage = ($total_margin / $total_revenue) * 100;
+
+      // replce margin % total
+      if ( isset($view->totals['expression_4']) )
+        $view->totals['expression_4'] = number_format($margin_percentage, 2, '.', '') . '%';
+  
+    }
+  
+    // change values per row
+    // it is toatl of tiers e.g for tier A or B or C
+    if ( isset($view->style_plugin->rendered_fields) ) {
+      $rendered_fields = &$view->style_plugin->rendered_fields;
+
+      // total revenue updated 
+      $total_revenue_updated = 0;
+
+      // total margin updated 
+      $total_margin_updated = 0;
+
+      foreach ($rendered_fields as $count => $fields) {
+
+        // get revenue and margin per row
+        $total_revenue_pr = isset($fields['expression_5']) ? $fields['expression_5'] : 0;
+        $total_margin_pr = isset($fields['expression_3']) ? $fields['expression_3'] : 0;
+
+        // calculate margin % per row
+        $margin_percentage_pr = $total_margin_pr > 0 ? ($total_margin_pr / $total_revenue_pr) * 100 : 0;
+        // change margin % per row 
+        if ( isset($fields['expression_4']) )
+          $view->style_plugin->rendered_fields[$count]['expression_4'] = number_format($margin_percentage_pr, 2, '.', '') . '%';
+
+        // calculate total revenue % per row
+        $total_revenue_percentage_pr = $total_revenue_pr > 0 ? ($total_revenue_pr / $total_revenue) * 100 : 0;
+        $total_revenue_updated += $total_revenue_percentage_pr;
+        if ( isset($fields['expression_9']) )
+          $view->style_plugin->rendered_fields[$count]['expression_9'] = number_format($total_revenue_percentage_pr, 2, '.', '') . '%';
+
+        // calculate total margin % per row
+        $total_margin_percentage_pr = $total_margin_pr > 0 ? ($total_margin_pr / $total_margin) * 100 : 0;
+        $total_margin_updated += $total_margin_percentage_pr;
+        // change total margin % per row 
+        if ( isset($fields['expression_10']) )
+          $view->style_plugin->rendered_fields[$count]['expression_10'] = number_format($total_margin_percentage_pr, 2, '.', '') . '%';
+
+        }
+
+        // update total values
+        if ( isset( $view->totals )) {
+          
+        // format % total revenue	
+        if ( isset($view->totals['expression_9']) )
+          $view->totals['expression_9'] = round($total_revenue_updated) . '%';
+
+        // format % total margin	
+        if ( isset($view->totals['expression_10']) )
+          $view->totals['expression_10'] = round($total_margin_updated) . '%';
+  
+      }
+    }
+}
+}
+
+/*
+ * Implementation of hook_views_api()
+ */
+function wwex_tier_report_views_api() {
+  return array('api' => 3.0);
+}
+
+/**
+ * Implements hook_theme().
+ */
+function wwex_tier_report_theme() {
+  return array(
+    'views_view__tier_report' => array(
+      'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+      'template' => 'views-view--tier-report',
+      'base hook' => 'views_view',
+      'path' => drupal_get_path('module', 'wwex_tier_report') . '/theme',
+    ),
+  );
+}
