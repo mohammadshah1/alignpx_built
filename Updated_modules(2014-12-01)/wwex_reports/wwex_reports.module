@@ -1,0 +1,408 @@
+<?php
+
+/**
+* @file
+* function wwex_reports_date_popup_process_alter(&$element, &$form_state, $context) 
+* function wwex_reports_form($form, &$form_state)
+* function wwex_reports_views_api()
+* function wwex_reports_theme()
+* function wwex_reports_form_views_exposed_form_alter(&$form, &$form_state, $form_id)
+* function wwex_reports_views_query_alter(&$view, &$query)
+* function wwex_reports_views_pre_render(&$view)
+* function wwex_reports_list_brokers()
+* function wwex_reports_list_markets()
+* function wwex_reports_list_load_status()
+*/
+
+/**
+ * Implementing hook_popup_process_alter().
+ */  
+function wwex_reports_date_popup_process_alter(&$element, &$form_state, $context) {
+  unset($element['date']['#description']);
+  unset($element['time']['#description']);
+} 
+
+/**
+ * Implementing hook_form().
+ */ 
+function wwex_reports_form($form, &$form_state) {
+  
+  if ( empty($_GET['fdate']['date']) || empty($_GET['tdate']['date'])) {
+   
+    $fdate = date('Y-m-d', time() - 60 * 60 * 24);
+    $tdate = date('Y-m-d', time());
+  }
+  else {
+    $fdate = wwex_access_clean_input($_GET['fdate']['date']);
+    $tdate = wwex_access_clean_input($_GET['tdate']['date']);
+  }
+  
+  $form['#method'] = 'GET';
+  
+  $form['fdate'] = array(
+    '#type' => 'date_popup',
+    '#date_label_position' => '',
+    '#title' => 'From',
+    '#date_format' => 'Y-m-d', 
+    '#default_value' => $fdate, 
+    '#maxlength' => 10,
+  );
+  
+  $form['tdate'] = array(
+    '#type' => 'date_popup',
+    '#date_label_position' => '',
+    '#title' => 'To',
+    '#date_format' => 'Y-m-d',
+    '#default_value' => $tdate,
+    '#maxlength' => 10,
+  );
+  
+  $form['market'] = array(
+    '#type' => 'select',  
+    '#title' => 'Markets(Select Markets)',
+    '#multiple' => TRUE,
+    '#pre_render' => array('dropdown_checkboxes'),
+    '#options' => wwex_reports_list_markets(),
+    '#default_value' => wwex_access_clean_input($_GET['market']),
+  );
+  
+  $form['sales'] = array(
+    '#type' => 'select',
+    '#multiple' => TRUE,
+    '#pre_render' => array('dropdown_checkboxes'),
+    '#title' => 'Sales Rep (Select Sales Rep)',
+    '#options' => wwex_sales_rep_report_list_sales_rep(),
+    '#default_value' => wwex_access_clean_input($_GET['sales']), 
+  );
+  
+  $form['broker'] = array(
+    '#type' => 'select',  
+    '#title' => 'Broker (Select Broker)',
+    '#multiple' => TRUE,
+    '#pre_render' => array('dropdown_checkboxes'),
+    '#options' => wwex_reports_list_brokers(),
+    '#default_value' => wwex_access_clean_input($_GET['broker']),
+  );
+  
+  $form['submit_button'] = array(
+    '#type' => 'submit',
+    '#value' => t('View Shipment'),
+  );
+  
+  return $form;
+}
+
+/*
+ * Implementation of hook_views_api()
+ */
+function wwex_reports_views_api() {
+  return array('api' => 3.0);
+}
+
+/**
+ * Implements hook_theme().
+ */
+function wwex_reports_theme() {
+  return array(
+    'views_view_fields__report_detail_page' => array(
+    'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+    'template' => 'views-view-fields--report-detail-page',
+    'base hook' => 'views_view_fields',
+    'path' => drupal_get_path('module', 'wwex_reports') . '/theme',
+    ),
+    'views_view__load_by_count_date_all_in_one' => array(
+    'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+    'template' => 'views-view--load-by-count-date-all-in-one',
+    'base hook' => 'views_view',
+    'path' => drupal_get_path('module', 'wwex_reports') . '/theme',
+    ),
+  
+    'views_view__load_count_detail' => array(
+    'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+    'template' => 'views-view--load-count-detail',
+    'base hook' => 'views_view',
+    'path' => drupal_get_path('module', 'wwex_reports') . '/theme',
+    ),
+   
+  );
+}
+
+/**
+ * Implementing hook_form_views_exposed_form_alter().
+ */ 
+function wwex_reports_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
+  
+  //Updating exposed filter dropdowns based on user role and user's franchise
+  $access = wwex_access_user_has_role(array('super user'));
+  if ( $access == FALSE ) {
+    global $user;
+    $user_obj = user_load($user->uid);
+    $franchise_nid = $user_obj->field_user_franchise['und'][0]['nid'];
+    unset($form['field_shipment_broker_uid']['#options']);
+    unset($form['field_shipment_franchise_nid']['#options']);
+    $form['field_shipment_franchise_nid']['#options'][$franchise_nid] = node_load($franchise_nid)->title;
+    $form['field_shipment_broker_uid']['#options'] = wwex_reports_list_brokers();
+  }
+  
+  // Updating (field_load_status) exposed filter drop down by adding two new options (In Transit and Delivered)
+  // without making changes to taxonomy terms vocabulary, to get correct searched results using current db structure.
+  $delivered = array(22 => 'In Transit', 23 => 'Delivered');
+  $load_status = $form['field_load_status_tid']['#options'];
+  unset($load_status[4]);
+  if ( !empty($load_status) ) {
+    $options = $load_status + $delivered;
+  }
+  unset($form['field_load_status_tid']['#options']);
+  $form['field_load_status_tid']['#options'] = $options;
+}
+ 
+/**
+ * Implementing hook_views_query_alter().
+ */ 
+  
+function wwex_reports_views_query_alter(&$view, &$query) {
+  
+  if ( $view->name == 'shipments_by_dates' || $view->name == 'load_by_count_date_all_in_one' ) {
+  /*
+    if ( is_array($_GET['field_load_status_tid']) ) {
+    
+      unset($query->table_queue['field_data_field_load_status']);
+      foreach ($query->where[1]['conditions'] as $key => $conditions) {
+        if ($conditions['field'] == 'field_data_field_load_status.field_load_status_tid') {
+  
+          unset($query->where[1]['conditions'][$key]);
+        }
+      }
+      
+      foreach ($_GET['field_load_status_tid'] as $val) {
+        if ( $val == 22 || $val == 23) {
+          $load_internal_status_tids[] = wwex_access_clean_input($val, TRUE);
+        }
+        else{
+          $load_status_tids[] = wwex_access_clean_input($val, TRUE);
+        }
+      }
+  
+      if (!empty($load_internal_status_tids) && !empty($load_status_tids) ) {
+
+        $join4 = new views_join;
+        $join4->construct('field_data_field_internal_load_status', 'node', 'nid', 'entity_id');
+        $view->query->add_relationship('field_data_field_internal_load_status', $join4, 'node');
+        
+        $join5 = new views_join;
+        $join5->construct('field_data_field_load_status', 'node', 'nid', 'entity_id');
+        $view->query->add_relationship('field_data_field_load_status', $join5, 'node');
+        
+        $or = db_or()->condition('field_data_field_load_status.field_load_status_tid', $load_status_tids, 'IN')->condition('field_data_field_internal_load_status.field_internal_load_status_tid', $load_internal_status_tids, 'IN');
+        $query->add_where(1, $or);
+
+      }
+      elseif ( empty($load_status_tids) ) {
+
+        $join6 = new views_join;
+        $join6->construct('field_data_field_internal_load_status', 'node', 'nid', 'entity_id');
+        $view->query->add_relationship('field_data_field_internal_load_status', $join6, 'node');
+        $query->where[2]['conditions'][4] = array(
+          'field' => 'field_data_field_internal_load_status.field_internal_load_status_tid',
+          'value' => $load_internal_status_tids,
+          'operator' => 'IN',
+        );
+      }
+      elseif ( !empty($load_status_tids) ) {
+      
+        $join7 = new views_join;
+        $join7->construct('field_data_field_load_status', 'node', 'nid', 'entity_id');
+        $view->query->add_relationship('field_data_field_load_status', $join7, 'node');
+        $query->where[2]['conditions'][4] = array(
+          'field' => 'field_data_field_load_status.field_load_status_tid',
+          'value' => $load_status_tids,
+          'operator' => 'IN', 
+        );
+      }
+    }
+  */
+    if (isset( $_GET['author_select']) && !empty( $_GET['author_select'] )) {
+    
+      $query->where[2]['conditions'][2] = array(
+        'field' => 'node.uid',
+        'value' => wwex_access_clean_input($_GET['author_select'], TRUE),
+        'operator' => 'IN', 
+      );
+    }
+  /*
+    $uri =  request_uri();
+    $query_str = explode("?" , $uri);
+    if ( empty($query_str[1]) ) {
+
+      $franchise_nids = array_keys(wwex_reports_list_markets());
+      $brokers = array_keys(wwex_reports_list_brokers());
+      $load_status_tids = array_keys(wwex_reports_list_load_status());
+      $sales_rep = array_keys(wwex_sales_rep_report_list_sales_rep());
+  
+      $join2 = new views_join;
+      $join2->construct('field_data_field_shipment_franchise', 'node', 'nid', 'entity_id');
+      $view->query->add_relationship('field_data_field_shipment_franchise', $join2, 'node');
+
+      $query->where[2]['conditions'][2] = array(
+        'field' => 'field_data_field_shipment_franchise.field_shipment_franchise_nid',
+        'value' => $franchise_nids,
+        'operator' => 'IN',
+      );
+
+      $join3 = new views_join;
+      $join3->construct('field_data_field_shipment_broker', 'node', 'nid', 'entity_id');
+      $view->query->add_relationship('field_data_field_shipment_broker', $join3, 'node');
+      $query->where[2]['conditions'][3] = array(
+        'field' => 'field_data_field_shipment_broker.field_shipment_broker_uid',
+        'value' => $brokers,
+        'operator' => 'IN', 
+      );
+
+      $join4 = new views_join;
+      $join4->construct('field_data_field_internal_load_status', 'node', 'nid', 'entity_id');
+      $view->query->add_relationship('field_data_field_internal_load_status', $join4, 'node');
+  
+      $join5 = new views_join;
+      $join5->construct('field_data_field_load_status', 'node', 'nid', 'entity_id');
+      $view->query->add_relationship('field_data_field_load_status', $join5, 'node');
+  
+      $or = db_or()->condition('field_data_field_load_status.field_load_status_tid', array(1, 2, 3), 'IN')->condition('field_data_field_internal_load_status.field_internal_load_status_tid', array(22, 23), 'IN');
+      $query->add_where(1, $or);
+  
+      $query->where[2]['conditions'][5] = array(
+        'field' => 'node.uid',
+        'value' => $sales_rep,
+        'operator' => 'IN', 
+      );
+    }
+		*/
+  }
+}
+  
+// hook_views_pre_render()
+function wwex_reports_views_pre_render(&$view) {
+  
+  if ( $view->name == 'load_by_count_date_all_in_one' ) {
+  
+    // update total values
+    if ( isset( $view->totals )) {
+  
+      // first we get total customer rate (Total Retial Price)
+      $total_customer_rate = isset($view->totals['field_customer_rate']) ? strip_tags($view->totals['field_customer_rate']) : 0;
+      $total_margin = isset($view->totals['expression_1']) ? $view->totals['expression_1'] : 0;
+      
+      // calculate total marin %
+      $margin_percentage = $total_customer_rate > 0 ? ($total_margin / $total_customer_rate) * 100 : 0;
+    
+      // replce total customer rate
+      if ( isset($view->totals['field_customer_rate_1']) )
+        $view->totals['field_customer_rate_1'] = '$' . number_format($total_customer_rate, 2, ' . ', ',');
+  
+      // replce total margin % rate
+      if ( isset($view->totals['expression_2']) )
+        $view->totals['expression_2'] = number_format($margin_percentage, 2, ' . ', '') . '%';
+  
+    }
+  
+    // change values per row
+    // it is toatl of tiers e.g for tier A or B or C
+    if ( isset($view->style_plugin->rendered_fields) ) {
+      $rendered_fields = &$view->style_plugin->rendered_fields;
+  
+    foreach ($rendered_fields as $count => $fields) {
+  
+      // get revenue and margin per row
+        $total_customer_rate_pr = isset($fields['field_customer_rate']) ? $fields['field_customer_rate'] : 0;
+      $total_margin_pr = isset($fields['expression_1']) ? $fields['expression_1'] : 0;
+  
+      // calculate margin % per row
+      $margin_percentage_pr = $total_customer_rate_pr > 0 ? ($total_margin_pr / $total_customer_rate_pr) * 100 : 0;
+      // change margin % per row 
+      if ( isset($fields['expression_2']) )
+        $view->style_plugin->rendered_fields[$count]['expression_2'] = number_format($margin_percentage_pr, 2, ' . ', '') . '%';
+  
+      }
+    }
+  }
+}
+
+// list of brokers 
+function wwex_reports_list_brokers() {
+  $brokers = array();
+  $access = wwex_access_user_has_role(array('super user'));
+  
+  if ( $access == FALSE) {
+
+    global $user;
+    $user_obj = user_load($user->uid);
+    $franchise = $user_obj->field_user_franchise['und'][0]['nid'];
+    $sql_concat = " AND field_data_field_user_franchise.field_user_franchise_nid IN (:frnachises) ";
+    $placeholder = array(':frnachises' => $franchise);
+  }
+  else {
+    $sql_concat = " ";
+    $placeholder = array("");
+  }
+  $sql = "SELECT
+            users.`name`,
+            users.uid
+            FROM
+            {field_data_field_user_franchise} field_data_field_user_franchise
+            INNER JOIN {users} users ON users.uid = field_data_field_user_franchise.entity_id
+            INNER JOIN {users_roles} users_roles ON users_roles.uid = users.uid
+            INNER JOIN {role} role ON users_roles.rid = role.rid
+            WHERE
+            role.rid = 7 " . $sql_concat . " ";
+            
+  $res = db_query( $sql, $placeholder );
+  
+  foreach ( $res as $item ) {
+    $brokers[$item->uid] = $item->name;
+  }
+  
+  return $brokers; 
+} 
+  
+// list markets
+function wwex_reports_list_markets() {
+  
+  $markets = array();
+  $access = wwex_access_user_has_role(array('super user'));
+  
+  if ( $access == FALSE) {
+  
+    global $user;
+    $user_obj = user_load($user->uid);
+    $franchise_nid = $user_obj->field_user_franchise['und'][0]['nid'];
+    $markets[$franchise_nid] = node_load($franchise_nid)->title;
+  }
+  else {
+    $nodes = node_load_multiple(array(), array('type' => 'franchise')); 
+    foreach	(	$nodes as $node	)	{
+      $markets[$node->nid] = $node->title;
+    }
+  }
+
+  return $markets; 
+} 
+
+// List load status
+function wwex_reports_list_load_status() {
+  $load_status = array();
+  //$load_status[] = 'Select Status';
+  $res = db_query("SELECT
+        taxonomy_term_data.`name` as name,
+        taxonomy_term_data.tid as tid
+        FROM
+        {field_data_field_load_status} field_data_field_load_status
+        INNER JOIN {taxonomy_term_data} taxonomy_term_data ON taxonomy_term_data.tid = field_data_field_load_status.field_load_status_tid
+        GROUP BY
+        field_data_field_load_status.field_load_status_tid
+    ");
+  
+  foreach	(	$res as $item	)	{
+    $load_status[$item->tid] = $item->name;
+  }
+  
+  return $load_status; 
+} 

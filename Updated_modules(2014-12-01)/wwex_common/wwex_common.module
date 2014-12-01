@@ -1,0 +1,36 @@
+<?php 
+
+/**
+* @file
+*  wwex_tier_report_views_aggregation_functions_info() add new function for comma separated values
+*/
+module_load_include('inc', 'wwex_common', 'views_aggregation');
+
+/**
+ * Get Company Name
+ *
+ * @param $w_number 
+ *    w number by which company name will be return
+ */
+function wwex_common_get_company_name( $w_number ){
+	if( $w_number ){ 
+		$sql = "SELECT
+		taxonomy_term_data.`name`
+		FROM
+		field_data_field_company
+		INNER JOIN {taxonomy_term_data} ON taxonomy_term_data.tid = field_data_field_company.field_company_tid
+		INNER {JOIN field_data_field_w_number} ON field_data_field_w_number.entity_id = field_data_field_company.entity_id
+		WHERE  
+		field_data_field_w_number.field_w_number_value = :w_number
+		LIMIT 1
+		";
+		
+		$result = db_query($sql, array(':w_number' => $w_number));
+		if( !empty($result) ){
+			foreach ($result as $item) {
+				return $item->name;
+			}
+		}
+	}
+}
+

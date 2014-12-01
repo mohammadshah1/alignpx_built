@@ -1,0 +1,31 @@
+<?php 
+
+/**
+* @file
+* function wwex_carrier_detail_views_api()
+* function wwex_carrier_detail_theme()
+* function wwex_carrier_detail_views_pre_render(&$view)
+* function wwex_carrier_detail_views_query_alter(&$view, &$query).
+*/
+
+
+/*
+ * Implementation of hook_views_api()
+ */
+function wwex_carrier_detail_views_api() {
+  return array('api' => 3.0);
+}
+
+/**
+ * Implements hook_theme().
+ */
+function wwex_carrier_detail_theme() {
+  return array(
+    'views_view__carrier_detail' => array(
+      'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+      'template' => 'views-view--carrier-detail',
+      'base hook' => 'views_view',
+      'path' => drupal_get_path('module', 'wwex_carrier_detail') . '/theme',
+		),
+	);
+}
