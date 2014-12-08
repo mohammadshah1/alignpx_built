@@ -1,0 +1,153 @@
+<?php
+
+/**
+ * implements hook_views_pre_render()
+ * @param $view
+ */
+function wwex_first_time_shippers_views_pre_render(&$view) {
+  // Scramble the order of the rows shown on this result page.
+  // Note that this could be done earlier, but not later in the view execution
+  // process.
+  if ($view->name == 'first_time_shippers') {
+  
+    // re calculate totals
+    if (isset($view->totals) && !empty($view->totals) ) {
+
+      // first we get total customer rate (Total Retial Price)
+      $total_customer_rate = isset($view->totals['field_customer_rate']) ? strip_tags($view->totals['field_customer_rate']) : 0;
+      // get total margin
+      $total_margin = isset($view->totals['expression_1']) ? $view->totals['expression_1'] : 0;
+
+      // calculate total marin %
+      $margin_percentage = $total_customer_rate != 0 ? ($total_margin / $total_customer_rate) * 100 : 0;
+  
+      // replce margin % total
+      if (isset($view->totals['expression_2'])) {
+        $view->totals['expression_2'] = number_format($margin_percentage, 2, '.', '') . '%';
+      }
+
+      // replace retail total with retail hidden total
+      if (isset($view->totals['field_customer_rate_1'])) {
+        $view->totals['field_customer_rate_1'] = '$' . number_format($total_customer_rate, 2, '.', ',');
+      }
+    }
+
+    // recalculate per row
+    if (isset($view->style_plugin->rendered_fields)) {
+  
+      $rendered_fields = &$view->style_plugin->rendered_fields;
+  
+      foreach ($rendered_fields as $count => $fields) {
+        // first we get total customer rate (Total Retial Price) per row
+        $total_customer_rate_pr = isset($fields['field_customer_rate']) ? strip_tags($fields['field_customer_rate']) : 0;
+        // get total margin per row
+        $total_margin_pr = isset($fields['expression_1']) ? $fields['expression_1'] : 0;
+
+        // calculate total marin % per row
+        $margin_percentage_pr = $total_customer_rate_pr != 0 ? ($total_margin_pr / $total_customer_rate_pr) * 100 : 0;
+  
+        // replace margin % total per row
+        if (isset($fields['expression_2'])) {
+          $view->style_plugin->rendered_fields[$count]['expression_2'] = number_format($margin_percentage_pr, 2, '.', '') . '%';
+        }
+
+      }
+  
+    }
+  
+  }
+
+}
+
+/**
+ * implements hook_views_api()
+ * @return array
+ */
+function wwex_first_time_shippers_views_api() {
+  return array('api' => 3.0);
+}
+
+/**
+ * Implements hook_theme().
+ */
+function wwex_first_time_shippers_theme() {
+  return array(
+    'views_view__first_time_shippers' => array(
+      'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+      'template' => 'views-view--first-time-shippers',
+      'base hook' => 'views_view',
+      'path' => drupal_get_path('module', 'wwex_first_time_shippers') . '/theme',
+    ),
+  );
+}
+
+/**
+ * get user franchise
+ * @return int
+ */
+function wwex_first_time_shippers_user_franchise() {
+  global $user;
+  $user_franchise_nid = 0;
+  
+  if ($user->uid > 0) {
+    $user_obj = user_load($user->uid); 
+    $user_franchise_nid = isset($user_obj->field_user_franchise[LANGUAGE_NONE][0]['nid']) ? $user_obj->field_user_franchise[LANGUAGE_NONE][0]['nid'] : 0;
+  }
+  
+  return $user_franchise_nid;
+}
+
+/**
+ * Implementing hook_views_query_alter().
+ */ 
+function wwex_first_time_shippers_views_query_alter(&$view, &$query) {
+  if ($view->name == 'first_time_shippers') {
+  
+    // add sales rep filter
+    if (function_exists('wwex_sales_rep_report_list_sales_rep')) {
+      $sales_rep = wwex_sales_rep_report_list_sales_rep();
+      if (!empty($sales_rep)) {
+        $query->where[1]['conditions'][] = array(
+          'field' => 'node.uid',
+          'value' => $sales_rep,
+          'operator' => 'IN',
+        );
+      } else {
+        // if sales_rep filter is selected, we have to hide main display
+        // so we are adding some condition which is not
+        // present, so it will automatic hide view due to no result found
+        $query->where[1]['conditions'][] = array(
+          'field' => 'node.uid',
+          'value' => -999,
+          'operator' => '=',
+        );
+      }
+    }
+
+    // add user franchise filter
+    if (function_exists('wwex_reports_list_markets')) {
+      $user_franchise = wwex_reports_list_markets();
+  
+      // add franchis field relation in query
+      $join = new views_join;
+      $join->construct('field_data_field_shipment_franchise', 'node', 'nid', 'entity_id');
+      $view->query->add_relationship('field_data_field_shipment_franchise', $join, 'node');
+  
+      if (!empty($user_franchise)) {
+        $query->where[1]['conditions'][] = array(
+          'field' => 'field_data_field_shipment_franchise.field_shipment_franchise_nid',
+          'value' => array_keys($user_franchise),
+          'operator' => 'IN',
+        );
+      } else {
+        // if user has no franchise, hide view
+        $query->where[1]['conditions'][] = array(
+          'field' => 'field_data_field_shipment_franchise.field_shipment_franchise_nid',
+          'value' => -999,
+          'operator' => '=',
+        );
+      }
+    }
+
+  }
+}

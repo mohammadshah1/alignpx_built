@@ -1,0 +1,59 @@
+<?php
+/**
+ * Controls access to wwex_reporting modules
+ */
+
+/**
+ * this is a proper Drupal permission
+ *  Implements hook_permission().
+ */
+function wwex_access_permission() {
+  return array(
+    'access wwex reports' => array(
+      'title' => t('User can access reports'),
+      'description' => t('Allows user to access reports')
+    )
+  );
+}
+
+/**
+ * cleans input
+ * @todo fix whatever this is supposed to do, especially if it is "cleaning input", because it is no good
+ * @param $input
+ * @param bool $int
+ * @param bool $str
+ * @return array|mixed|string
+ */
+function wwex_access_clean_input($input, $int = FALSE, $str = FALSE) {
+  //if the variable is an array, recurse into it
+  if (is_array($input) && !empty($input)) {
+    //for each element in the array...
+    foreach ($input as $key => $val) {
+      //...clean the content of each variable in the array
+      $input[$key] = wwex_access_clean_input($val, $int, $str);
+    }
+
+      //return clean array
+    return $input;
+
+  } else {
+    $input = filter_var($input, FILTER_SANITIZE_STRING);
+    $input = trim($input);
+    $input = stripslashes($input);
+    $input = strip_tags($input);
+    $input = str_replace(array('‘', '’', '“', '”'), array("'", "'", '"', '"'), $input);
+
+    // only int value
+    if ($int) {
+      $input = preg_replace("/[^0-9\s]/", "", $input);
+    }
+
+
+    // only string values
+    if ($str) {
+      $input = preg_replace("/[^a-zA-Z\s]/", "", $input);
+    }
+
+    return $input;
+  }
+}

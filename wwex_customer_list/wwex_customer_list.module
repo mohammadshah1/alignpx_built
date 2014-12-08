@@ -1,0 +1,28 @@
+<?php 
+
+/**
+* @file
+* Function wwex_customer_list_theme() for listing customer in wwex_customer_list module.
+*/
+
+/**
+ * implements hook_views_api()
+ * @return array
+ */
+function wwex_customer_list_views_api() {
+  return array('api' => 3.0);
+}
+
+/**
+ * Implements hook_theme().
+ */
+function wwex_customer_list_theme() {
+  return array(
+    'views_view__general_customer_list' => array(
+      'variables' => array('view' => NULL, 'options' => NULL, 'row' => NULL),
+      'template' => 'views-view--general-customer-list',
+      'base hook' => 'views_view',
+      'path' => drupal_get_path('module', 'wwex_customer_list') . '/theme',
+    ),
+  );
+}

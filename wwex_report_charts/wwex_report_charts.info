@@ -1,0 +1,11 @@
+name = WWEX Report Charts
+description = Create csutom report charts
+core = 7.x
+package = WWEX Reports
+version = 7.x-1.0
+dependencies[] = views_aggregator
+dependencies[] = views_distinct
+dependencies[] = views_php
+dependencies[] = wwex_access
+
+scripts[] = js/highcharts.js

@@ -1,0 +1,9 @@
+name = WWEX Tier Report
+description = Add tier report view.
+core = 7.x
+package = WWEX Reports
+version = 7.x-1.0
+dependencies[] = views_aggregator
+dependencies[] = views_distinct
+dependencies[] = views_php
+dependencies[] = wwex_access
